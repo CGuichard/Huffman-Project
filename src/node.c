@@ -14,7 +14,6 @@ int isLeaf(nd n){
 }
 
 void printNode(nd n){
-<<<<<<< HEAD
   if(n == NULL)
     return;
 
@@ -30,18 +29,6 @@ void printNode(nd n){
       printNode(n->right);
     printf("]");
   }
-=======
-  // if(n == NULL)
-  //   puts("The node is empty!");
-  //
-  // if(isLeaf(n))
-  //   printf("<Leaf | Value : %i; Tag : %c>\n", n->val, n->tag);
-  //
-  // do {
-  //   printf("<Node | Value : %i; Tag : %c> [", n->val, n->tag);
-  //   printf("]");
-  // } while(isValidNode(n));
->>>>>>> 20995d2dad7ea636f5d2d7ba4e2908671428fd92
 }
 
 nd createNode(int val){
@@ -79,7 +66,6 @@ void destroyNode(nd *n){
       puts("The node is empty!");
 
   else{
-<<<<<<< HEAD
     if((*n)->left != NULL){
       destroyLastNode((*n)->left);
       free((*n)->left);
@@ -89,12 +75,6 @@ void destroyNode(nd *n){
       destroyLastNode((*n)->right);
       free((*n)->right);
     }
-=======
-    if((*n)->left != NULL)
-      destroyLastNode((*n)->left);
-    if((*n)->right != NULL)
-      destroyLastNode((*n)->right);
->>>>>>> 20995d2dad7ea636f5d2d7ba4e2908671428fd92
     free(*n);
     (*n) = NULL;
   }
@@ -104,24 +84,18 @@ void setLeft(nd n, int val){
   n->left = createNode(val);
 }
 
-<<<<<<< HEAD
 nd* getLeft(nd n){
   return &n->left;
 }
 
-=======
->>>>>>> 20995d2dad7ea636f5d2d7ba4e2908671428fd92
 void setRight(nd n, int val){
   n->right = createNode(val);
 }
 
-<<<<<<< HEAD
 nd* getRight(nd n){
   return &n->right;
 }
 
-=======
->>>>>>> 20995d2dad7ea636f5d2d7ba4e2908671428fd92
 int* getVal(nd n){
   return &n->val;
 }

@@ -17,13 +17,10 @@
   void destroyLastNode(nd n);
   void destroyNode(nd* n);
   void setLeft(nd n, int val);
-<<<<<<< HEAD
   nd* getLeft(nd n);
   void setRight(nd n, int val);
   nd* getRight(nd n);
-=======
   void setRight(nd n, int val);
->>>>>>> 20995d2dad7ea636f5d2d7ba4e2908671428fd92
   int* getVal(nd n);
   void setVal(nd n, int val);
   char* getTag(nd n);
