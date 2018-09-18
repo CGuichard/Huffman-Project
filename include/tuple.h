@@ -1,5 +1,5 @@
-#ifndef HUFFMAN_H
-#define HUFFMAN_H
+#ifndef TUPLE_H
+#define TUPLE_H
 
   #ifndef STD_LIBS_H
   #define STD_LIBS_H
@@ -14,8 +14,10 @@
 typedef struct tuple* tpl;
 
 tpl createTuple(void *key, void *val);
-void* getValue(tpl tuple);
-void* getKey(tpl tuple);
-int isKeyOf(tpl tuple, void* key, int(*equals)(void *val1, void *val2));
+void destroyTuple(tpl *tuple);
+void destroyTupleGen(void **tuple);
+void* getTupleValue(tpl tuple);
+void* getTupleKey(tpl tuple);
+int isKeyOf(tpl tuple, void *key, int(*equals)(void *val1, void *val2));
 
 #endif

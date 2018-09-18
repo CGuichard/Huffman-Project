@@ -9,6 +9,9 @@
 
   #endif
 
-int equalsInt(void* val1, void* val2);
+int equalsInt(void *val1, void *val2);
+void printInt(void *elem);
+void printChar(void *elem);
+void pointerError();
 
 #endif
