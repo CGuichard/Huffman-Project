@@ -12,6 +12,9 @@
 int equalsInt(void *val1, void *val2);
 void printInt(void *elem);
 void printChar(void *elem);
-void pointerError();
+void* copyInt(void *elem);
+void* copyChar(void *elem);
+void pointerAllocError();
+void pointerNullError();
 
 #endif
