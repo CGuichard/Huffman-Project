@@ -30,6 +30,10 @@ lst createDefinedList(void(*destroyElem)(void **elem), void(*printElem)(void *el
   return l;
 }
 
+int getListSize(lst l){
+  return (l != NULL)?l->numberOfElements:0;
+}
+
 void setElemDestroyer(lst l, void(*destroyElem)(void **elem)){
     l->destroyElem = destroyElem;
 }
@@ -90,8 +94,6 @@ void addInList(lst l, void *elem){
     l->numberOfElements++;
   }
 }
-
-#include "tuple.h"
 
 void popList(lst l){
   if(l != NULL && l->numberOfElements > 0){

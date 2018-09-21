@@ -9,7 +9,20 @@
 
   #endif
 
-// Prototypes ici
+#include <string.h>
+#include "utils.h"
+#include "tuple.h"
+#include "list.h"
+#include "node.h"
+
+void encrypt(char *srcFile);
+// void decrypt(char *srcFile, tr tree);
+
+lst charOccurences(char *srcFile);
+// tr construct_binary_tree(lst occurences);
+// lst contruct_encryption_tab(tr);
+
+tpl getTupleInListByKey(lst list, char key);
+
 
 #endif
-

@@ -15,6 +15,7 @@ typedef struct list* lst;
 
 lst createList();
 lst createDefinedList(void(*destroyElem)(void **elem), void(*printElem)(void *elem));
+int getListSize(lst l);
 void setElemDestroyer(lst l, void(*destroyElem)(void **elem));
 void setElemPrinter(lst l, void(*printElem)(void *elem));
 void destroyList(lst *l);
