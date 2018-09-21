@@ -1,0 +1,34 @@
+unsigned int const NB_ELEM = 5;
+
+printf("\n========== TEST LISTE ENTIER ==========\n\n");
+lst l = createDefinedList(NULL, &printInt);
+for (size_t j = 0; j < NB_ELEM; j++) {
+  int* i = (int*)malloc(sizeof(int));
+  *i = j;
+  addInList(l, i);
+}
+printList(l);
+for (size_t j = 0; j < NB_ELEM; j++) {
+  popList(l);
+  printList(l);
+}
+destroyList(&l);
+
+printf("\n\n========== TEST LISTE TUPLE ==========\n\n");
+lst l2 = createDefinedList(&destroyTupleGen, &printTupleGen);
+int *i = (int*)malloc(sizeof(int));
+char *a = (char*)malloc(sizeof(char));
+for (size_t j = 0; j < NB_ELEM; j++) {
+  *i = j;
+  *a = (char)(j+97);
+  tpl tuple = createTupleByCopy(i, a, &copyInt, NULL, &printInt, &copyChar, NULL, &printChar);
+  addInList(l2, tuple);
+}
+printList(l2);
+for (size_t j = 0; j < NB_ELEM; j++) {
+  popList(l2);
+  printList(l2);
+}
+destroyList(&l2);
+free(a); free(i);
+printf("\n\n");
