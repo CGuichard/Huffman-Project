@@ -1,5 +1,9 @@
 #include "tuple.h"
 
+/* ================================================== */
+/* ==================== STRUCT DEF ================== */
+/* ============================================================================ */
+
 struct tuple {
   void* key;
   void* val;
@@ -8,6 +12,10 @@ struct tuple {
   void (*printKey)(void *key);
   void (*printValue)(void *val);
 };
+
+/* ================================================== */
+/* ===================== PUBLIC ===================== */
+/* ============================================================================ */
 
 tpl createTuple(void *key, void *val, void(*destroyKey)(void **elem), void(*printKey)(void *key), void(*destroyValue)(void **elem), void(*printValue)(void *val)){
   tpl t = (tpl)malloc(sizeof(struct tuple));
