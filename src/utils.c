@@ -1,15 +1,15 @@
 /**
- * @file: utils.c
- * @author: GUICHARD Clément
- * @standard: C99
+ * @file utils.c
+ * @author GUICHARD Clément
+ * @standard C99
  *
- * @brief: Implementation file for "utils.h"
+ * @brief Implementation file for "utils.h"
  *
  * This file contains tool functions, used by
  * other files but not really belonging to a file,
  * and being useful in many places of the project
  *
- * Overview about public functions of utils:
+ * Overview about public functions of utils
  *  - equalsInt
  *  - printInt
  *  - printChar
@@ -28,28 +28,28 @@
 
 
 /** ===========================================================================/
- * @see: @file utils.h / @function equalsInt
+ * @see @file utils.h / @function equalsInt
  */
 int equalsInt(void *val1, void *val2){
   return *((int*)val1) == *((int*)val2);
 }
 
 /** ===========================================================================/
- * @see: @file utils.h / @function printInt
+ * @see @file utils.h / @function printInt
  */
 void printInt(void *elem){
   printf("%d", *((int*)elem));
 }
 
 /** ===========================================================================/
- * @see: @file utils.h / @function printChar
+ * @see @file utils.h / @function printChar
  */
 void printChar(void *elem){
   printf("'%c'", *((char*)elem));
 }
 
 /** ===========================================================================/
- * @see: @file utils.h / @function copyInt
+ * @see @file utils.h / @function copyInt
  */
 void* copyInt(void *elem){
   int* i = (int*)malloc(sizeof(int));
@@ -58,7 +58,7 @@ void* copyInt(void *elem){
 }
 
 /** ===========================================================================/
- * @see: @file utils.h / @function copyChar
+ * @see @file utils.h / @function copyChar
  */
 void* copyChar(void *elem){
   char* i = (char*)malloc(sizeof(char));
@@ -67,7 +67,7 @@ void* copyChar(void *elem){
 }
 
 /** ===========================================================================/
- * @see: @file utils.h / @function pointerAllocError
+ * @see @file utils.h / @function pointerAllocError
  */
 void pointerAllocError(){
   printf("Memory error: memory allocation can't be done\n");
@@ -75,7 +75,7 @@ void pointerAllocError(){
 }
 
 /** ===========================================================================/
- * @see: @file utils.h / @function pointerNullError
+ * @see @file utils.h / @function pointerNullError
  */
 void pointerNullError(){
   printf("Null pointer error: a function pointer needed to not be null has been found null\n");

@@ -1,9 +1,9 @@
 /**
- * @file: tuple.h
- * @author: GUICHARD Clément
- * @standard: C99
+ * @file tuple.h
+ * @author GUICHARD Clément
+ * @standard C99
  *
- * @brief: Header file for the struct "tuple".
+ * @brief Header file for the struct "tuple".
  *
  * The tuple structure represents two variables, a key
  * and a value. The types of the key and the value are generic
@@ -39,8 +39,8 @@
 /* ========== Struct ========= */
 
 /**
- * @typedef: tpl
- * @brief: Definition of tpl, a pointer of the structure tuple
+ * @typedef tpl
+ * @brief Definition of tpl, a pointer of the structure tuple
  *
  * The struct tuple is said existing, but truly implemented in the file
  * "tuple.c". The idea is to make a structure with unknown members so that
@@ -51,8 +51,8 @@ typedef struct tuple* tpl;
 /* ======== Functions ======== */
 
 /** ===========================================================================/
- * @function: createTuple
- * @brief: This function create a new tuple
+ * @function createTuple
+ * @brief This function create a new tuple
  *
  * @param{void*} key: pointer on the key of the tuple
  * @param{void*} val: pointer on the value of the tuple
@@ -78,8 +78,8 @@ tpl createTuple(void *key,
                );
 
 /** ===========================================================================/
- * @function: createTupleByCopy
- * @brief: Create a tuple by copy of a key and a value
+ * @function createTupleByCopy
+ * @brief Create a tuple by copy of a key and a value
  *
  * Like createTuple this function create a new tuple, but don't take directly
  * the pointer of the key and the value, it allocate new pointers and copy their
@@ -115,8 +115,8 @@ tpl createTupleByCopy(void *key,
                      );
 
 /** ===========================================================================/
-* @function: makeCopyTuple
-* @brief: This function make a copy of a given tuple
+* @function makeCopyTuple
+* @brief This function make a copy of a given tuple
 *
 * @param{tpl} tuple: pointer on the tuple to copy
 * @param{void*()} copyKey(void *key): function used to create a new pointer with
@@ -132,8 +132,8 @@ tpl makeCopyTuple(tpl tuple,
                  );
 
 /** ===========================================================================/
-* @function: destroyTuple
-* @brief: Destroy a tuple
+* @function destroyTuple
+* @brief Destroy a tuple
 *
 * This function destroy a tuple, by releasing the allocated memory dedicated to
 * it members, and destroying the pointer
@@ -145,8 +145,8 @@ tpl makeCopyTuple(tpl tuple,
 void destroyTuple(tpl *tuple);
 
 /** ===========================================================================/
-* @function: destroyTupleGen
-* @brief: Destroy a tuple pointed by a generic pointer
+* @function destroyTupleGen
+* @brief Destroy a tuple pointed by a generic pointer
 *
 * Like destroyTuple, but take a void** in parameter, for generic purpose of the
 * tuple in other files
@@ -158,8 +158,8 @@ void destroyTuple(tpl *tuple);
 void destroyTupleGen(void **tuple);
 
 /** ===========================================================================/
-* @function: printTuple
-* @brief: Print a tuple
+* @function printTuple
+* @brief Print a tuple
 *
 * This function print a tuple, by printing the key and the value like:
 * "(key : value)"
@@ -171,8 +171,8 @@ void destroyTupleGen(void **tuple);
 void printTuple(tpl tuple);
 
 /** ===========================================================================/
-* @function: printTupleGen
-* @brief: Print a tuple pointed by a generic pointer
+* @function printTupleGen
+* @brief Print a tuple pointed by a generic pointer
 *
 * Like printTuple, but take a void* in parameter, for generic purpose of the
 * tuple in other files
@@ -184,8 +184,8 @@ void printTuple(tpl tuple);
 void printTupleGen(void *tuple);
 
 /** ===========================================================================/
-* @function: getTupleKey
-* @brief: Give a pointer of the key of a tuple
+* @function getTupleKey
+* @brief Give a pointer of the key of a tuple
 *
 * This function return a generic pointer (void*) to the key of the given
 * tuple, which need to be cast to the true type of the key after been get
@@ -197,8 +197,8 @@ void printTupleGen(void *tuple);
 void* getTupleKey(tpl tuple);
 
 /** ===========================================================================/
-* @function: getTupleValue
-* @brief: Give a pointer of the value of a tuple
+* @function getTupleValue
+* @brief Give a pointer of the value of a tuple
 *
 * This function return a generic pointer (void*) to the value of the given
 * tuple, which need to be cast to the true type of the value after been get
@@ -210,8 +210,8 @@ void* getTupleKey(tpl tuple);
 void* getTupleValue(tpl tuple);
 
 /** ===========================================================================/
-* @function: isKeyOfTuple
-* @brief: Tell if a key is the key of a tuple
+* @function isKeyOfTuple
+* @brief Tell if a key is the key of a tuple
 *
 * This function tell if a given key equals to the key of a given tuple using an
 * equals function
@@ -229,8 +229,8 @@ void* getTupleValue(tpl tuple);
 int isKeyOfTuple(tpl tuple, void *key, int(*equals)(void *val1, void *val2));
 
 /** ===========================================================================/
-* @function: isValueOfTuple
-* @brief: Tell if a value is the value of a tuple
+* @function isValueOfTuple
+* @brief Tell if a value is the value of a tuple
 *
 * This function tell if a given value equals to the value of a given tuple using
 * an equals function

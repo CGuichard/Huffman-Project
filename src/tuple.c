@@ -1,9 +1,9 @@
 /**
- * @file: tuple.c
- * @author: GUICHARD Clément
- * @standard: C99
+ * @file tuple.c
+ * @author GUICHARD Clément
+ * @standard C99
  *
- * @brief: Implementation file for the struct "tuple".
+ * @brief Implementation file for the struct "tuple".
  *
  * This file implements the struct "tuple" described in the file "tuple.h",
  * a generic structure for multiple uses
@@ -31,8 +31,8 @@
 
 
 /**
- * @struct: tuple
- * @brief: A tuple contain a key and a value
+ * @struct tuple
+ * @brief A tuple contain a key and a value
  *
  * The structure tuple represent a key and a value, both with generic types,
  * and pointers on functions needed to manage a tuple
@@ -53,7 +53,7 @@ struct tuple {
 
 
 /** ===========================================================================/
- * @see: @file tuple.h / @function createTuple
+ * @see @file tuple.h / @function createTuple
  */
 tpl createTuple(void *key, void *val, void(*destroyKey)(void **elem), void(*printKey)(void *key), void(*destroyValue)(void **elem), void(*printValue)(void *val)){
   tpl t = (tpl)malloc(sizeof(struct tuple));
@@ -67,7 +67,7 @@ tpl createTuple(void *key, void *val, void(*destroyKey)(void **elem), void(*prin
 }
 
 /** ===========================================================================/
- * @see: @file tuple.h / @function createTupleByCopy
+ * @see @file tuple.h / @function createTupleByCopy
  */
 tpl createTupleByCopy(void *key, void *val, void*(*copyKey)(void *key), void(*destroyKey)(void **elem), void(*printKey)(void *key), void*(*copyValue)(void *val), void(*destroyValue)(void **elem), void(*printValue)(void *val)){
   tpl t = (tpl)malloc(sizeof(struct tuple));
@@ -81,7 +81,7 @@ tpl createTupleByCopy(void *key, void *val, void*(*copyKey)(void *key), void(*de
 }
 
 /** ===========================================================================/
- * @see: @file tuple.h / @function makeCopyTuple
+ * @see @file tuple.h / @function makeCopyTuple
  */
 tpl makeCopyTuple(tpl tuple, void*(*copyKey)(void *key), void*(*copyValue)(void *val)){
   tpl t = (tpl)malloc(sizeof(struct tuple));
@@ -95,7 +95,7 @@ tpl makeCopyTuple(tpl tuple, void*(*copyKey)(void *key), void*(*copyValue)(void 
 }
 
 /** ===========================================================================/
- * @see: @file tuple.h / @function destroyTuple
+ * @see @file tuple.h / @function destroyTuple
  */
 void destroyTuple(tpl *tuple){
   if(*tuple != NULL){
@@ -112,14 +112,14 @@ void destroyTuple(tpl *tuple){
 }
 
 /** ===========================================================================/
- * @see: @file tuple.h / @function destroyTupleGen
+ * @see @file tuple.h / @function destroyTupleGen
  */
 void destroyTupleGen(void **tuple){
   destroyTuple((tpl*)tuple);
 }
 
 /** ===========================================================================/
- * @see: @file tuple.h / @function printTuple
+ * @see @file tuple.h / @function printTuple
  */
 void printTuple(tpl tuple){
   if(tuple != NULL){
@@ -138,35 +138,35 @@ void printTuple(tpl tuple){
 }
 
 /** ===========================================================================/
- * @see: @file tuple.h / @function printTupleGen
+ * @see @file tuple.h / @function printTupleGen
  */
 void printTupleGen(void *tuple){
   printTuple((tpl)tuple);
 }
 
 /** ===========================================================================/
- * @see: @file tuple.h / @function getTupleKey
+ * @see @file tuple.h / @function getTupleKey
  */
 void* getTupleKey(tpl tuple){
   return tuple->key;
 }
 
 /** ===========================================================================/
- * @see: @file tuple.h / @function getTupleValue
+ * @see @file tuple.h / @function getTupleValue
  */
 void* getTupleValue(tpl tuple){
   return tuple->val;
 }
 
 /** ===========================================================================/
- * @see: @file tuple.h / @function isKeyOfTuple
+ * @see @file tuple.h / @function isKeyOfTuple
  */
 int isKeyOfTuple(tpl tuple, void *key, int(*equals)(void *val1, void *val2)){
   return (*equals)(tuple->key, key);
 }
 
 /** ===========================================================================/
- * @see: @file tuple.h / @function isValueOfTuple
+ * @see @file tuple.h / @function isValueOfTuple
  */
 int isValueOfTuple(tpl tuple, void *val, int(*equals)(void *val1, void *val2)){
   return (*equals)(tuple->val, val);
