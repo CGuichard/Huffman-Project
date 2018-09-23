@@ -1,3 +1,4 @@
+<span style="display:block;text-align:center">![Logo](./doc/l3ing-project-huffman-coding.png)
 # L3 ING Project - Huffman coding
 
 The objective of this project is to propose a code allowing to apply a Huffman coding on ASCII text files to compress their data without loss of information
@@ -34,7 +35,23 @@ Quite simple isn't it? Now the project is ready to run
 
 ### Learn more
 
-You can learn more about the commands you can use with **make** by looking at the *commands.md* file
+You can learn more about the commands you can use with **make** by looking at the **commands.md** file
+
+## Documentation generation
+
+The documentation of this project can be generated using the software [Doxygen](http://www.doxygen.nl/)
+
+You can learn about how to install Doxygen [here](https://www.stack.nl/~dimitri/doxygen/manual/install.html)
+
+Use Doxygen with the **Doxyfile** file in the **doc/** folder to generate web-format documentation (html). You can use Doxygen with the Doxywizard, or if you can by typing in a terminal *(by being in the directory doc /)* the command:
+
+    doxygen Doxyfile
+
+If the version of Doxyfile is too old for your version of Doxygen, you can upgrade it with:
+
+    doxygen -u Doxyfile
+
+Do not hesitate to consult the documentation of Doxygen for any problem
 
 ## Standards used
 
