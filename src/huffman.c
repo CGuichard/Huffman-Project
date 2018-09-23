@@ -2,7 +2,7 @@
 
 int main(void){
 
-  encrypt("test/halo_rebirth.txt");
+  encrypt("tests/test.txt");
 
   return EXIT_SUCCESS;
 }

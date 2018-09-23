@@ -246,7 +246,7 @@ int isKeyOfTuple(tpl tuple, void *key, int(*equals)(void *val1, void *val2));
 * @return{int}: Integer that represent a boolean value. A '0' equals to false,
 * and another value means true
 */
-int isValueOfTuple(tpl tuple, void *val, int(*equals)(void *val1, void *val2))
+int isValueOfTuple(tpl tuple, void *val, int(*equals)(void *val1, void *val2));
 
 
 #endif
