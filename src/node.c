@@ -3,117 +3,127 @@
 struct node{
   nd left;
   nd right;
-  int val;
-  char tag;
+  void *tag;
 };
 
 int isLeaf(nd n){
   // if the node have no children and its tag is set
   // then it's a leaf.
-  return n->left == NULL && n->right == NULL && n->tag != '\0' ? 1 : 0;
+  return n->left == NULL && n->right == NULL ? 1 : 0;
 }
 
-void printNode(nd n){
+void printNodeGen(nd n, void(*printTag)(void *tag)){
   if(n == NULL)
     return;
 
-  if(isLeaf(n))
-    printf("<Leaf | Value : %i; Tag : %c>", n->val, n->tag);
+  else if(printTag == NULL){
+    printf("<Key printer is null>");
+  }
 
   else{
-    printf("<Node | Value : %i; Tag : %c>[", n->val, n->tag);
-    if(isValidNode(n) && n->left != NULL)
-      printNode(n->left);
-    printf(",");
-    if(isValidNode(n) && n->right != NULL)
-      printNode(n->right);
-    printf("]");
+    if(isLeaf(n)){
+      printf("<Leaf | Tag : ");
+      (*printTag)(n->tag);
+      printf(">");
+    }
+
+    else{
+      printf("<Node | Tag : ");
+      (*printTag)(n->tag);
+      printf(">[");
+      if(isValidNode(n) && n->left != NULL)
+      printNodeGen(n->left, printTag);
+      printf(", ");
+      if(isValidNode(n) && n->right != NULL)
+      printNodeGen(n->right, printTag);
+      printf("]");
+    }
   }
 }
 
-nd createNode(int val){
+nd createNode(void* tag){
   nd node = (nd)malloc(sizeof(struct node));
 
   node->left = NULL;
   node->right = NULL;
-  node->val = val;
-  node->tag = '\0';
+  node->tag = tag;
 
   return node;
 }
 
-void destroyLastNode(nd n){
+void destroyLastNode(nd n, void(*destroyer)(void **elem)){
   if(n == NULL)
     puts("The node is empty!");
 
   else{
+    if(destroyer == NULL)
+      free(n->tag);
+    else
+      (*destroyer)(&(n->tag));
+
     if(n->left != NULL){
-      destroyLastNode(n->left);
+      destroyLastNode(n->left, destroyer);
       free(n->left);
       n->left = NULL;
     }
 
     if(n->right != NULL){
-      destroyLastNode(n->right);
+      destroyLastNode(n->right, destroyer);
+      if(destroyer == NULL)
+        free(n->tag);
+      else
+        (*destroyer)(&(n->tag));
       free(n->right);
       n->right = NULL;
     }
   }
 }
 
-void destroyNode(nd *n){
+void destroyNodeGen(nd *n, void(*destroyer)(void **elem)){
   if((*n) == NULL)
       puts("The node is empty!");
 
   else{
     if((*n)->left != NULL){
-      destroyLastNode((*n)->left);
+      destroyLastNode((*n)->left, destroyer);
       free((*n)->left);
     }
 
     if((*n)->right != NULL){
-      destroyLastNode((*n)->right);
+      destroyLastNode((*n)->right, destroyer);
       free((*n)->right);
     }
+    if(destroyer == NULL)
+      free((*n)->tag);
+    else
+      (*destroyer)(&(*n)->tag);
     free(*n);
     (*n) = NULL;
   }
 }
 
-void setLeft(nd n, int val){
-  n->left = createNode(val);
+void setLeft(nd n, void *tag){
+  n->left = createNode(tag);
 }
 
 nd* getLeft(nd n){
   return &n->left;
 }
 
-void setRight(nd n, int val){
-  n->right = createNode(val);
+void setRight(nd n, void *tag){
+  n->right = createNode(tag);
 }
 
 nd* getRight(nd n){
   return &n->right;
 }
 
-int* getVal(nd n){
-  return &n->val;
-}
-
-void setVal(nd n, int val){
-  n->val = val;
-}
-
-char* getTag(nd n){
+void* getTag(nd n){
   return &n->tag;
-}
-
-void setTag(nd n, char t){
-  n->tag = t;
 }
 
 int isValidNode(nd n){
   // if the node have a tag AND haven't children, it's a valid node.
   // if the node haven't a tag AND at least one child, it's a valid node.
-  return (n->tag != '\0' && (n->left == NULL && n->right == NULL)) || (n->tag == '\0' && (n->left != NULL || n->right != NULL)) ? 1 : 0;
+  return (isLeaf(n) && n->tag != NULL) || (!isLeaf(n) && n->tag !=NULL) ? 1 : 0;
 }

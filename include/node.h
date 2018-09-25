@@ -12,19 +12,15 @@
   typedef struct node* nd;
 
   int isLeaf(nd n);
-  void printNode(nd n);
-  nd createNode(int val);
-  void destroyLastNode(nd n);
-  void destroyNode(nd* n);
-  void setLeft(nd n, int val);
+  void printNodeGen(nd n, void(*printTag)(void *tag));
+  nd createNode(void* tag);
+  void destroyLastNode(nd n, void(*destroyer)(void **elem));
+  void destroyNodeGen(nd* n, void(*destroyer)(void **elem));
+  void setLeft(nd n, void* tag);
   nd* getLeft(nd n);
-  void setRight(nd n, int val);
+  void setRight(nd n, void* tag);
   nd* getRight(nd n);
-  void setRight(nd n, int val);
-  int* getVal(nd n);
-  void setVal(nd n, int val);
-  char* getTag(nd n);
-  void setTag(nd n, char t);
+  void* getTag(nd n);
   int isValidNode(nd n);
 
 #endif
