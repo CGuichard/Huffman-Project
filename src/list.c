@@ -7,13 +7,9 @@
  *
  * @brief Implementation file for the struct list and the functions in "list.h"
  *
- * The structure list is a dynamic list, it size
- * is modified when needed. This list is also generic
- * to support any type of element. However the type
- * of variables pointed to by the list must be
- * constrained by a principle of uniqueness. For example,
- * one list can contain only integers, or only characters,
- * or only one type of struct for example.
+ * This file implements the struct "list" described in the file "list.h" (and
+ * here in the comments of the struct implementation), a generic structure
+ * for multiple uses
  *
  * Overview about private functions of list:
  *    - destroyElemInList

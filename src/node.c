@@ -2,6 +2,8 @@
  * @file node.c
  * @author Thàng long CAMA
  * @standard C99
+ * @version 1.0
+ * @date 11th October 2018
  *
  * @brief Implementation file for the struct "node".
  *
@@ -32,10 +34,10 @@
 
 /**
  * @struct node
- * @brief A node contains two children and a tag
+ * @brief A node contains two children and a tag (is used to represent a tree)
  *
  * The structure node represents two children and a tag, the latter with generic
- * type.
+ * type. It is used to represent trees.
  */
 struct node{
   nd left; /**< Pointer on a child of the node, which is an other node */
@@ -47,6 +49,7 @@ struct node{
 /* ================================================== */
 /* ===================== PUBLIC ===================== */
 /* ========================================================================== */
+
 
 /** ===========================================================================/
  * @see @file node.h / @function createNode

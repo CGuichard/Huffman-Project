@@ -86,7 +86,9 @@ lst createList();
  *
  * @return{lst}: pointer of the new list
  */
-lst createDefinedList(void(*destroyElem)(void **elem), void(*printElem)(void *elem));
+lst createDefinedList(void(*destroyElem)(void **elem),
+                      void(*printElem)(void *elem)
+                     );
 
 /** ===========================================================================/
  * @function getListSize
