@@ -1,7 +1,9 @@
 /**
  * @file utils.c
- * @author GUICHARD Clément
+ * @author Clément GUICHARD
  * @standard C99
+ * @version 1.0
+ * @date 11th October 2018
  *
  * @brief Implementation file for "utils.h"
  *
