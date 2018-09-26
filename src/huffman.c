@@ -1,19 +1,68 @@
+/**
+ * @file huffman.c
+ * @author Clément GUICHARD
+ * @author Thàng long CAMA
+ * @standard C99
+ * @version 1.0
+ * @date 11th October 2018
+ *
+ * @brief This file implements the functions used in "huffman.h"
+ *
+ * This file implements function of the huffman coding using trees in C.
+ * The tree is a binary tree, which is composed of nodes.
+ *
+ * Overview about public functions of this file:
+ *    -
+ */
+
 #include "huffman.h"
 
-int main(void){
 
-  encrypt("tests/test.txt");
+/* ================================================== */
+/* ===================== PUBLIC ===================== */
+/* ========================================================================== */
 
-  return EXIT_SUCCESS;
+char* encryptStr(char *str){
+  lst charOccurences = charOccurencesOfStr(str);
+  printList(charOccurences);
+  destroyList(&charOccurences);
+  return NULL;
 }
 
-void encrypt(char *srcFile){
-  lst occurences = charOccurences(srcFile);
-  printList(occurences);
-  destroyList(&occurences);
+// void encryptFile(char *fileIn, char *fileOut, char *fileKey){
+//
+// }
+//
+// char* decryptStr(char *str){
+//   return NULL;
+// }
+//
+// void decryptFile(char *fileIn, char *fileOut, char *fileKey){
+//
+// }
+
+lst charOccurencesOfStr(char *str) {
+  lst occurences = createDefinedList(&destroyTupleGen, &printTupleGen);
+  char *key = (char*)malloc(sizeof(char));
+  int *val = (int*)malloc(sizeof(int)); *val = 1;
+  tpl tupleTmp = NULL;
+  for (size_t i = 0; i < strlen(str); i++) {
+    tupleTmp = getTupleInListByKey(occurences, str[i]);
+    if(tupleTmp == NULL){
+      *key = str[i];
+      tpl tuple = createTupleByCopy(key, val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
+      addInList(occurences, tuple);
+    }else{
+      (*((int*)getTupleValue(tupleTmp)))++;
+      tupleTmp = NULL;
+    }
+  }
+  free(key);
+  free(val);
+  return occurences;
 }
 
-lst charOccurences(char *srcFile){
+lst charOccurencesOfFile(char *srcFile){
   FILE* file = fopen (srcFile, "r");
   if(file != NULL) {
     char ligne[255];
@@ -53,3 +102,6 @@ tpl getTupleInListByKey(lst list, char key){
   }
   return NULL;
 }
+
+/* ========================================================================== */
+/* ========================================================================== */

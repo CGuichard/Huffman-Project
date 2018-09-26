@@ -1,7 +1,7 @@
 #====================== PARAMETRES ======================#
 
 # Nom du fichier principal (sans le .c)
-MAIN=huffman
+MAIN=huffman_exec
 
 #====================== NE PAS TOUCHER ======================#
 
