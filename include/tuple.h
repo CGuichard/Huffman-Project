@@ -1,7 +1,9 @@
 /**
  * @file tuple.h
- * @author GUICHARD Clément
+ * @author Clément GUICHARD
  * @standard C99
+ * @version 1.0
+ * @date 11th October 2018
  *
  * @brief Header file for the struct "tuple".
  *
@@ -115,137 +117,138 @@ tpl createTupleByCopy(void *key,
                      );
 
 /** ===========================================================================/
-* @function makeCopyTuple
-* @brief This function make a copy of a given tuple
-*
-* @param{tpl} tuple: pointer on the tuple to copy
-* @param{void*()} copyKey(void *key): function used to create a new pointer with
-*                                     the copy of the key value
-* @param{void*()} copyValue(void *val): function used to create a new pointer
-*                                       with the copy of the key value
-*
-* @return{tpl}: The pointer of the new tuple
-*/
+ * @function makeCopyTuple
+ * @brief This function make a copy of a given tuple
+ *
+ * @param{tpl} tuple: pointer on the tuple to copy
+ * @param{void*()} copyKey(void *key): function used to create a new pointer
+ *                                     with the copy of the key value
+ * @param{void*()} copyValue(void *val): function used to create a new pointer
+ *                                       with the copy of the key value
+ *
+ * @return{tpl}: The pointer of the new tuple
+ */
 tpl makeCopyTuple(tpl tuple,
                   void*(*copyKey)(void *key),
                   void*(*copyValue)(void *val)
                  );
 
 /** ===========================================================================/
-* @function destroyTuple
-* @brief Destroy a tuple
-*
-* This function destroy a tuple, by releasing the allocated memory dedicated to
-* it members, and destroying the pointer
-*
-* @param{tpl*} tuple: pointer on the pointer of the tuple
-*
-* @return{void}
-*/
+ * @function destroyTuple
+ * @brief Destroy a tuple
+ *
+ * This function destroy a tuple, by releasing the allocated memory dedicated to
+ * it members, and destroying the pointer
+ *
+ * @param{tpl*} tuple: pointer on the pointer of the tuple
+ *
+ * @return{void}
+ */
 void destroyTuple(tpl *tuple);
 
 /** ===========================================================================/
-* @function destroyTupleGen
-* @brief Destroy a tuple pointed by a generic pointer
-*
-* Like destroyTuple, but take a void** in parameter, for generic purpose of the
-* tuple in other files
-*
-* @param{void**} tuple: pointer on the pointer of the tuple (cast to void)
-*
-* @return{void}
-*/
+ * @function destroyTupleGen
+ * @brief Destroy a tuple pointed by a generic pointer
+ *
+ * Like destroyTuple, but take a void** in parameter, for generic purpose of the
+ * tuple in other files
+ *
+ * @param{void**} tuple: pointer on the pointer of the tuple (cast to void)
+ *
+ * @return{void}
+ */
 void destroyTupleGen(void **tuple);
 
 /** ===========================================================================/
-* @function printTuple
-* @brief Print a tuple
-*
-* This function print a tuple, by printing the key and the value like:
-* "(key : value)"
-*
-* @param{tpl} tuple: pointer of the tuple to print
-*
-* @return{void}
-*/
+ * @function printTuple
+ * @brief Print a tuple
+ *
+ * This function print a tuple, by printing the key and the value like:
+ * "(key : value)"
+ *
+ * @param{tpl} tuple: pointer of the tuple to print
+ *
+ * @return{void}
+ */
 void printTuple(tpl tuple);
 
 /** ===========================================================================/
-* @function printTupleGen
-* @brief Print a tuple pointed by a generic pointer
-*
-* Like printTuple, but take a void* in parameter, for generic purpose of the
-* tuple in other files
-*
-* @param{void*} tuple: pointer of the tuple to print
-*
-* @return{void}
-*/
+ * @function printTupleGen
+ * @brief Print a tuple pointed by a generic pointer
+ *
+ * Like printTuple, but take a void* in parameter, for generic purpose of the
+ * tuple in other files
+ *
+ * @param{void*} tuple: pointer of the tuple to print
+ *
+ * @return{void}
+ */
 void printTupleGen(void *tuple);
 
 /** ===========================================================================/
-* @function getTupleKey
-* @brief Give a pointer of the key of a tuple
-*
-* This function return a generic pointer (void*) to the key of the given
-* tuple, which need to be cast to the true type of the key after been get
-*
-* @param{tpl} tuple: pointer of the tuple
-*
-* @return{void*}: pointer of the key
-*/
+ * @function getTupleKey
+ * @brief Give a pointer of the key of a tuple
+ *
+ * This function return a generic pointer (void*) to the key of the given
+ * tuple, which need to be cast to the true type of the key after been get
+ *
+ * @param{tpl} tuple: pointer of the tuple
+ *
+ * @return{void*}: pointer of the key
+ */
 void* getTupleKey(tpl tuple);
 
 /** ===========================================================================/
-* @function getTupleValue
-* @brief Give a pointer of the value of a tuple
-*
-* This function return a generic pointer (void*) to the value of the given
-* tuple, which need to be cast to the true type of the value after been get
-*
-* @param{tpl} tuple: pointer of the tuple
-*
-* @return{void*}: pointer of the value
-*/
+ * @function getTupleValue
+ * @brief Give a pointer of the value of a tuple
+ *
+ * This function return a generic pointer (void*) to the value of the given
+ * tuple, which need to be cast to the true type of the value after been get
+ *
+ * @param{tpl} tuple: pointer of the tuple
+ *
+ * @return{void*}: pointer of the value
+ */
 void* getTupleValue(tpl tuple);
 
 /** ===========================================================================/
-* @function isKeyOfTuple
-* @brief Tell if a key is the key of a tuple
-*
-* This function tell if a given key equals to the key of a given tuple using an
-* equals function
-*
-* @param{tpl} tuple: pointer of the tuple
-* @param{void*} key: pointer of the key to test
-* @param{int()} equals(void *val1, void *val2): equals function to test if the
-*                                               key of the tuple and the key are
-*                                               equals, the function with void*
-*                                               pointers for generic purpose
-*
-* @return{int}: Integer that represent a boolean value. A '0' equals to false,
-* and another value means true
-*/
+ * @function isKeyOfTuple
+ * @brief Tell if a key is the key of a tuple
+ *
+ * This function tell if a given key equals to the key of a given tuple using an
+ * equals function
+ *
+ * @param{tpl} tuple: pointer of the tuple
+ * @param{void*} key: pointer of the key to test
+ * @param{int()} equals(void *val1, void *val2): equals function to test if the
+ *                                               key of the tuple and the key
+ *                                               are equals, the function with
+ *                                               void* pointers for generic
+ *                                               purpose
+ *
+ * @return{int}: Integer that represent a boolean value. A '0' equals to false,
+ * and another value means true
+ */
 int isKeyOfTuple(tpl tuple, void *key, int(*equals)(void *val1, void *val2));
 
 /** ===========================================================================/
-* @function isValueOfTuple
-* @brief Tell if a value is the value of a tuple
-*
-* This function tell if a given value equals to the value of a given tuple using
-* an equals function
-*
-* @param{tpl} tuple: pointer of the tuple
-* @param{void*} val: pointer of the value to test
-* @param{int()} equals(void *val1, void *val2): equals function to test if the
-*                                               value of the tuple and the value
-*                                               are equals, the function with
-*                                               void* pointers for generic
-*                                               purpose
-*
-* @return{int}: Integer that represent a boolean value. A '0' equals to false,
-* and another value means true
-*/
+ * @function isValueOfTuple
+ * @brief Tell if a value is the value of a tuple
+ *
+ * This function tell if a given value equals to the value of a given tuple using
+ * an equals function
+ *
+ * @param{tpl} tuple: pointer of the tuple
+ * @param{void*} val: pointer of the value to test
+ * @param{int()} equals(void *val1, void *val2): equals function to test if the
+ *                                               value of the tuple and the
+ *                                               value are equals, the function
+ *                                               with void* pointers for generic
+ *                                               purpose
+ *
+ * @return{int}: Integer that represent a boolean value. A '0' equals to false,
+ * and another value means true
+ */
 int isValueOfTuple(tpl tuple, void *val, int(*equals)(void *val1, void *val2));
 
 
