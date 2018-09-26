@@ -1,46 +1,56 @@
+/**
+ * @file node.c
+ * @author Thàng long CAMA
+ * @standard C99
+ *
+ * @brief Implementation file for the struct "node".
+ *
+ * This file implements the struct "node" described in the file "node.h",
+ * a generic structure for multiple uses
+ *
+ * Overview about public functions of node:
+ *  - createNode
+ *  - destroyLastNode
+ *  - destroyNodeGen
+ *  - printNodeGen
+ *  - getLeft
+ *  - setLeft
+ *  - getRight
+ *  - setRight
+ *  - getTag
+ *  - isValidNode
+ *  - isLeaf
+ */
+
 #include "node.h"
 
+
+/* ================================================== */
+/* ==================== STRUCT DEF ================== */
+/* ========================================================================== */
+
+
+/**
+ * @struct node
+ * @brief A node contains two children and a tag
+ *
+ * The structure node represents two children and a tag, the latter with generic
+ * type.
+ */
 struct node{
-  nd left;
-  nd right;
-  void *tag;
+  nd left; /**< Pointer on a child of the node, which is an other node */
+  nd right; /**< Pointer on a child of the node, which is an other node */
+  void *tag; /**< Generic pointer on the node's tag */
 };
 
-int isLeaf(nd n){
-  // if the node have no children and its tag is set
-  // then it's a leaf.
-  return n->left == NULL && n->right == NULL ? 1 : 0;
-}
 
-void printNodeGen(nd n, void(*printTag)(void *tag)){
-  if(n == NULL)
-    return;
+/* ================================================== */
+/* ===================== PUBLIC ===================== */
+/* ========================================================================== */
 
-  else if(printTag == NULL){
-    printf("<Key printer is null>");
-  }
-
-  else{
-    if(isLeaf(n)){
-      printf("<Leaf | Tag : ");
-      (*printTag)(n->tag);
-      printf(">");
-    }
-
-    else{
-      printf("<Node | Tag : ");
-      (*printTag)(n->tag);
-      printf(">[");
-      if(isValidNode(n) && n->left != NULL)
-      printNodeGen(n->left, printTag);
-      printf(", ");
-      if(isValidNode(n) && n->right != NULL)
-      printNodeGen(n->right, printTag);
-      printf("]");
-    }
-  }
-}
-
+/** ===========================================================================/
+ * @see @file node.h / @function createNode
+ */
 nd createNode(void* tag){
   nd node = (nd)malloc(sizeof(struct node));
 
@@ -51,6 +61,9 @@ nd createNode(void* tag){
   return node;
 }
 
+/** ===========================================================================/
+ * @see @file node.h / @function destroyLastNode
+ */
 void destroyLastNode(nd n, void(*destroyer)(void **elem)){
   if(n == NULL)
     puts("The node is empty!");
@@ -79,6 +92,9 @@ void destroyLastNode(nd n, void(*destroyer)(void **elem)){
   }
 }
 
+/** ===========================================================================/
+ * @see @file node.h / @function destroyNodeGen
+ */
 void destroyNodeGen(nd *n, void(*destroyer)(void **elem)){
   if((*n) == NULL)
       puts("The node is empty!");
@@ -102,28 +118,91 @@ void destroyNodeGen(nd *n, void(*destroyer)(void **elem)){
   }
 }
 
-void setLeft(nd n, void *tag){
-  n->left = createNode(tag);
+/** ===========================================================================/
+* @see @file node.h / @function printNodeGen
+*/
+void printNodeGen(nd n, void(*printTag)(void *tag)){
+  if(n == NULL)
+  return;
+
+  else if(printTag == NULL){
+    printf("<Key printer is null>");
+  }
+
+  else{
+    if(isLeaf(n)){
+      printf("<Leaf | Tag : ");
+      (*printTag)(n->tag);
+      printf(">");
+    }
+
+    else{
+      printf("<Node | Tag : ");
+      (*printTag)(n->tag);
+      printf(">[");
+      if(isValidNode(n) && n->left != NULL)
+      printNodeGen(n->left, printTag);
+      printf(", ");
+      if(isValidNode(n) && n->right != NULL)
+      printNodeGen(n->right, printTag);
+      printf("]");
+    }
+  }
 }
 
+/** ===========================================================================/
+* @see @file node.h / @function getLeft
+*/
 nd* getLeft(nd n){
   return &n->left;
 }
 
-void setRight(nd n, void *tag){
-  n->right = createNode(tag);
+/** ===========================================================================/
+ * @see @file node.h / @function setLeft
+ */
+void setLeft(nd n, void *tag){
+  n->left = createNode(tag);
 }
 
+/** ===========================================================================/
+ * @see @file node.h / @function getRight
+ */
 nd* getRight(nd n){
   return &n->right;
 }
 
+/** ===========================================================================/
+* @see @file node.h / @function setRight
+*/
+void setRight(nd n, void *tag){
+  n->right = createNode(tag);
+}
+
+/** ===========================================================================/
+ * @see @file node.h / @function getTag
+ */
 void* getTag(nd n){
   return &n->tag;
 }
 
+/** ===========================================================================/
+ * @see @file node.h / @function isValidNode
+ */
 int isValidNode(nd n){
   // if the node have a tag AND haven't children, it's a valid node.
   // if the node haven't a tag AND at least one child, it's a valid node.
   return (isLeaf(n) && n->tag != NULL) || (!isLeaf(n) && n->tag !=NULL) ? 1 : 0;
 }
+
+/** ===========================================================================/
+ * @see @file node.h / @function isLeaf
+ */
+int isLeaf(nd n){
+  // if the node have no children and its tag is set
+  // then it's a leaf.
+  return n->left == NULL && n->right == NULL ? 1 : 0;
+}
+
+
+/* ========================================================================== */
+/* ========================================================================== */
