@@ -42,7 +42,10 @@ char* encryptStr(char *str);
 
 lst charOccurencesOfStr(char *str);
 lst charOccurencesOfFile(char *srcFile);
+nd contructBinaryTree(lst occurences);
+
 tpl getTupleInListByKey(lst list, char key);
+void mergeTwoSmallerNodes(lst list);
 
 
 #endif

@@ -24,8 +24,12 @@
 
 char* encryptStr(char *str){
   lst charOccurences = charOccurencesOfStr(str);
-  printList(charOccurences);
+  nd tree = contructBinaryTree(charOccurences);
+
+  printf("Tree: ");
+  printNode(tree);
   destroyList(&charOccurences);
+  destroyNode(&tree);
   return NULL;
 }
 
@@ -94,14 +98,78 @@ lst charOccurencesOfFile(char *srcFile){
   return NULL;
 }
 
+nd contructBinaryTree(lst occurences){
+  // nd tree = createDefinedNode(NULL, destroyTupleGen, printTupleGen);
+  lst treeNodes = createDefinedList(destroyNodeGen, printNodeGen);
+  nd tree = NULL;
+  tpl tuple = NULL;
+  for(size_t i = 0; i < getListSize(occurences); i++){
+    tuple = get(occurences, i);
+    tpl tmp = makeCopyTuple(tuple, copyChar, copyInt);
+    nd node = createDefinedNode(tmp, destroyTupleGen, printTupleGen);
+    addInList(treeNodes, node);
+  }
+  if (getListSize(treeNodes) > 0){
+    while(getListSize(treeNodes) > 1){
+      mergeTwoSmallerNodes(treeNodes);
+    }
+    if(getListSize(treeNodes) == 1) tree = (nd)popInList(treeNodes, 0);
+  }
+  destroyList(&treeNodes);
+  return tree;
+}
+
 tpl getTupleInListByKey(lst list, char key){
   tpl tuple = NULL;
-  for (int i = 0; i < getListSize(list); i++) {
+  for (size_t i = 0; i < getListSize(list); i++) {
     tuple = (tpl)get(list, i);
     if (*((char*)getTupleKey(tuple)) == key) return tuple;
   }
   return NULL;
 }
+
+void mergeTwoSmallerNodes(lst list){
+  size_t j = 0;
+  size_t k = 1;
+  int valueJ = *((int*)getTupleValue((tpl)getTag((nd)get(list, j))));
+  int valueK = *((int*)getTupleValue((tpl)getTag((nd)get(list, k))));
+  int *currentValue = NULL;
+  for(size_t i = 2; i < getListSize(list); i++){
+    currentValue = (int*)getTupleValue((tpl)getTag((nd)get(list, i)));
+    if(k < j){
+      if(*currentValue < valueK && i != j && i != k){
+        k = i;
+        valueK = *currentValue;
+      }
+    }else{
+      if(*currentValue < valueJ && i != j && i != k){
+        j = i;
+        valueJ = *currentValue;
+      }
+    }
+  }
+  if(j < k) k--;
+  nd child1 = (nd)popInList(list, j);
+  nd child2 = (nd)popInList(list, k);
+  int valChild1 = *((int*)getTupleValue((tpl)getTag(child1)));
+  int valChild2 = *((int*)getTupleValue((tpl)getTag(child2)));
+  int* newValue = (int*)malloc(sizeof(int));
+  *newValue = valChild1 + valChild2;
+  tpl newTuple = createTuple(NULL, newValue, NULL, printChar, NULL, printInt);
+  nd newNode = createDefinedNode(newTuple, destroyTupleGen, printTupleGen);
+  if(valChild1 <= valChild2){
+    setLeft(newNode, child1);
+    setRight(newNode, child2);
+  }else{
+    setLeft(newNode, child2);
+    setRight(newNode, child1);
+  }
+  printNode(newNode);
+  printf("\n");
+  destroyNode(&newNode);
+  // addInList(list, newNode);
+}
+
 
 /* ========================================================================== */
 /* ========================================================================== */

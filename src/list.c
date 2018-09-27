@@ -134,7 +134,7 @@ lst createDefinedList(void(*destroyElem)(void **elem), void(*printElem)(void *el
 /** ===========================================================================/
  * @see @file list.h / @function getListSize
  */
-int getListSize(lst l){
+size_t getListSize(lst l){
   return (l != NULL)?l->numberOfElements:0;
 }
 
@@ -307,11 +307,11 @@ void resizeAlloc(lst l, int nbNewElements){
       l->allocatedBlocks = size;
     }else if(actualSize < B/2){
       // printf("RESIZE -\n");
-      size = actualSize + actualSize / 2;
-      void** ptr = (void**)realloc(l->objectList, size);
-      if(ptr != NULL) l->objectList = ptr;
-      else pointerAllocError();
-      l->allocatedBlocks = size;
+      // size = actualSize + actualSize / 2;
+      // void** ptr = (void**)realloc(l->objectList, size);
+      // if(ptr != NULL) l->objectList = ptr;
+      // else pointerAllocError();
+      // l->allocatedBlocks = size;
     }
   }
 }

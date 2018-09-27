@@ -99,9 +99,9 @@ lst createDefinedList(void(*destroyElem)(void **elem),
  *
  * @param{lst} l: pointer of the list which we want the size
  *
- * @return{int}: size of the list
+ * @return{size_t}: size of the list
  */
-int getListSize(lst l);
+size_t getListSize(lst l);
 
 /** ===========================================================================/
  * @function setElemDestroyer

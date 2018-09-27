@@ -34,12 +34,13 @@ int main(int argc, char *argv[]){
     }else{
       strcpy(fileOut, fileIn);
       strcat(fileOut, ".hfm");
-      if(argc >= 5){
-        strcpy(fileKey, argv[4]);
-      }else{
-        strcpy(fileKey, fileOut);
-        strcat(fileKey, ".key");
-      }
+    }
+
+    if(argc >= 5){
+      strcpy(fileKey, argv[4]);
+    }else{
+      strcpy(fileKey, fileOut);
+      strcat(fileKey, ".key");
     }
 
     if(!strcmp("encrypt", argv[1])){
@@ -56,8 +57,8 @@ int main(int argc, char *argv[]){
   }else{
     printf("#============== TEST ==============#\n\n");
     char* encr = encryptStr("TEST TABERNACLE");
-    printf("Encrypt: %s\n", encr);
-    printf("\n#==================================#\n");
+    // printf("Encrypt: %s\n", encr);
+    printf("\n\n#==================================#\n");
   }
 
   return EXIT_SUCCESS;

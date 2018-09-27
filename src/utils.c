@@ -40,14 +40,20 @@ int equalsInt(void *val1, void *val2){
  * @see @file utils.h / @function printInt
  */
 void printInt(void *elem){
-  printf("%d", *((int*)elem));
+  if(elem != NULL)
+    printf("%d", *((int*)elem));
+  else
+    printf("NULL");
 }
 
 /** ===========================================================================/
  * @see @file utils.h / @function printChar
  */
 void printChar(void *elem){
-  printf("'%c'", *((char*)elem));
+  if(elem != NULL)
+    printf("'%c'", *((char*)elem));
+  else
+    printf("NULL");
 }
 
 /** ===========================================================================/
