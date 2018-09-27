@@ -14,8 +14,13 @@
  *
  * Overview about public functions of node:
  *  - createNode
+ *  - createDefinedNode
+ *  - setTagDestroyer
+ *  - setTagPrinter
  *  - destroyLastNode
+ *  - destroyNode
  *  - destroyNodeGen
+ *  - printNode
  *  - printNodeGen
  *  - getLeft
  *  - setLeft
@@ -60,68 +65,115 @@ typedef struct node* nd;
  *
  * @return{nd}: The pointer of the new node
  */
-nd createNode(void* tag);
+nd createNode(void *tag);
 
-nd createDefinedNode(void* tag,
+/** ===========================================================================/
+ * @function createDefinedNode
+ * @brief This function creates a new node
+ *
+ * @param{void*} tag: pointer on the tag of the node
+ * @param{void*()} destroyTag(void **elem): function used to destroy the value
+ *                                         when the type cannot be destroyed
+ *                                         with a simple "free"
+ * @param{void* ()} printTag(void *elem): function used to print the key (because
+ *                                       we don't know the real type of the key)
+ *
+ * @return{nd}: The pointer of the new node
+ */
+nd createDefinedNode(void *tag,
                      void(*destroyTag)(void **elem),
                      void(*printTag)(void *elem)
                     );
 
+/** ===========================================================================/
+ * @function setTagDestroyer
+ * @brief This function sets a function to destroy a node's tag
+ *
+ * @param{nd} node: pointer on a node
+ * @param{void*()} destroyTag(void **elem): function used to destroy the value
+ *                                         when the type cannot be destroyed
+ *                                         with a simple "free"
+ *
+ * @return{void}
+ */
 void setTagDestroyer(nd node, void(*destroyTag)(void **elem));
 
+/** ===========================================================================/
+ * @function setTagPrinter
+ * @brief This function sets a function to print a node's tag
+ *
+ * @param{nd} node: pointer on a node
+ * @param{void*()} printTag(void *elem): function used to destroy the value
+ *                                         when the type cannot be destroyed
+ *                                         with a simple "free"
+ *
+ * @return{void}
+ */
 void setTagPrinter(nd node, void(*printTag)(void *elem));
 
 /** ===========================================================================/
  * @function destroyLastNode
  * @brief Destroys recursively all the children of a node
  *
- * @param{nd} n: the node where the children have to be freed
- * @param{void*()} destroyer(void **elem): function used to destroy the value
- *                                         when the type cannot be destroyed
- *                                         with a simple "free"
+ * @param{nd} n: pointer on a node
  *
  * @return{void}
  */
 void destroyLastNode(nd n);
 
 /** ===========================================================================/
- * @function destroyLastNode
- * @brief Destroys recursively all the children of a node AND the node itself
+ * @function destroyNodeGen
+ * @brief Destroys safely a generic node
  *
- * @param{nd} n: the node where the children have to be freed
- * @param{void*()} destroyer(void **elem): function used to destroy the value
- *                                         when the type cannot be destroyed
- *                                         with a simple "free"
+ * @param{void**} n: pointer on a node's pointer
  *
  * @return{void}
  */
 void destroyNodeGen(void **n);
 
+/** ===========================================================================/
+ * @function destroyNode
+ * @brief Destroys safely a node
+ *
+ * @param{nd*} n: pointer on a node's pointer
+ *
+ * @return{void}
+ */
 void destroyNode(nd *n);
 
 /** ===========================================================================/
-* @function printNodeGen
+* @function printNode
 * @brief Prints a node
 *
 * This function prints a node, by printing its children and its tag like:
 * <Node | Tag : 50>[<Leaf | Tag : 25>[,],<Leaf | Tag : 25>[,]]
 *
 *
-* @param{nd} node: the node to print
-* @param{void*()} printTag(void *tag): function used to print the tag with the
-*                                       correct format
+* @param{nd} node: pointer on a node
 *
 * @return{void}
 */
 void printNode(nd n);
 
+/** ===========================================================================/
+* @function printNodeGen
+* @brief Prints a generic node
+*
+* This function prints a node, by printing its children and its tag like:
+* <Node | Tag : 50>[<Leaf | Tag : 25>[,],<Leaf | Tag : 25>[,]]
+*
+*
+* @param{void*} n: pointer on a generic node
+*
+* @return{void}
+*/
 void printNodeGen(void *n);
 
 /** ===========================================================================/
  * @function getLeft
- * @brief Gets the left child of the node
+ * @brief Gets the left child of a node
  *
- * @param{nd} n: the node where the child is
+ * @param{nd} n: pointer on a node
  *
  * @return{nd}: the pointer of the left child's pointer
  */
@@ -131,8 +183,8 @@ nd getLeft(nd n);
  * @function setLeft
  * @brief Sets the left child of the node
  *
- * @param{nd} n: the node where the child has to be set
- * @param{void*} tag: pointer on the tag of the node
+ * @param{nd} n: pointer on a node
+ * @param{nd} child: pointer on a child node
  *
  * @return{void}
  */
@@ -142,7 +194,7 @@ void setLeft(nd n, nd child);
  * @function getRight
  * @brief Gets the right child of the node
  *
- * @param{nd} n: the node where the child is
+ * @param{nd} n: pointer on a node
  *
  * @return{nd}: the pointer of the right child's pointer
  */
@@ -152,8 +204,8 @@ nd getRight(nd n);
  * @function setRight
  * @brief Sets the right child of the node
  *
- * @param{nd} n: the node where the child has to be set
- * @param{void*} tag: pointer on the tag of the node
+ * @param{nd} n: pointer on a node
+ * @param{nd} child: pointer on a child node
  *
  * @return{void}
  */
@@ -163,7 +215,7 @@ void setRight(nd n, nd child);
  * @function getTag
  * @brief Gets the node's tag
  *
- * @param{nd} n: the node where the tag can be read
+ * @param{nd} n: pointer on a node
  *
  * @return{void*}: pointer on the tag of the node
  */
@@ -173,7 +225,7 @@ void* getTag(nd n);
  * @function isValidNode
  * @brief Checks a node's validity
  *
- * @param{nd} n: the node to check
+ * @param{nd} n: pointer on a node
  *
  * @return{int}: a boolean, 0 if it's false else 1
  */
@@ -183,7 +235,7 @@ int isValidNode(nd n);
  * @function isLeaf
  * @brief Checks if a node is a leaf
  *
- * @param{nd} n: the node to check
+ * @param{nd} n: pointer on a node
  *
  * @return{int}: a boolean, 0 if it's false else 1
  */

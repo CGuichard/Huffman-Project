@@ -12,8 +12,13 @@
  *
  * Overview about public functions of node:
  *  - createNode
+ *  - createDefinedNode
+ *  - setTagDestroyer
+ *  - setTagPrinter
  *  - destroyLastNode
+ *  - destroyNode
  *  - destroyNodeGen
+ *  - printNode
  *  - printNodeGen
  *  - getLeft
  *  - setLeft
@@ -36,8 +41,8 @@
  * @struct node
  * @brief A node contains two children and a tag (is used to represent a tree)
  *
- * The structure node represents two children and a tag, the latter with generic
- * type. It is used to represent trees.
+ * The structure node represents two children, a generic-typed tag and
+ * pointers on functions needed to manage the node. It is used to represent trees.
  */
 struct node{
   nd left; /**< Pointer on a child of the node, which is an other node */
@@ -68,6 +73,9 @@ nd createNode(void* tag){
   return node;
 }
 
+/** ===========================================================================/
+ * @see @file node.h / @function createDefinedNode
+ */
 nd createDefinedNode(void* tag, void(*destroyTag)(void **elem), void(*printTag)(void *elem)){
   nd node = (nd)malloc(sizeof(struct node));
 
@@ -80,10 +88,16 @@ nd createDefinedNode(void* tag, void(*destroyTag)(void **elem), void(*printTag)(
   return node;
 }
 
+/** ===========================================================================/
+ * @see @file node.h / @function setTagDestroyer
+ */
 void setTagDestroyer(nd node, void(*destroyTag)(void **elem)){
   node->destroyTag = destroyTag;
 }
 
+/** ===========================================================================/
+ * @see @file node.h / @function setTagPrinter
+ */
 void setTagPrinter(nd node, void(*printTag)(void *elem)){
   node->printTag = printTag;
 }
@@ -116,6 +130,9 @@ void destroyLastNode(nd n){
   }
 }
 
+/** ===========================================================================/
+ * @see @file node.h / @function destroyNode
+ */
 void destroyNode(nd *n){
   if((*n) != NULL){
     if((*n)->left != NULL){
@@ -144,7 +161,7 @@ void destroyNodeGen(void **n){
 }
 
 /** ===========================================================================/
-* @see @file node.h / @function printNodeGen
+* @see @file node.h / @function printNode
 */
 void printNode(nd n){
   if(n != NULL){
@@ -172,10 +189,12 @@ void printNode(nd n){
   }
 }
 
+/** ===========================================================================/
+ * @see @file node.h / @function printNodeGen
+ */
 void printNodeGen(void *n){
   printNode((nd)n);
 }
-
 
 /** ===========================================================================/
 * @see @file node.h / @function getLeft
