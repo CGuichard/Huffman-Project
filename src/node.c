@@ -43,6 +43,8 @@ struct node{
   nd left; /**< Pointer on a child of the node, which is an other node */
   nd right; /**< Pointer on a child of the node, which is an other node */
   void *tag; /**< Generic pointer on the node's tag */
+  void (*destroyTag)(void **elem); /**< Function used to destroy the tag */
+  void (*printTag)(void *elem); /**< Function used to print the tag */
 };
 
 
@@ -60,132 +62,154 @@ nd createNode(void* tag){
   node->left = NULL;
   node->right = NULL;
   node->tag = tag;
+  node->destroyTag = NULL;
+  node->printTag = NULL;
 
   return node;
+}
+
+nd createDefinedNode(void* tag, void(*destroyTag)(void **elem), void(*printTag)(void *elem)){
+  nd node = (nd)malloc(sizeof(struct node));
+
+  node->left = NULL;
+  node->right = NULL;
+  node->tag = tag;
+  node->destroyTag = destroyTag;
+  node->printTag = printTag;
+
+  return node;
+}
+
+void setTagDestroyer(nd node, void(*destroyTag)(void **elem)){
+  node->destroyTag = destroyTag;
+}
+
+void setTagPrinter(nd node, void(*printTag)(void *elem)){
+  node->printTag = printTag;
 }
 
 /** ===========================================================================/
  * @see @file node.h / @function destroyLastNode
  */
-void destroyLastNode(nd n, void(*destroyer)(void **elem)){
-  if(n == NULL)
-    puts("The node is empty!");
-
-  else{
-    if(destroyer == NULL)
+void destroyLastNode(nd n){
+  if(n != NULL){
+    if(n->destroyTag == NULL)
       free(n->tag);
     else
-      (*destroyer)(&(n->tag));
+      n->destroyTag(&(n->tag));
 
     if(n->left != NULL){
-      destroyLastNode(n->left, destroyer);
+      destroyLastNode(n->left);
       free(n->left);
       n->left = NULL;
     }
 
     if(n->right != NULL){
-      destroyLastNode(n->right, destroyer);
-      if(destroyer == NULL)
+      destroyLastNode(n->right);
+      if(n->destroyTag == NULL)
         free(n->tag);
       else
-        (*destroyer)(&(n->tag));
+        n->destroyTag(&(n->tag));
       free(n->right);
       n->right = NULL;
     }
   }
 }
 
-/** ===========================================================================/
- * @see @file node.h / @function destroyNodeGen
- */
-void destroyNodeGen(nd *n, void(*destroyer)(void **elem)){
-  if((*n) == NULL)
-      puts("The node is empty!");
-
-  else{
+void destroyNode(nd *n){
+  if((*n) != NULL){
     if((*n)->left != NULL){
-      destroyLastNode((*n)->left, destroyer);
+      destroyLastNode((*n)->left);
       free((*n)->left);
     }
 
     if((*n)->right != NULL){
-      destroyLastNode((*n)->right, destroyer);
+      destroyLastNode((*n)->right);
       free((*n)->right);
     }
-    if(destroyer == NULL)
+    if((*n)->destroyTag == NULL)
       free((*n)->tag);
     else
-      (*destroyer)(&(*n)->tag);
+      (*n)->destroyTag(&(*n)->tag);
     free(*n);
     (*n) = NULL;
   }
 }
 
 /** ===========================================================================/
+ * @see @file node.h / @function destroyNodeGen
+ */
+void destroyNodeGen(void **n){
+  destroyNode((nd*)n);
+}
+
+/** ===========================================================================/
 * @see @file node.h / @function printNodeGen
 */
-void printNodeGen(nd n, void(*printTag)(void *tag)){
-  if(n == NULL)
-  return;
-
-  else if(printTag == NULL){
-    printf("<Key printer is null>");
-  }
-
-  else{
+void printNode(nd n){
+  if(n != NULL){
     if(isLeaf(n)){
       printf("<Leaf | Tag : ");
-      (*printTag)(n->tag);
+      if(n->printTag != NULL)
+        n->printTag(n->tag);
+      else
+        printf("<Key printer is null>");
       printf(">");
-    }
-
-    else{
+    }else{
       printf("<Node | Tag : ");
-      (*printTag)(n->tag);
+      if(n->printTag != NULL)
+        n->printTag(n->tag);
+      else
+        printf("<Key printer is null>");
       printf(">[");
       if(isValidNode(n) && n->left != NULL)
-      printNodeGen(n->left, printTag);
+      printNodeGen(n->left);
       printf(", ");
       if(isValidNode(n) && n->right != NULL)
-      printNodeGen(n->right, printTag);
+      printNodeGen(n->right);
       printf("]");
     }
   }
 }
 
+void printNodeGen(void *n){
+  printNode((nd)n);
+}
+
+
 /** ===========================================================================/
 * @see @file node.h / @function getLeft
 */
-nd* getLeft(nd n){
-  return &n->left;
+nd getLeft(nd n){
+  return n->left;
 }
 
 /** ===========================================================================/
  * @see @file node.h / @function setLeft
  */
-void setLeft(nd n, void *tag){
-  n->left = createNode(tag);
+void setLeft(nd n, nd child){
+  n->left = child;
 }
 
 /** ===========================================================================/
  * @see @file node.h / @function getRight
  */
-nd* getRight(nd n){
-  return &n->right;
+nd getRight(nd n){
+  return n->right;
 }
 
 /** ===========================================================================/
 * @see @file node.h / @function setRight
 */
-void setRight(nd n, void *tag){
-  n->right = createNode(tag);
+void setRight(nd n, nd child){
+  n->right = child;
 }
 
 /** ===========================================================================/
  * @see @file node.h / @function getTag
  */
 void* getTag(nd n){
-  return &n->tag;
+  return n->tag;
 }
 
 /** ===========================================================================/

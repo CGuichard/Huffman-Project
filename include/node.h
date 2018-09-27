@@ -62,6 +62,15 @@ typedef struct node* nd;
  */
 nd createNode(void* tag);
 
+nd createDefinedNode(void* tag,
+                     void(*destroyTag)(void **elem),
+                     void(*printTag)(void *elem)
+                    );
+
+void setTagDestroyer(nd node, void(*destroyTag)(void **elem));
+
+void setTagPrinter(nd node, void(*printTag)(void *elem));
+
 /** ===========================================================================/
  * @function destroyLastNode
  * @brief Destroys recursively all the children of a node
@@ -73,7 +82,7 @@ nd createNode(void* tag);
  *
  * @return{void}
  */
-void destroyLastNode(nd n, void(*destroyer)(void **elem));
+void destroyLastNode(nd n);
 
 /** ===========================================================================/
  * @function destroyLastNode
@@ -86,7 +95,9 @@ void destroyLastNode(nd n, void(*destroyer)(void **elem));
  *
  * @return{void}
  */
-void destroyNodeGen(nd* n, void(*destroyer)(void **elem));
+void destroyNodeGen(void **n);
+
+void destroyNode(nd *n);
 
 /** ===========================================================================/
 * @function printNodeGen
@@ -102,7 +113,9 @@ void destroyNodeGen(nd* n, void(*destroyer)(void **elem));
 *
 * @return{void}
 */
-void printNodeGen(nd n, void(*printTag)(void *tag));
+void printNode(nd n);
+
+void printNodeGen(void *n);
 
 /** ===========================================================================/
  * @function getLeft
@@ -110,9 +123,9 @@ void printNodeGen(nd n, void(*printTag)(void *tag));
  *
  * @param{nd} n: the node where the child is
  *
- * @return{nd*}: the address of the left child's pointer
+ * @return{nd}: the pointer of the left child's pointer
  */
-nd* getLeft(nd n);
+nd getLeft(nd n);
 
 /** ===========================================================================/
  * @function setLeft
@@ -123,7 +136,7 @@ nd* getLeft(nd n);
  *
  * @return{void}
  */
-void setLeft(nd n, void* tag);
+void setLeft(nd n, nd child);
 
 /** ===========================================================================/
  * @function getRight
@@ -131,9 +144,9 @@ void setLeft(nd n, void* tag);
  *
  * @param{nd} n: the node where the child is
  *
- * @return{nd*}: the address of the right child's pointer
+ * @return{nd}: the pointer of the right child's pointer
  */
-nd* getRight(nd n);
+nd getRight(nd n);
 
 /** ===========================================================================/
  * @function setRight
@@ -144,7 +157,7 @@ nd* getRight(nd n);
  *
  * @return{void}
  */
-void setRight(nd n, void* tag);
+void setRight(nd n, nd child);
 
 /** ===========================================================================/
  * @function getTag
