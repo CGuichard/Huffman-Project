@@ -106,28 +106,7 @@ void setTagPrinter(nd node, void(*printTag)(void *elem)){
  * @see @file node.h / @function destroyLastNode
  */
 void destroyLastNode(nd n){
-  if(n != NULL){
-    if(n->destroyTag == NULL)
-      free(n->tag);
-    else
-      n->destroyTag(&(n->tag));
-
-    if(n->left != NULL){
-      destroyLastNode(n->left);
-      free(n->left);
-      n->left = NULL;
-    }
-
-    if(n->right != NULL){
-      destroyLastNode(n->right);
-      if(n->destroyTag == NULL)
-        free(n->tag);
-      else
-        n->destroyTag(&(n->tag));
-      free(n->right);
-      n->right = NULL;
-    }
-  }
+  destroyNode(&n);
 }
 
 /** ===========================================================================/
@@ -135,19 +114,21 @@ void destroyLastNode(nd n){
  */
 void destroyNode(nd *n){
   if((*n) != NULL){
-    if((*n)->left != NULL){
-      destroyLastNode((*n)->left);
-      free((*n)->left);
+
+    if ((*n)->left != NULL) {
+      destroyNode(&((*n)->left));
+      (*n)->left = NULL;
+    }
+    if ((*n)->right != NULL) {
+      destroyNode(&((*n)->right));
+      (*n)->right = NULL;
     }
 
-    if((*n)->right != NULL){
-      destroyLastNode((*n)->right);
-      free((*n)->right);
-    }
-    if((*n)->destroyTag == NULL)
-      free((*n)->tag);
+    if((*n)->destroyTag != NULL)
+      (*n)->destroyTag(&((*n)->tag));
     else
-      (*n)->destroyTag(&(*n)->tag);
+      free((*n)->tag);
+
     free(*n);
     (*n) = NULL;
   }

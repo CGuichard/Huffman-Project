@@ -24,19 +24,28 @@
 
 char* encryptStr(char *str){
   lst charOccurences = charOccurencesOfStr(str);
-  nd tree = contructBinaryTree(charOccurences);
-
-  printf("Tree: ");
-  printNode(tree);
-  destroyList(&charOccurences);
-  destroyNode(&tree);
-  return NULL;
+  char *encr = encrypt(charOccurences, "tests/test_str.hfm.key");
+  return encr;
 }
 
-// void encryptFile(char *fileIn, char *fileOut, char *fileKey){
-//
-// }
-//
+void encryptFile(char *fileIn, char *fileOut, char *fileKey){
+  lst charOccurences = charOccurencesOfFile(fileIn);
+  char *encr = encrypt(charOccurences, fileKey);
+  writeEncryptionInFile(fileOut, encr);
+}
+
+char* encrypt(lst occurences, char *fileKey){
+  char* encr = NULL;
+  nd tree = contructBinaryTree(occurences);
+  saveKeyInFile(occurences, fileKey);
+  destroyList(&occurences);
+
+  printNode(tree);
+
+  destroyNode(&tree);
+  return encr;
+}
+
 // char* decryptStr(char *str){
 //   return NULL;
 // }
@@ -164,10 +173,19 @@ void mergeTwoSmallerNodes(lst list){
     setLeft(newNode, child2);
     setRight(newNode, child1);
   }
-  printNode(newNode);
-  printf("\n");
-  destroyNode(&newNode);
-  // addInList(list, newNode);
+  addInList(list, newNode);
+}
+
+void saveKeyInFile(lst occurences, char *fileKey){
+  if(occurences != NULL && fileKey != NULL) {
+    printf("Save key in file: %s\n", fileKey);
+  }
+}
+
+void writeEncryptionInFile(char *file, char *encr){
+  if(encr != NULL && file != NULL) {
+    printf("Write encryption in file: %s\n", file);
+  }
 }
 
 

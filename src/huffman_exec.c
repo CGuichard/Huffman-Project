@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
 
     if(!strcmp("encrypt", argv[1])){
       printf("Encrypt file: '%s'. Output file: '%s' (Key file generated: '%s').\n", fileIn, fileOut, fileKey);
-      // encryptFile(fileIn, fileOut, fileKey);
+      encryptFile(fileIn, fileOut, fileKey);
     }else if (!strcmp("decrypt", argv[1])){
       printf("Decrypt file: '%s'. Output file: '%s' (Key file given: '%s').\n", fileIn, fileOut, fileKey);
       // decryptFile(fileIn, fileOut, fileKey);
@@ -57,6 +57,9 @@ int main(int argc, char *argv[]){
   }else{
     printf("#============== TEST ==============#\n\n");
     char* encr = encryptStr("TEST TABERNACLE");
+    if (encr != NULL) {
+      printf("%s\n", encr);
+    }
     // printf("Encrypt: %s\n", encr);
     printf("\n\n#==================================#\n");
   }

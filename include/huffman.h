@@ -36,13 +36,16 @@
 /* ======== Functions ======== */
 
 char* encryptStr(char *str);
-// void encryptFile(char *fileIn, char *fileOut, char *fileKey);
+void encryptFile(char *fileIn, char *fileOut, char *fileKey);
+char* encrypt(lst occurences, char *fileKey);
 // char* decryptStr(char *str);
 // void decryptFile(char *fileIn, char *fileOut, char *fileKey);
 
 lst charOccurencesOfStr(char *str);
 lst charOccurencesOfFile(char *srcFile);
 nd contructBinaryTree(lst occurences);
+void saveKeyInFile(lst occurences, char *fileKey);
+void writeEncryptionInFile(char *file, char *encr);
 
 tpl getTupleInListByKey(lst list, char key);
 void mergeTwoSmallerNodes(lst list);
