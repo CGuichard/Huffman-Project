@@ -14,6 +14,7 @@
 
 #include "huffman.h"
 
+char* TEST = "TEST TABERNACLE";
 
 /* ================================================== */
 /* ====================== MAIN ====================== */
@@ -56,7 +57,7 @@ int main(int argc, char *argv[]){
     free(fileKey);
   }else{
     printf("#============== TEST ==============#\n\n");
-    char* encr = encryptStr("TEST TABERNACLE");
+    char* encr = encryptStr(TEST);
     if (encr != NULL) {
       printf("%s\n", encr);
     }

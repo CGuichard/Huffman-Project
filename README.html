@@ -297,13 +297,22 @@ img {
 <h2>Getting Started</h2>
 <p>These instructions will help you to get an executable file, as well as the method to use this executable</p>
 <h3>Prerequisites</h3>
+<h4>Make</h4>
 <p>To compile the project you will need to use <strong>make</strong>. This command uses the file named Makefile and is used to compile the project. It is normally on all GNU Operating Systems</p>
 <p>If it is not installed on your machine you will need to install it. This command can be found for example on Ubuntu in the build-essential package. You can install it as follows:</p>
-<pre><code>sudo apt-get install build-essential
+<pre><code>sudo apt-get install make
 </code></pre>
 
-<p>To learn how to install it on other operating systems, please check the correct documentation</p>
+<p>To learn how to install <strong>make</strong> on other operating systems, please check the correct documentation</p>
 <p><em>Learn more about <a href="https://www.gnu.org/software/make/manual/make.pdf">make</a></em></p>
+<h4>Valgrind</h4>
+<p>Valgrind is a tool used to know with details the state of the memory at the exit of the program. It is used in the makefile and by using the corresponding command (see <em>commands.md</em>) you can execute the program with valgrind</p>
+<p>To install it you need to use this command:</p>
+<pre><code>sudo apt-get install valgrind
+</code></pre>
+
+<p>To learn how to install <strong>valgrind</strong> on other operating systems, please check the correct documentation</p>
+<p><em>Learn more about <a href="http://valgrind.org/">valgrind</a></em></p>
 <h3>Compilation</h3>
 <p>To compile you will have to open a terminal at the root of the project folder and type in the terminal:</p>
 <pre><code>make
@@ -312,7 +321,38 @@ img {
 <p><em>You can use the -j{x} option with make and replace {x} with the number of jobs you want to run simultaneously. To summarize if your machine has 4 cores add -j4 to compile faster using the 4 cores instead of one</em></p>
 <p>Quite simple isn't it? Now the project is ready to run</p>
 <h3>Use of the executable</h3>
-<p>// TODO</p>
+<h4>Start the test</h4>
+<p>The project is easy to use. You can execute this command to run the default test of the executable:</p>
+<pre><code>make run
+</code></pre>
+
+<p>You can also write directly:</p>
+<pre><code>./bin/huffman_exec
+</code></pre>
+
+<p>This test encrypt and decrypt a string of characters wrote in src/huffman_exec.c</p>
+<p>You can modify the test string in the src/huffman.exec to make another test</p>
+<p>If you want to run the program with valgrind you can execute:</p>
+<pre><code>make memory_run
+# OR
+valgrind ./bin/huffman_exec
+</code></pre>
+
+<h4>More precise execution</h4>
+<p>Previously we only used the test of huffman, but it is impractical to compile each time</p>
+<p>To overcome this problem, it is possible to encrypt files directly by giving the file to be encrypted as execution parameter of the executable</p>
+<p>For this you need to type as follows:</p>
+<pre><code>./bin/huffman_exec {encrypt/decrypt} {pathFileInput} {pathFileOut} {pathFileKey}
+</code></pre>
+
+<ol>
+<li><code>{encrypt/decrypt}</code>: You can put either &quot;encrypt&quot; or &quot;decrypt&quot; to choose what you want</li>
+<li><code>{pathFileInput}</code>: Path of the file to encrypt or decrypt</li>
+<li><code>{pathFileOut}</code>: Path of the output file</li>
+<li><code>{pathFileKey}</code>: Path of the file used to save the key (because to decrypt you need a key)</li>
+</ol>
+<p><em>Note: Remember that you cannot change the order of the arguments. For example if you want to put {pathFileKey} you must have put {pathFileOut}</em></p>
+<p>It goes without saying that you can put <strong>valgring</strong> before <strong>./bin/huffman_exec</strong> to use it</p>
 <h3>Learn more</h3>
 <p>You can learn more about the commands you can use with <strong>make</strong> by looking at the <strong>commands.md</strong> file</p>
 <h2>Documentation generation</h2>

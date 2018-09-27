@@ -9,15 +9,29 @@ These instructions will help you to get an executable file, as well as the metho
 
 ### Prerequisites
 
+#### Make
+
 To compile the project you will need to use **make**. This command uses the file named Makefile and is used to compile the project. It is normally on all GNU Operating Systems
 
 If it is not installed on your machine you will need to install it. This command can be found for example on Ubuntu in the build-essential package. You can install it as follows:
 
-    sudo apt-get install build-essential
+    sudo apt-get install make
 
-To learn how to install it on other operating systems, please check the correct documentation
+To learn how to install **make** on other operating systems, please check the correct documentation
 
 *Learn more about [make](https://www.gnu.org/software/make/manual/make.pdf)*
+
+#### Valgrind
+
+Valgrind is a tool used to know with details the state of the memory at the exit of the program. It is used in the makefile and by using the corresponding command (see *commands.md*) you can execute the program with valgrind
+
+To install it you need to use this command:
+
+    sudo apt-get install valgrind
+
+To learn how to install **valgrind** on other operating systems, please check the correct documentation
+
+*Learn more about [valgrind](http://valgrind.org/)*
 
 ### Compilation
 
@@ -31,7 +45,44 @@ Quite simple isn't it? Now the project is ready to run
 
 ### Use of the executable
 
-// TODO
+#### Start the test
+
+The project is easy to use. You can execute this command to run the default test of the executable:
+
+    make run
+
+You can also write directly:
+
+    ./bin/huffman_exec
+
+This test encrypt and decrypt a string of characters wrote in src/huffman_exec.c
+
+You can modify the test string in the src/huffman.exec to make another test
+
+If you want to run the program with valgrind you can execute:
+
+    make memory_run
+	# OR
+    valgrind ./bin/huffman_exec
+
+#### More precise execution
+
+Previously we only used the test of huffman, but it is impractical to compile each time
+
+To overcome this problem, it is possible to encrypt files directly by giving the file to be encrypted as execution parameter of the executable
+
+For this you need to type as follows:
+
+    ./bin/huffman_exec {encrypt/decrypt} {pathFileInput} {pathFileOut} {pathFileKey}
+
+1. `{encrypt/decrypt}`: You can put either "encrypt" or "decrypt" to choose what you want
+2. `{pathFileInput}`: Path of the file to encrypt or decrypt
+3. `{pathFileOut}`: Path of the output file
+4. `{pathFileKey}`: Path of the file used to save the key (because to decrypt you need a key)
+
+*Note: Remember that you cannot change the order of the arguments. For example if you want to put {pathFileKey} you must have put {pathFileOut}*
+
+It goes without saying that you can put **valgring** before **./bin/huffman_exec** to use it
 
 ### Learn more
 
