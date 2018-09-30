@@ -29,6 +29,7 @@
  *  - getTag
  *  - isValidNode
  *  - isLeaf
+ *  - getNodeDepth
  */
 
 /* ========================================================= */
@@ -122,16 +123,6 @@ void setTagPrinter(nd node, void(*printTag)(void *elem));
 void destroyLastNode(nd n);
 
 /** ===========================================================================/
- * @function destroyNodeGen
- * @brief Destroys safely a generic node
- *
- * @param{void**} n: pointer on a node's pointer
- *
- * @return{void}
- */
-void destroyNodeGen(void **n);
-
-/** ===========================================================================/
  * @function destroyNode
  * @brief Destroys safely a node
  *
@@ -140,6 +131,16 @@ void destroyNodeGen(void **n);
  * @return{void}
  */
 void destroyNode(nd *n);
+
+/** ===========================================================================/
+ * @function destroyNodeGen
+ * @brief Destroys safely a generic node
+ *
+ * @param{void**} n: pointer on a node's pointer
+ *
+ * @return{void}
+ */
+void destroyNodeGen(void **n);
 
 /** ===========================================================================/
 * @function printNode
@@ -240,6 +241,16 @@ int isValidNode(nd n);
  * @return{int}: a boolean, 0 if it's false else 1
  */
 int isLeaf(nd n);
+
+/** ===========================================================================/
+ * @function getNodeDepth
+ * @brief Return the depth/height of a node
+ *
+ * @param{nd} n: pointer of node
+ *
+ * @return{int}: the depth/height of a node
+ */
+int getNodeDepth(nd n);
 
 
 #endif

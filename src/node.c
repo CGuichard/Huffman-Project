@@ -27,6 +27,7 @@
  *  - getTag
  *  - isValidNode
  *  - isLeaf
+ *  - getNodeDepth
  */
 
 #include "node.h"
@@ -106,7 +107,22 @@ void setTagPrinter(nd node, void(*printTag)(void *elem)){
  * @see @file node.h / @function destroyLastNode
  */
 void destroyLastNode(nd n){
-  destroyNode(&n);
+  if(n != NULL){
+    if (n->left != NULL) {
+      destroyNode(&(n->left));
+      n->left = NULL;
+    }
+    if (n->right != NULL) {
+      destroyNode(&(n->right));
+      n->right = NULL;
+    }
+    if(n->destroyTag != NULL)
+      n->destroyTag(&(n->tag));
+    else
+      free(n->tag);
+    free(n);
+    n = NULL;
+  }
 }
 
 /** ===========================================================================/
@@ -114,7 +130,6 @@ void destroyLastNode(nd n){
  */
 void destroyNode(nd *n){
   if((*n) != NULL){
-
     if ((*n)->left != NULL) {
       destroyNode(&((*n)->left));
       (*n)->left = NULL;
@@ -123,12 +138,10 @@ void destroyNode(nd *n){
       destroyNode(&((*n)->right));
       (*n)->right = NULL;
     }
-
     if((*n)->destroyTag != NULL)
       (*n)->destroyTag(&((*n)->tag));
     else
       free((*n)->tag);
-
     free(*n);
     (*n) = NULL;
   }
@@ -228,6 +241,24 @@ int isLeaf(nd n){
   // if the node have no children and its tag is set
   // then it's a leaf.
   return n->left == NULL && n->right == NULL ? 1 : 0;
+}
+
+/** ===========================================================================/
+ * @see @file node.h / @function getNodeDepth
+ */
+int getNodeDepth(nd n){
+  if (n != NULL) {
+    int left = 0;
+    int right = 0;
+    if(n->left != NULL){
+      left = getNodeDepth(n->left) + 1;
+    }
+    if(n->right != NULL){
+      right = getNodeDepth(n->right) + 1;
+    }
+    return (left > right) ? left : right;
+  }
+  return 0;
 }
 
 
