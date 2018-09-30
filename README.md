@@ -73,14 +73,23 @@ To overcome this problem, it is possible to encrypt files directly by giving the
 
 For this you need to type as follows:
 
-    ./bin/huffman_exec {encrypt/decrypt} {pathFileInput} {pathFileOut} {pathFileKey}
+    ./bin/huffman_exec encrypt {pathFileInput} {pathFileOut} {pathFileKey}
 
-1. `{encrypt/decrypt}`: You can put either "encrypt" or "decrypt" to choose what you want
-2. `{pathFileInput}`: Path of the file to encrypt or decrypt
-3. `{pathFileOut}`: Path of the output file
-4. `{pathFileKey}`: Path of the file used to save the key (because to decrypt you need a key)
+1. `{pathFileInput}`: Path of the file to encrypt
+2. `{pathFileOut}`: Path of the output file *(not obligatory)*
+3. `{pathFileKey}`: Path of the file used to save the key *(not obligatory)*
 
 *Note: Remember that you cannot change the order of the arguments. For example if you want to put {pathFileKey} you must have put {pathFileOut}*
+
+To decrypt the order of the argument is not exactly the same:
+
+    ./bin/huffman_exec decrypt {pathFileInput} {pathFileKey} {pathFileOut}
+
+1. `{pathFileInput}`: Path of the file to encrypt
+2. `{pathFileKey}`: Path of the file used to save the key *(not obligatory)*
+3. `{pathFileOut}`: Path of the output file *(not obligatory)*
+
+*Note: it is possible not to specify files other than that of pathFileInput, because the program will determine the filenames (pathFileOut = pathFileInput + ".hfm" and pathFileKey = pathFileInput + ".hfm.key")*
 
 It goes without saying that you can put **valgring** before **./bin/huffman_exec** to use it
 
@@ -88,7 +97,7 @@ It goes without saying that you can put **valgring** before **./bin/huffman_exec
 
 You can learn more about the commands you can use with **make** by looking at the **commands.md** file
 
-## Documentation generation
+## Generation of the documentation
 
 The documentation of this project can be generated using the software [Doxygen](http://www.doxygen.nl/)
 

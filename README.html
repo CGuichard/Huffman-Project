@@ -342,20 +342,29 @@ valgrind ./bin/huffman_exec
 <p>Previously we only used the test of huffman, but it is impractical to compile each time</p>
 <p>To overcome this problem, it is possible to encrypt files directly by giving the file to be encrypted as execution parameter of the executable</p>
 <p>For this you need to type as follows:</p>
-<pre><code>./bin/huffman_exec {encrypt/decrypt} {pathFileInput} {pathFileOut} {pathFileKey}
+<pre><code>./bin/huffman_exec encrypt {pathFileInput} {pathFileOut} {pathFileKey}
 </code></pre>
 
 <ol>
-<li><code>{encrypt/decrypt}</code>: You can put either &quot;encrypt&quot; or &quot;decrypt&quot; to choose what you want</li>
-<li><code>{pathFileInput}</code>: Path of the file to encrypt or decrypt</li>
-<li><code>{pathFileOut}</code>: Path of the output file</li>
-<li><code>{pathFileKey}</code>: Path of the file used to save the key (because to decrypt you need a key)</li>
+<li><code>{pathFileInput}</code>: Path of the file to encrypt</li>
+<li><code>{pathFileOut}</code>: Path of the output file <em>(not obligatory)</em></li>
+<li><code>{pathFileKey}</code>: Path of the file used to save the key <em>(not obligatory)</em></li>
 </ol>
 <p><em>Note: Remember that you cannot change the order of the arguments. For example if you want to put {pathFileKey} you must have put {pathFileOut}</em></p>
+<p>To decrypt the order of the argument is not exactly the same:</p>
+<pre><code>./bin/huffman_exec decrypt {pathFileInput} {pathFileKey} {pathFileOut}
+</code></pre>
+
+<ol>
+<li><code>{pathFileInput}</code>: Path of the file to encrypt</li>
+<li><code>{pathFileKey}</code>: Path of the file used to save the key <em>(not obligatory)</em></li>
+<li><code>{pathFileOut}</code>: Path of the output file <em>(not obligatory)</em></li>
+</ol>
+<p><em>Note: it is possible not to specify files other than that of pathFileInput, because the program will determine the filenames (pathFileOut = pathFileInput + &quot;.hfm&quot; and pathFileKey = pathFileInput + &quot;.hfm.key&quot;)</em></p>
 <p>It goes without saying that you can put <strong>valgring</strong> before <strong>./bin/huffman_exec</strong> to use it</p>
 <h3>Learn more</h3>
 <p>You can learn more about the commands you can use with <strong>make</strong> by looking at the <strong>commands.md</strong> file</p>
-<h2>Documentation generation</h2>
+<h2>Generation of the documentation</h2>
 <p>The documentation of this project can be generated using the software <a href="http://www.doxygen.nl/">Doxygen</a></p>
 <p>You can learn about how to install Doxygen <a href="https://www.stack.nl/~dimitri/doxygen/manual/install.html">here</a></p>
 <p>Use Doxygen with the <strong>Doxyfile</strong> file in the <strong>doc/</strong> folder to generate web-format documentation (html). You can use Doxygen with the Doxywizard, or if you can by typing in a terminal <em>(by being in the directory doc /)</em> the command:</p>
