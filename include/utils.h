@@ -15,8 +15,12 @@
  *  - equalsInt
  *  - printInt
  *  - printChar
+ *  - printString
  *  - copyInt
  *  - copyChar
+ *  - copyString
+ *  - charBytesToChar
+ *  - strToInt
  *  - pointerAllocError
  *  - pointerNullError
  */
@@ -32,6 +36,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h> /**< used for strlen, strcpy and strcat function */
+#include <math.h> /**< used for pow function */
 
 /* ======== Functions ======== */
 
@@ -77,6 +83,19 @@ void printInt(void *elem);
 void printChar(void *elem);
 
 /** ===========================================================================/
+ * @function printChar
+ * @brief Print a string of character
+ *
+ * This function print a string. The generic pointer of the string is
+ * given to the function
+ *
+ * @param{void*} elem: pointer on the string (the pointer is generic)
+ *
+ * @return{void}
+ */
+void printString(void *elem);
+
+/** ===========================================================================/
  * @function copyInt
  * @brief Return the pointer of the copy of the given integer
  *
@@ -101,6 +120,44 @@ void* copyInt(void *elem);
  * @return{void*}: The generic pointer of the new character
  */
 void* copyChar(void *elem);
+
+/** ===========================================================================/
+ * @function copyString
+ * @brief Return the pointer of the copy of the given string
+ *
+ * This function allocates a new string in the memory, copies the value of
+ * the given string into the new, and returns the pointer of the copy
+ *
+ * @param{void*} elem: pointer on the string to copy (the pointer is generic)
+ *
+ * @return{void*}: The generic pointer of the new string
+ */
+void* copyString(void *elem);
+
+/** ===========================================================================/
+ * @function charBytesToChar
+ * @brief Returns the character corresponding to a sequence of bits
+ *
+ * This function return a character corresponding to a sequence of bits given
+ * in a string (which therefore contains only 0s and 1s)
+ *
+ * @param{char*} bytes: sequence of bits. Must have a size of 8
+ *
+ * @return{char}: The character
+ */
+char charBytesToChar(char *bytes);
+
+/** ===========================================================================/
+ * @function strToInt
+ * @brief Returns the integer corresponding to an integer which is in a string
+ *
+ * This function return an integer, which is extracted from a string
+ *
+ * @param{char*} str: string corresponding to an integer
+ *
+ * @return{int}: The integer
+ */
+int strToInt(char* str);
 
 /** ===========================================================================/
  * @function pointerAllocError

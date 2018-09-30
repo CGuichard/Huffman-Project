@@ -15,8 +15,12 @@
  *  - equalsInt
  *  - printInt
  *  - printChar
+ *  - printString
  *  - copyInt
  *  - copyChar
+ *  - copyString
+ *  - charBytesToChar
+ *  - strToInt
  *  - pointerAllocError
  *  - pointerNullError
  */
@@ -57,6 +61,16 @@ void printChar(void *elem){
 }
 
 /** ===========================================================================/
+ * @see @file utils.h / @function printString
+ */
+void printString(void *elem){
+  if(elem != NULL)
+    printf("\"%s\"", (char*)elem);
+  else
+    printf("NULL");
+}
+
+/** ===========================================================================/
  * @see @file utils.h / @function copyInt
  */
 void* copyInt(void *elem){
@@ -69,9 +83,41 @@ void* copyInt(void *elem){
  * @see @file utils.h / @function copyChar
  */
 void* copyChar(void *elem){
-  char* i = (char*)malloc(sizeof(char));
-  *i = *((char*)elem);
-  return i;
+  char* c = (char*)malloc(sizeof(char));
+  *c = *((char*)elem);
+  return c;
+}
+
+/** ===========================================================================/
+ * @see @file utils.h / @function copyString
+ */
+void* copyString(void *elem){
+  char* s = (char*)malloc(sizeof(char) * (strlen((char*)elem)+1));
+  strcpy(s, (char*)elem);
+  return s;
+}
+
+/** ===========================================================================/
+ * @see @file utils.h / @function charBytesToChar
+ */
+char charBytesToChar(char *bytes){
+  if (strlen(bytes) == 8) {
+    int val = 0;
+    for (unsigned int i = 0; i < strlen(bytes); i++)
+      val += (bytes[i] - 48) * pow(2, strlen(bytes)-i-1);
+    return val;
+  }
+  return 0;
+}
+
+/** ===========================================================================/
+ * @see @file utils.h / @function strToInt
+ */
+int strToInt(char* str){
+  int val = 0;
+  for (unsigned int i = 0; i < strlen(str); i++)
+    val += (str[i] - 48) * pow(10, strlen(str)-i-1);
+  return val;
 }
 
 /** ===========================================================================/
