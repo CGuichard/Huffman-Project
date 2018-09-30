@@ -2,6 +2,7 @@
 
 # Nom du fichier principal (sans le .c)
 MAIN=huffman_exec
+LIB=libhuffman
 
 #====================== NE PAS TOUCHER ======================#
 
@@ -16,6 +17,9 @@ LIBS=-std=c99 -lm
 
 SRCS=$(wildcard src/*.c)
 OBJS=$(SRCS:src/%.c=obj/%.o)
+OBJSPIC=$(SRCS:src/%.c=obj/%.pic.o)
+
+# bin/$(MAIN)
 
 bin/$(MAIN): $(OBJS)
 	@mkdir -p bin
@@ -29,29 +33,53 @@ obj/%.o: src/%.c include/%.h
 	@mkdir -p obj
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-.PHONY: clean cleanO clean+ cleandir run memory_run archive sort init
+#lib/$(LIB).a
+
+lib/$(LIB).a: $(OBJS)
+	@mkdir -p lib
+	$(AR) -cr $@ $^
+
+#lib/$(LIB).so
+
+lib/$(LIB).so: $(OBJSPIC)
+	@mkdir -p lib
+	$(CC) --shared -o $@ $^
+
+obj/$(MAIN).pic.o: src/$(MAIN).c
+	$(CC) -fPIC -c -o $@ $< -I include
+
+obj/%.pic.o: src/%.c include/%.h
+	$(CC) -fPIC -c -o $@ $< -I include
+
+.PHONY: all bin lib clean cleanO clean+ cleandir run memory_run archive lib
+
+all: bin/$(MAIN) lib/$(LIB).a lib/$(LIB).so
+
+bin: bin/$(MAIN)
+
+lib: lib/$(LIB).a lib/$(LIB).so
 
 clean:
 ifneq ("$(wildcard bin/$(MAIN))","")
 	@rm bin/$(MAIN)
-	@echo "Exécutable supprimé"
+	@echo "Executable removed"
 else
-	@echo "Exécutable déjà supprimé"
+	@echo "Executable already removed"
 endif
 
 cleanO:
 ifneq ("$(wildcard obj/*.o)","")
 	@rm $(wildcard obj/*.o)
-	@echo "Fichiers .o supprimés"
+	@echo "Files .o deleted"
 else
-	@echo "Aucun fichier .o à supprimer"
+	@echo "No file .o to delete"
 endif
 
 clean+: clean cleanO
 
 cleandir:
-	@rm -rf bin obj
-	@echo "Dossiers bin/ et obj/ supprimés"
+	@rm -rf bin obj lib
+	@echo "'bin/', 'obj/' and 'lib/' folders have been deleted"
 
 run: bin/$(MAIN)
 	@./bin/$(MAIN)
@@ -59,45 +87,12 @@ run: bin/$(MAIN)
 memory_run: bin/$(MAIN)
 	@valgrind ./bin/$(MAIN)
 
-archive: $(wildcard src/*) $(wildcard include/*) $(wildcard doc/*) Makefile
+archive: $(wildcard src/*) $(wildcard include/*) $(wildcard doc/*) $(wildcard tests/*) Makefile
 	@tar jcvf $@-$(MAIN).tar.bz2 $^ > /dev/null
 ifneq ("$@-$(MAIN).tar.bz2","")
-	@echo "Une archive \"$@-$(MAIN).tar.bz2\" a était généré"
+	@echo "The archive \"$@-$(MAIN).tar.bz2\" was successfully generated"
 else
-	@echo "L'archive n'a pas pu être généré"
+	@echo "The archive could not be generated"
 endif
-
-sort:
-	@mkdir -p src include doc
-ifneq ("$(wildcard *.c)","")
-	@mv $(wildcard *.c) src/
-endif
-ifneq ("$(wildcard *.h)","")
-	@mv $(wildcard *.h) include/
-endif
-ifneq ("$(wildcard *.pdf)","")
-	@mv $(wildcard *.pdf) doc/
-endif
-ifneq ("$(wildcard *.o)","")
-	@rm $(wildcard *.o)
-endif
-ifneq ("$(wildcard $(MAIN))","")
-	@rm $(MAIN)
-endif
-	@echo "Répartition faite"
-
-init:
-	@mkdir -p src include doc
-ifneq ("$(wildcard include/$(MAIN).h)","")
-	@echo "Attention! Le fichier include/$(MAIN).h est déjà présent"
-else
-	@echo "#ifndef $$( echo $(MAIN) | tr [a-z] [A-Z] )_H\n#define $$( echo $(MAIN) | tr [a-z] [A-Z] )_H\n\n  #ifndef STD_LIBS_H\n  #define STD_LIBS_H\n\n  #include <stdlib.h>\n  #include <stdio.h>\n\n  #endif\n\n// Prototypes ici\n\n#endif\n" > include/$(MAIN).h;
-endif
-ifneq ("$(wildcard src/$(MAIN).c)","")
-	@echo "Attention! Le fichier src/$(MAIN).c est déjà présent"
-else
-	@echo "#include \"$(MAIN).h\"\n\nint main(int argc, char *argv[]){\n\n  // A modifier\n  puts(\"Hello World!\");\n\n  return EXIT_SUCCESS;\n}\n" > src/$(MAIN).c;
-endif
-	@echo "Répertoire initialisé";
 
 #====================== FIN NE PAS TOUCHER ======================#
