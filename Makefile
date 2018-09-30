@@ -37,13 +37,15 @@ obj/%.o: src/%.c include/%.h
 
 lib/$(LIB).a: $(OBJS)
 	@mkdir -p lib
-	$(AR) -cr $@ $^
+	@rm -f obj/$(MAIN).o obj/*.pic.o
+	$(AR) -cr $@ obj/*.o
 
 #lib/$(LIB).so
 
 lib/$(LIB).so: $(OBJSPIC)
 	@mkdir -p lib
-	$(CC) --shared -o $@ $^
+	@rm -f obj/$(MAIN).pic.o
+	$(CC) --shared -o $@ obj/*.pic.o
 
 obj/$(MAIN).pic.o: src/$(MAIN).c
 	$(CC) -fPIC -c -o $@ $< -I include
@@ -53,7 +55,7 @@ obj/%.pic.o: src/%.c include/%.h
 
 .PHONY: all bin lib clean cleanO clean+ cleandir run memory_run archive lib
 
-all: bin/$(MAIN) lib/$(LIB).a lib/$(LIB).so
+all: bin lib
 
 bin: bin/$(MAIN)
 
