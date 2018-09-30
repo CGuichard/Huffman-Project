@@ -22,44 +22,195 @@
 /* ===================== PUBLIC ===================== */
 /* ========================================================================== */
 
-char* encryptStr(char *str){
-  lst charOccurences = charOccurencesOfStr(str);
-  char *encr = encrypt(charOccurences, "tests/test_str.hfm.key");
-  return encr;
+char* huffmanEncryptStr(char *str){
+  if(str != NULL){
+    lst charOccurences = charOccurencesOfStr(str);
+    int maxPrefixLength = 0;
+    lst prefixes = prefixesList(charOccurences, "tests/test_str.hfm.key", &maxPrefixLength);
+    char *bytesEncryption = getEncryptionOf(str, prefixes, maxPrefixLength);
+    tpl tupleEndChar = (tpl)getTupleInListByKey(prefixes, '\0');
+    char* encr = makeCharactersFromBytes(bytesEncryption, (char*)getTupleValue(tupleEndChar));
+    destroyList(&prefixes);
+    return encr;
+  }
+  return NULL;
 }
 
-void encryptFile(char *fileIn, char *fileOut, char *fileKey){
-  lst charOccurences = charOccurencesOfFile(fileIn);
-  char *encr = encrypt(charOccurences, fileKey);
-  writeEncryptionInFile(fileOut, encr);
+void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey){
+  if(fileIn != NULL && fileOut != NULL && fileKey != NULL){
+    lst charOccurences = charOccurencesOfFile(fileIn);
+    int maxPrefixLength = 0;
+    lst prefixes = prefixesList(charOccurences, fileKey, &maxPrefixLength);
+    writeEncryptionInFile(fileIn, fileOut, prefixes, maxPrefixLength);
+    destroyList(&prefixes);
+  }
 }
 
-char* encrypt(lst occurences, char *fileKey){
-  char* encr = NULL;
-  nd tree = contructBinaryTree(occurences);
-  saveKeyInFile(occurences, fileKey);
-  destroyList(&occurences);
+/* ========================================================================== */
 
-  printNode(tree);
-
+char* huffmanDecryptStr(char *str){
+  nd tree = getTreeFromKeyFile("tests/test_str.hfm.key");
+  // TODO
   destroyNode(&tree);
+  return NULL;
+}
+
+void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
+  nd tree = getTreeFromKeyFile(fileKey);
+  // TODO
+  destroyNode(&tree);
+}
+
+/* ========================================================================== */
+
+char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength){
+  char *encr = (char*)calloc(sizeof(char), maxPrefixLength * strlen(str) + 1);
+  if(str != NULL && prefixes != NULL){
+    tpl prefixTuple = NULL;
+    char *prefix = NULL;
+    for(size_t i = 0; i < strlen(str); i++){
+      prefixTuple = getTupleInListByKey(prefixes, str[i]);
+      prefix = (char*)getTupleValue(prefixTuple);
+      strcat(encr, prefix);
+    }
+  }
+  // if(strlen(encr) < (unsigned int)maxPrefixLength){
+  //   char *tmp = (char*)realloc(encr, strlen(encr) + 1);
+  //   if(tmp != NULL) encr = tmp;
+  // }
   return encr;
 }
 
-// char* decryptStr(char *str){
-//   return NULL;
-// }
-//
-// void decryptFile(char *fileIn, char *fileOut, char *fileKey){
-//
-// }
+void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPrefixLength){
+  if(fileIn != NULL && fileOut != NULL && prefixes != NULL){
+    FILE* file = fopen(fileIn, "r");
+    FILE *fileW = fopen(fileOut, "wb");
+    if(file != NULL && fileOut != NULL){
+      char charToWrite;
+      char ligne[255];
+      int actualByteIndex = 0;
+      char *bytes = (char*)calloc(sizeof(char), 9);
+      char *endChar = (char*)getTupleValue((tpl)getTupleInListByKey(prefixes, '\0'));
+      while(fgets(ligne, sizeof(ligne), file) != NULL){
+        char *encrOfLigne = getEncryptionOf(ligne, prefixes, maxPrefixLength);
+        for(size_t i = 0; i < strlen(encrOfLigne); i++){
+          if(actualByteIndex == 8){
+            actualByteIndex = 0;
+            charToWrite = charBytesToChar(bytes);
+            fwrite(&charToWrite, 1, sizeof(charToWrite), fileW);
+          }
+          bytes[actualByteIndex] = encrOfLigne[i];
+          actualByteIndex++;
+        }
+        free(encrOfLigne);
+      }
+      for (size_t i = 0; i < strlen(endChar); i++) {
+        if(actualByteIndex == 8){
+          actualByteIndex = 0;
+          charToWrite = charBytesToChar(bytes);
+          fwrite(&charToWrite, 1, sizeof(charToWrite), fileW);
+        }
+        bytes[actualByteIndex] = endChar[i];
+        actualByteIndex++;
+      }
+      if(actualByteIndex != 0){
+        while(actualByteIndex != 0){
+          bytes[actualByteIndex] = '0';
+          actualByteIndex++;
+          if(actualByteIndex == 8) actualByteIndex = 0;
+        }
+        charToWrite = charBytesToChar(bytes);
+        fwrite(&charToWrite, 1, sizeof(charToWrite), fileW);
+      }
+      printf("Encryption process completed\n");
+      free(bytes); fclose(fileW); fclose(file);
+    }else{
+      if(file == NULL) perror(fileIn);
+      if(fileW == NULL) perror(fileOut);
+      exit(0);
+    }
+  }
+}
 
-lst charOccurencesOfStr(char *str) {
+void saveKeyInFile(lst occurences, char *fileKey){
+  if(occurences != NULL && fileKey != NULL){
+    FILE *file = fopen(fileKey, "w");
+    tpl occurence = NULL;
+    if(file != NULL){
+      for (size_t i = 0; i < getListSize(occurences); i++) {
+        occurence = get(occurences, i);
+        if(*((char*)getTupleKey(occurence)) != '\0'){
+          fprintf(file, "%c:%d;", *((char*)getTupleKey(occurence)), *((int*)getTupleValue(occurence)));
+        }
+      }
+      fclose(file);
+    }else{
+      if(file == NULL) perror(fileKey);
+      exit(0);
+    }
+  }
+}
+
+nd getTreeFromKeyFile(char *fileKey){
+  FILE* file = fopen (fileKey, "r");
+  if(file != NULL) {
+    char ligne[255];
+    tpl occurence = NULL;
+    int etape = 1;
+    char l = 0;
+    unsigned int tmp = 0;
+    char* nb = (char*)calloc(sizeof(char), 11);
+    lst occurences = createDefinedList(&destroyTupleGen, &printTupleGen);
+    while(fgets(ligne, sizeof(ligne), file) != NULL){
+      for (unsigned int i = 0; i < strlen(ligne); i++){
+        if (etape == 1) {
+          l = ligne[i];
+          etape++;
+        }else if(etape == 2){
+          if (ligne[i] == ':') etape++;
+        }else if(etape == 3){
+          nb[tmp] = ligne[i];
+          tmp++;
+          if(ligne[i+1] == ';'){
+            while(tmp < 11){
+              nb[tmp] = 0;
+              tmp++;
+            }
+            tmp = 0;
+            char *letter = (char*)malloc(sizeof(char)); *letter = l;
+            int *value = (int*)malloc(sizeof(int)); *value = strToInt(nb);
+            occurence = createTuple(letter, value, NULL, printChar, NULL, printInt);
+            addInList(occurences, occurence);
+            etape++;
+          }
+        }else if(etape == 4){
+          if (ligne[i] == ';') etape = 1;
+        }
+      }
+    }
+    fclose(file);
+    free(nb);
+    char *letter = (char*)malloc(sizeof(char)); *letter = '\0';
+    int *value = (int*)malloc(sizeof(int)); *value = 1;
+    occurence = createTuple(letter, value, NULL, printChar, NULL, printInt);
+    addInList(occurences, occurence);
+    nd tree = contructBinaryTree(occurences);
+    destroyList(&occurences);
+    return tree;
+  } else {
+    perror(fileKey);
+  }
+  return NULL;
+}
+
+/* ========================================================================== */
+
+lst charOccurencesOfStr(char *str){
   lst occurences = createDefinedList(&destroyTupleGen, &printTupleGen);
   char *key = (char*)malloc(sizeof(char));
   int *val = (int*)malloc(sizeof(int)); *val = 1;
   tpl tupleTmp = NULL;
-  for (size_t i = 0; i < strlen(str); i++) {
+  for(size_t i = 0; i < strlen(str); i++){
     tupleTmp = getTupleInListByKey(occurences, str[i]);
     if(tupleTmp == NULL){
       *key = str[i];
@@ -70,6 +221,9 @@ lst charOccurencesOfStr(char *str) {
       tupleTmp = NULL;
     }
   }
+  *key = '\0';
+  tpl tuple = createTupleByCopy(key, val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
+  addInList(occurences, tuple);
   free(key);
   free(val);
   return occurences;
@@ -77,14 +231,14 @@ lst charOccurencesOfStr(char *str) {
 
 lst charOccurencesOfFile(char *srcFile){
   FILE* file = fopen (srcFile, "r");
-  if(file != NULL) {
-    char ligne[255];
+  if(file != NULL){
+    char ligne[512];
     lst occurences = createDefinedList(&destroyTupleGen, &printTupleGen);
     char *key = (char*)malloc(sizeof(char));
     int *val = (int*)malloc(sizeof(int)); *val = 1;
-    tpl tupleTmp   = NULL;
-    while(fgets(ligne, sizeof(ligne), file) != NULL) {
-      for(unsigned int i = 0; i < strlen(ligne); i++) {
+    tpl tupleTmp = NULL;
+    while(fgets(ligne, sizeof(ligne), file) != NULL){
+      for(unsigned int i = 0; i < strlen(ligne); i++){
         tupleTmp = getTupleInListByKey(occurences, ligne[i]);
         if(tupleTmp == NULL){
           *key = ligne[i];
@@ -96,6 +250,9 @@ lst charOccurencesOfFile(char *srcFile){
         }
       }
     }
+    *key = '\0';
+    tpl tuple = createTupleByCopy(key, val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
+    addInList(occurences, tuple);
     free(key);
     free(val);
     fclose(file);
@@ -108,7 +265,6 @@ lst charOccurencesOfFile(char *srcFile){
 }
 
 nd contructBinaryTree(lst occurences){
-  // nd tree = createDefinedNode(NULL, destroyTupleGen, printTupleGen);
   lst treeNodes = createDefinedList(destroyNodeGen, printNodeGen);
   nd tree = NULL;
   tpl tuple = NULL;
@@ -118,7 +274,7 @@ nd contructBinaryTree(lst occurences){
     nd node = createDefinedNode(tmp, destroyTupleGen, printTupleGen);
     addInList(treeNodes, node);
   }
-  if (getListSize(treeNodes) > 0){
+  if(getListSize(treeNodes) > 0){
     while(getListSize(treeNodes) > 1){
       mergeTwoSmallerNodes(treeNodes);
     }
@@ -126,15 +282,6 @@ nd contructBinaryTree(lst occurences){
   }
   destroyList(&treeNodes);
   return tree;
-}
-
-tpl getTupleInListByKey(lst list, char key){
-  tpl tuple = NULL;
-  for (size_t i = 0; i < getListSize(list); i++) {
-    tuple = (tpl)get(list, i);
-    if (*((char*)getTupleKey(tuple)) == key) return tuple;
-  }
-  return NULL;
 }
 
 void mergeTwoSmallerNodes(lst list){
@@ -176,16 +323,79 @@ void mergeTwoSmallerNodes(lst list){
   addInList(list, newNode);
 }
 
-void saveKeyInFile(lst occurences, char *fileKey){
-  if(occurences != NULL && fileKey != NULL) {
-    printf("Save key in file: %s\n", fileKey);
+lst prefixesList(lst occurences, char *fileKey, int *maxPrefixLength){
+  nd tree = contructBinaryTree(occurences);
+  *maxPrefixLength = getNodeDepth(tree);
+  saveKeyInFile(occurences, fileKey);
+  destroyList(&occurences);
+  lst prefixes = createDefinedList(&destroyTupleGen, &printTupleGen);
+  char *prefix = (char*)calloc(sizeof(char), *maxPrefixLength + 1);
+  calculatePrefixes(tree, prefixes, prefix);
+  free(prefix);
+  destroyNode(&tree);
+  return prefixes;
+}
+
+void calculatePrefixes(nd node, lst prefixes, char *prefix){
+  if(node == NULL || prefix == NULL || prefixes == NULL) pointerNullError();
+  int next = (int)strlen(prefix);
+  if(isLeaf(node)){
+    char* ch = (char*)copyChar(getTupleKey((tpl)getTag(node)));
+    char* pr = copyString(prefix);
+    tpl prefixTuple = createTuple(ch, pr, NULL, printChar, NULL, printString);
+    addInList(prefixes, prefixTuple);
+  } else {
+    nd left = getLeft(node);
+    nd right = getRight(node);
+    if(left != NULL){
+      prefix[next] = '0';
+      calculatePrefixes(left, prefixes, prefix);
+      prefix[next] = 0;
+    }
+    if(right != NULL){
+      prefix[next] = '1';
+      calculatePrefixes(right, prefixes, prefix);
+      prefix[next] = 0;
+    }
   }
 }
 
-void writeEncryptionInFile(char *file, char *encr){
-  if(encr != NULL && file != NULL) {
-    printf("Write encryption in file: %s\n", file);
+char* makeCharactersFromBytes(char *bytes, char *endChar){
+  int size = (strlen(bytes)+strlen(endChar))/8+2;
+  char *encr = (char*)calloc(sizeof(char), size);
+  int actualByteIndex = 0;
+  char *chars = (char*)calloc(sizeof(char), 9);
+  for(size_t i = 0; i < strlen(bytes)+strlen(endChar); i++){
+      if(actualByteIndex == 8){
+        actualByteIndex = 0;
+        encr[strlen(encr)] = charBytesToChar(chars);
+      }
+      if(i<strlen(bytes))
+        chars[actualByteIndex] = bytes[i];
+      else
+        chars[actualByteIndex] = endChar[i-strlen(bytes)];
+      actualByteIndex++;
   }
+  if(actualByteIndex != 0){
+    while(actualByteIndex != 8){
+      chars[actualByteIndex] = '0';
+      actualByteIndex++;
+    }
+    encr[strlen(encr)] = charBytesToChar(chars);
+  }
+  free(chars); free(bytes);
+  return encr;
+}
+
+/* ========================================================================== */
+
+tpl getTupleInListByKey(lst list, char key){
+  tpl tuple = NULL;
+  for(size_t i = 0; i < getListSize(list); i++){
+    tuple = (tpl)get(list, i);
+    if(*((char*)getTupleKey(tuple)) == key) return tuple;
+  }
+  return NULL;
 }
 
 
