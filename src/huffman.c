@@ -50,15 +50,62 @@ void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey){
 
 char* huffmanDecryptStr(char *str){
   nd tree = getTreeFromKeyFile("tests/test_str.hfm.key");
-  // TODO
+
+  const size_t numberOfBits = 8;
+  const size_t resultSize = sizeof(char)*100;
+  char* result = malloc(resultSize+1);
+  result[resultSize] = '\0';
+
+  size_t resultIndex = 0;
+  nd currentNode = tree;
+  char* path;
+  for(size_t i = 0; i < strlen(str); i++){
+    path = decimalToBinary((size_t)str[i], numberOfBits);
+    for(size_t j = 0; j < sizeof(path)/sizeof(char); j++){
+      if(isLeaf(currentNode)){
+        result[resultIndex] = (*(char*)getTupleKey(getTag(currentNode)));
+        currentNode = tree;
+        resultIndex++;
+      }
+
+      if(path[j] == '0'){
+        currentNode = getLeft(currentNode);
+      }
+
+      else if(path[j] == '1'){
+        currentNode = getRight(currentNode);
+      }
+
+    }
+    free(path);
+  }
   destroyNode(&tree);
-  return NULL;
+  return result;
 }
 
 void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
   nd tree = getTreeFromKeyFile(fileKey);
+  puts(fileIn);
+  puts(fileOut);
   // TODO
   destroyNode(&tree);
+}
+
+char* decimalToBinary(unsigned int decimal, int numberOfBits){
+  char* binaryCode = malloc(sizeof(char) * numberOfBits + 1);
+  size_t index = numberOfBits-1;
+  for(int c = numberOfBits; c > 0; c--)
+  {
+    if(decimal%2 & 1)
+      binaryCode[index] = '1';
+    else
+      binaryCode[index] = '0';
+
+    decimal /= 2;
+    index--;
+  }
+  binaryCode[numberOfBits] = '\0';
+  return binaryCode;
 }
 
 /* ========================================================================== */

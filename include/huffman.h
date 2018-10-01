@@ -56,6 +56,8 @@ void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey);
 
 char* huffmanDecryptStr(char *str);
 void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey);
+char* decimalToBinary(unsigned int decimal, int numberOfBits);
+void* getKeyWithPath(nd tree, char* path);
 
 char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength);
 void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPrefixLength);
