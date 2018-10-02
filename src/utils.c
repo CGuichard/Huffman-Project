@@ -121,6 +121,27 @@ int strToInt(char* str){
 }
 
 /** ===========================================================================/
+ * @see @file utils.h / @function decimalToBinary
+ */
+char* decimalToBinary(unsigned int decimal, int numberOfBits){
+  char* binaryCode = malloc(sizeof(char) * numberOfBits + 1);
+  size_t index = numberOfBits-1;
+  for(int c = numberOfBits; c > 0; c--)
+  {
+    if(decimal%2 & 1)
+      binaryCode[index] = '1';
+    else
+      binaryCode[index] = '0';
+
+    decimal /= 2;
+    index--;
+  }
+  binaryCode[numberOfBits] = '\0';
+  return binaryCode;
+}
+
+
+/** ===========================================================================/
  * @see @file utils.h / @function pointerAllocError
  */
 void pointerAllocError(){

@@ -52,34 +52,28 @@ char* huffmanDecryptStr(char *str){
   nd tree = getTreeFromKeyFile("tests/test_str.hfm.key");
 
   const size_t numberOfBits = 8;
-  const size_t resultSize = sizeof(char)*100;
+  const size_t resultSize = sizeof(char)*strlen(str)*3;
+  int* resultIndex = malloc(sizeof(int));
+  *resultIndex = 0;
+
   char* result = malloc(resultSize+1);
   result[resultSize] = '\0';
 
-  size_t resultIndex = 0;
-  nd currentNode = tree;
   char* path;
+  nd currentNode = tree;
+
   for(size_t i = 0; i < strlen(str); i++){
     path = decimalToBinary((size_t)str[i], numberOfBits);
-    for(size_t j = 0; j < sizeof(path)/sizeof(char); j++){
-      if(isLeaf(currentNode)){
-        result[resultIndex] = (*(char*)getTupleKey(getTag(currentNode)));
-        currentNode = tree;
-        resultIndex++;
-      }
-
-      if(path[j] == '0'){
-        currentNode = getLeft(currentNode);
-      }
-
-      else if(path[j] == '1'){
-        currentNode = getRight(currentNode);
-      }
-
-    }
+    setResultByReadingTree(tree, &currentNode, path, &result, &resultIndex);
     free(path);
   }
+
+  free(resultIndex);
   destroyNode(&tree);
+  // if(strlen(result) < resultSize){
+  //   char *tmp = (char*)realloc(result, strlen(result) + 1);
+  //   if(tmp != NULL) result = tmp;
+  // }
   return result;
 }
 
@@ -91,24 +85,25 @@ void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
   destroyNode(&tree);
 }
 
-char* decimalToBinary(unsigned int decimal, int numberOfBits){
-  char* binaryCode = malloc(sizeof(char) * numberOfBits + 1);
-  size_t index = numberOfBits-1;
-  for(int c = numberOfBits; c > 0; c--)
-  {
-    if(decimal%2 & 1)
-      binaryCode[index] = '1';
-    else
-      binaryCode[index] = '0';
-
-    decimal /= 2;
-    index--;
-  }
-  binaryCode[numberOfBits] = '\0';
-  return binaryCode;
-}
-
 /* ========================================================================== */
+
+void setResultByReadingTree(nd tree, nd* currentNode, char* path, char** result, int** resultIndex){
+  for(size_t j = 0; j < sizeof(path)/sizeof(char); j++){
+    if(isLeaf(*currentNode)){
+      (*result)[(*(*resultIndex))] = (*(char*)getTupleKey(getTag(*currentNode)));
+      *currentNode = tree;
+      (*(*resultIndex))++;
+    }
+
+    if(path[j] == '0'){
+      *currentNode = getLeft(*currentNode);
+    }
+
+    else if(path[j] == '1'){
+      *currentNode = getRight(*currentNode);
+    }
+  }
+}
 
 char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength){
   char *encr = (char*)calloc(sizeof(char), maxPrefixLength * strlen(str) + 1);

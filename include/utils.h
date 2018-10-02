@@ -21,6 +21,7 @@
  *  - copyString
  *  - charBytesToChar
  *  - strToInt
+ *  - decimalToBinary
  *  - pointerAllocError
  *  - pointerNullError
  */
@@ -158,6 +159,19 @@ char charBytesToChar(char *bytes);
  * @return{int}: The integer
  */
 int strToInt(char* str);
+
+/** ===========================================================================/
+ * @function decimalToBinary
+ * @brief Converts a decimal to its binary form
+ *
+ * This function converts an encrypted character to its unsigned binary form.
+ *
+ * @param{unsigned int} decimal: code of the encrypted character
+ * @param(int) numberOfBits: the size of the binary form (8bits, 16bits, ...)
+ *
+ * @return{char*}: the binary form of the decimal
+ */
+char* decimalToBinary(unsigned int decimal, int numberOfBits);
 
 /** ===========================================================================/
  * @function pointerAllocError
