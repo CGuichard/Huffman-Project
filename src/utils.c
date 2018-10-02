@@ -102,7 +102,7 @@ void* copyString(void *elem){
  */
 char charBytesToChar(char *bytes){
   if (strlen(bytes) == 8) {
-    int val = 0;
+    unsigned int val = 0;
     for (unsigned int i = 0; i < strlen(bytes); i++)
       val += (bytes[i] - 48) * pow(2, strlen(bytes)-i-1);
     return val;

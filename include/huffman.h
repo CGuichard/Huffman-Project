@@ -56,7 +56,8 @@ void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey);
 
 char* huffmanDecryptStr(char *str);
 void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey);
-void setResultByReadingTree(nd tree, nd* currentNode, char* path, char** result, int** resultIndex);
+char* getDecryptionOf(char *str, nd tree);
+void setResultByReadingTree(nd tree, nd *currentNode, char *path, char **result, int **resultIndex);
 
 char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength);
 void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPrefixLength);

@@ -50,25 +50,7 @@ void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey){
 
 char* huffmanDecryptStr(char *str){
   nd tree = getTreeFromKeyFile("tests/test_str.hfm.key");
-
-  const size_t numberOfBits = 8;
-  const size_t resultSize = sizeof(char)*strlen(str)*3;
-  int* resultIndex = malloc(sizeof(int));
-  *resultIndex = 0;
-
-  char* result = malloc(resultSize+1);
-  result[resultSize] = '\0';
-
-  char* path;
-  nd currentNode = tree;
-
-  for(size_t i = 0; i < strlen(str); i++){
-    path = decimalToBinary((size_t)str[i], numberOfBits);
-    setResultByReadingTree(tree, &currentNode, path, &result, &resultIndex);
-    free(path);
-  }
-
-  free(resultIndex);
+  char* result = getDecryptionOf(str, tree);
   destroyNode(&tree);
   // if(strlen(result) < resultSize){
   //   char *tmp = (char*)realloc(result, strlen(result) + 1);
@@ -78,18 +60,51 @@ char* huffmanDecryptStr(char *str){
 }
 
 void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
-  nd tree = getTreeFromKeyFile(fileKey);
-  puts(fileIn);
-  puts(fileOut);
-  // TODO
-  destroyNode(&tree);
+  if(fileIn != NULL && fileOut != NULL && fileKey != NULL){
+    nd tree = getTreeFromKeyFile(fileKey);
+    FILE *fileToRead = fopen(fileIn, "r");
+    FILE *fileToWrite = fopen(fileOut, "w");
+    if(fileToRead != NULL && fileToWrite != NULL){
+      char line[255];
+      char* lineToWrite;
+      while(fgets(line, sizeof(line), fileToRead) != NULL){
+        lineToWrite = getDecryptionOf(line, tree);
+        fputs(lineToWrite, fileToWrite);
+        free(lineToWrite);
+      }
+      destroyNode(&tree);
+      fclose(fileToRead);
+      fclose(fileToWrite);
+    } else {
+      if(fileToRead == NULL) perror(fileIn);
+      if(fileToWrite == NULL) perror(fileOut);
+      exit(0);
+    }
+  }
 }
 
-/* ========================================================================== */
+char* getDecryptionOf(char *str, nd tree){
+  const size_t numberOfBits = 8;
+  const size_t resultSize = sizeof(char)*strlen(str)*3;
+  int* resultIndex = malloc(sizeof(int));
+  *resultIndex = 0;
+  char* result = malloc(resultSize+1);
+  result[resultSize] = '\0';
+  char* path;
+  nd currentNode = tree;
+  for(size_t i = 0; i < strlen(str); i++){
+    path = decimalToBinary((size_t)str[i], numberOfBits);
+    setResultByReadingTree(tree, &currentNode, path, &result, &resultIndex);
+    free(path);
+  }
 
-void setResultByReadingTree(nd tree, nd* currentNode, char* path, char** result, int** resultIndex){
+  free(resultIndex);
+  return result;
+}
+
+void setResultByReadingTree(nd tree, nd *currentNode, char *path, char **result, int **resultIndex){
   for(size_t j = 0; j < sizeof(path)/sizeof(char); j++){
-    if(isLeaf(*currentNode)){
+    if(isLeaf((*currentNode))){
       (*result)[(*(*resultIndex))] = (*(char*)getTupleKey(getTag(*currentNode)));
       *currentNode = tree;
       (*(*resultIndex))++;
@@ -104,6 +119,7 @@ void setResultByReadingTree(nd tree, nd* currentNode, char* path, char** result,
     }
   }
 }
+/* ========================================================================== */
 
 char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength){
   char *encr = (char*)calloc(sizeof(char), maxPrefixLength * strlen(str) + 1);
