@@ -52,10 +52,6 @@ char* huffmanDecryptStr(char *str){
   nd tree = getTreeFromKeyFile("tests/test_str.hfm.key");
   char* result = getDecryptionOf(str, tree);
   destroyNode(&tree);
-  // if(strlen(result) < resultSize){
-  //   char *tmp = (char*)realloc(result, strlen(result) + 1);
-  //   if(tmp != NULL) result = tmp;
-  // }
   return result;
 }
 
@@ -69,7 +65,10 @@ void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
       char* lineToWrite;
       while(fgets(line, sizeof(line), fileToRead) != NULL){
         lineToWrite = getDecryptionOf(line, tree);
-        fputs(lineToWrite, fileToWrite);
+        for(size_t i = 0; i < sizeof(lineToWrite)/sizeof(char); i++){
+          fwrite(&(lineToWrite[i]), 1, sizeof(lineToWrite[i]), fileToWrite);
+        }
+
         free(lineToWrite);
       }
       destroyNode(&tree);
@@ -98,6 +97,10 @@ char* getDecryptionOf(char *str, nd tree){
     free(path);
   }
 
+  if(sizeof(result)/sizeof(char) < resultSize){
+    char *tmp = (char*)realloc(result, sizeof(result)/sizeof(char) + 1);
+    if(tmp != NULL) result = tmp;
+  }
   free(resultIndex);
   return result;
 }
