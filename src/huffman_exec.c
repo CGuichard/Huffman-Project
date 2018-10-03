@@ -62,8 +62,8 @@ int main(int argc, char *argv[]){
     free(fileOut);
     free(fileKey);
   }else{
-    char *encr = huffmanEncryptStr(TEST1);
-    printf("Text: \"%s\"\n", TEST1);
+    char *encr = huffmanEncryptStr(TEST2);
+    printf("Text: \"%s\"\n", TEST2);
     if(encr != NULL){
       printf("Encryption: \"%s\"\n", encr);
       char *decr = huffmanDecryptStr(encr);

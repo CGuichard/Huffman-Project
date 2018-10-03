@@ -19,7 +19,7 @@
  *  - copyInt
  *  - copyChar
  *  - copyString
- *  - charBytesToChar
+ *  - charBitsToChar
  *  - strToInt
  *  - pointerAllocError
  *  - pointerNullError
@@ -98,13 +98,13 @@ void* copyString(void *elem){
 }
 
 /** ===========================================================================/
- * @see @file utils.h / @function charBytesToChar
+ * @see @file utils.h / @function charBitsToChar
  */
-char charBytesToChar(char *bytes){
-  if (strlen(bytes) == 8) {
+char charBitsToChar(char *bits){
+  if (strlen(bits) == 8) {
     unsigned int val = 0;
-    for (unsigned int i = 0; i < strlen(bytes); i++)
-      val += (bytes[i] - 48) * pow(2, strlen(bytes)-i-1);
+    for (unsigned int i = 0; i < strlen(bits); i++)
+      val += (bits[i] - 48) * pow(2, strlen(bits)-i-1);
     return val;
   }
   return 0;

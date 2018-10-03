@@ -26,7 +26,7 @@
  *    - mergeTwoSmallerNodes
  *    - prefixesList
  *    - calculatePrefixes
- *    - makeCharactersFromBytes
+ *    - makeCharactersFromBits
  *    - getTupleInListByKey
  */
 
@@ -70,7 +70,7 @@ nd contructBinaryTree(lst occurences);
 void mergeTwoSmallerNodes(lst list);
 lst prefixesList(lst occurences, char *fileKey, int *maxPrefixLength);
 void calculatePrefixes(nd node, lst prefixes, char *prefix);
-char* makeCharactersFromBytes(char *bytes, char *endChar);
+char* makeCharactersFromBits(char *bits, char *endChar);
 
 tpl getTupleInListByKey(lst list, char key);
 

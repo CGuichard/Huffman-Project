@@ -19,7 +19,7 @@
  *  - copyInt
  *  - copyChar
  *  - copyString
- *  - charBytesToChar
+ *  - charBitsToChar
  *  - strToInt
  *  - decimalToBinary
  *  - pointerAllocError
@@ -136,17 +136,17 @@ void* copyChar(void *elem);
 void* copyString(void *elem);
 
 /** ===========================================================================/
- * @function charBytesToChar
+ * @function charBitsToChar
  * @brief Returns the character corresponding to a sequence of bits
  *
  * This function return a character corresponding to a sequence of bits given
  * in a string (which therefore contains only 0s and 1s)
  *
- * @param{char*} bytes: sequence of bits. Must have a size of 8
+ * @param{char*} bits: sequence of bits. Must have a size of 8
  *
  * @return{char}: The character
  */
-char charBytesToChar(char *bytes);
+char charBitsToChar(char *bits);
 
 /** ===========================================================================/
  * @function strToInt

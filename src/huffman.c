@@ -27,9 +27,9 @@ char* huffmanEncryptStr(char *str){
     lst charOccurences = charOccurencesOfStr(str);
     int maxPrefixLength = 0;
     lst prefixes = prefixesList(charOccurences, "tests/test_str.hfm.key", &maxPrefixLength);
-    char *bytesEncryption = getEncryptionOf(str, prefixes, maxPrefixLength);
+    char *bitsEncryption = getEncryptionOf(str, prefixes, maxPrefixLength);
     tpl tupleEndChar = (tpl)getTupleInListByKey(prefixes, '\0');
-    char* encr = makeCharactersFromBytes(bytesEncryption, (char*)getTupleValue(tupleEndChar));
+    char* encr = makeCharactersFromBits(bitsEncryption, (char*)getTupleValue(tupleEndChar));
     destroyList(&prefixes);
     return encr;
   }
@@ -61,16 +61,20 @@ void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
     FILE *fileToRead = fopen(fileIn, "r");
     FILE *fileToWrite = fopen(fileOut, "w");
     if(fileToRead != NULL && fileToWrite != NULL){
-      char line[255];
-      char* lineToWrite;
-      while(fgets(line, sizeof(line), fileToRead) != NULL){
-        lineToWrite = getDecryptionOf(line, tree);
-        for(size_t i = 0; i < sizeof(lineToWrite)/sizeof(char); i++){
-          fwrite(&(lineToWrite[i]), 1, sizeof(lineToWrite[i]), fileToWrite);
-        }
-
-        free(lineToWrite);
-      }
+      // char line[255];
+      // char* lineToWrite;
+      // while(fgets(line, sizeof(line), fileToRead) != NULL){
+      //   lineToWrite = getDecryptionOf(line, tree);
+      //   for(size_t i = 0; i < sizeof(lineToWrite)/sizeof(char); i++){
+      //     fwrite(&(lineToWrite[i]), 1, sizeof(lineToWrite[i]), fileToWrite);
+      //   }
+      //
+      //   free(lineToWrite);
+      // }
+      char c;
+      while((c = fgetc(fileToRead)) != EOF) {
+        // TODO
+    	}
       destroyNode(&tree);
       fclose(fileToRead);
       fclose(fileToWrite);
@@ -147,44 +151,47 @@ void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPre
     if(file != NULL && fileOut != NULL){
       char charToWrite;
       char ligne[255];
-      int actualByteIndex = 0;
-      char *bytes = (char*)calloc(sizeof(char), 9);
+      int actualBitIndex = 0;
+      char *bits = (char*)calloc(sizeof(char), 9);
+      const int E_CHAR = 7;
+      bits[E_CHAR] = '0';
       char *endChar = (char*)getTupleValue((tpl)getTupleInListByKey(prefixes, '\0'));
       while(fgets(ligne, sizeof(ligne), file) != NULL){
         char *encrOfLigne = getEncryptionOf(ligne, prefixes, maxPrefixLength);
         for(size_t i = 0; i < strlen(encrOfLigne); i++){
-          if(actualByteIndex == 8){
-            actualByteIndex = 0;
-            charToWrite = charBytesToChar(bytes);
+          if(actualBitIndex >= E_CHAR){
+            actualBitIndex = 0;
+            charToWrite = charBitsToChar(bits);
             fprintf(fileW, "%c", charToWrite);
-            // fprintf(fileW, "%s ", bytes); // To print the string of bytes in the file
-            // fwrite(&charToWrite, 1, sizeof(charToWrite), fileW); // Old version
+            // fprintf(fileW, "%s ", bits); // To print the string of bits in the file
           }
-          bytes[actualByteIndex] = encrOfLigne[i];
-          actualByteIndex++;
+          bits[actualBitIndex] = encrOfLigne[i];
+          actualBitIndex++;
         }
         free(encrOfLigne);
       }
       for (size_t i = 0; i < strlen(endChar); i++) {
-        if(actualByteIndex == 8){
-          actualByteIndex = 0;
-          charToWrite = charBytesToChar(bytes);
-          fwrite(&charToWrite, 1, sizeof(charToWrite), fileW);
+        if(actualBitIndex >= E_CHAR){
+          actualBitIndex = 0;
+          charToWrite = charBitsToChar(bits);
+          fprintf(fileW, "%c", charToWrite);
+          // fprintf(fileW, "%s ", bits); // To print the string of bits in the file
         }
-        bytes[actualByteIndex] = endChar[i];
-        actualByteIndex++;
+        bits[actualBitIndex] = endChar[i];
+        actualBitIndex++;
       }
-      if(actualByteIndex != 0){
-        while(actualByteIndex != 0){
-          bytes[actualByteIndex] = '0';
-          actualByteIndex++;
-          if(actualByteIndex == 8) actualByteIndex = 0;
+      if(actualBitIndex != 0){
+        while(actualBitIndex != 0){
+          bits[actualBitIndex] = '0';
+          actualBitIndex++;
+          if(actualBitIndex >= E_CHAR) actualBitIndex = 0;
         }
-        charToWrite = charBytesToChar(bytes);
-        fwrite(&charToWrite, 1, sizeof(charToWrite), fileW);
+        charToWrite = charBitsToChar(bits);
+        fprintf(fileW, "%c", charToWrite);
+        // fprintf(fileW, "%s ", bits); // To print the string of bits in the file
       }
       printf("Encryption process completed\n");
-      free(bytes); fclose(fileW); fclose(file);
+      free(bits); fclose(fileW); fclose(file);
     }else{
       if(file == NULL) perror(fileIn);
       if(fileW == NULL) perror(fileOut);
@@ -421,30 +428,33 @@ void calculatePrefixes(nd node, lst prefixes, char *prefix){
   }
 }
 
-char* makeCharactersFromBytes(char *bytes, char *endChar){
-  int size = (strlen(bytes)+strlen(endChar))/8+2;
+char* makeCharactersFromBits(char *bits, char *endChar){
+  int size = (strlen(bits)+strlen(endChar))/7+2;
   char *encr = (char*)calloc(sizeof(char), size);
-  int actualByteIndex = 0;
+  int actualBitIndex = 0;
   char *chars = (char*)calloc(sizeof(char), 9);
-  for(size_t i = 0; i < strlen(bytes)+strlen(endChar); i++){
-      if(actualByteIndex == 8){
-        actualByteIndex = 0;
-        encr[strlen(encr)] = charBytesToChar(chars);
+  const int E_CHAR = 7;
+  chars[7] = '0';
+  for(size_t i = 0; i < strlen(bits)+strlen(endChar); i++){
+      if(actualBitIndex >= E_CHAR){
+        actualBitIndex = 0;
+        encr[strlen(encr)] = charBitsToChar(chars);
       }
-      if(i<strlen(bytes))
-        chars[actualByteIndex] = bytes[i];
+      if(i<strlen(bits))
+        chars[actualBitIndex] = bits[i];
       else
-        chars[actualByteIndex] = endChar[i-strlen(bytes)];
-      actualByteIndex++;
+        chars[actualBitIndex] = endChar[i-strlen(bits)];
+      actualBitIndex++;
   }
-  if(actualByteIndex != 0){
-    while(actualByteIndex != 8){
-      chars[actualByteIndex] = '0';
-      actualByteIndex++;
+  if(actualBitIndex != 0){
+    while(actualBitIndex < E_CHAR){
+      chars[actualBitIndex] = '0';
+      actualBitIndex++;
     }
-    encr[strlen(encr)] = charBytesToChar(chars);
+    encr[strlen(encr)] = charBitsToChar(chars);
   }
-  free(chars); free(bytes);
+  free(chars); free(bits);
+  printf("%d %d\n", strlen(encr)+1, size);
   return encr;
 }
 
