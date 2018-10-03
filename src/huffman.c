@@ -84,11 +84,10 @@ void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
 
 char* getDecryptionOf(char *str, nd tree){
   const size_t numberOfBits = 8;
-  const size_t resultSize = sizeof(char)*strlen(str)*3;
-  int* resultIndex = malloc(sizeof(int));
+  int* resultIndex = (int*)malloc(sizeof(int));
+  unsigned int resultSize = strlen(str)*3 + 1;
   *resultIndex = 0;
-  char* result = malloc(resultSize+1);
-  result[resultSize] = '\0';
+  char* result = (char*)calloc(sizeof(char), resultSize);
   char* path;
   nd currentNode = tree;
   for(size_t i = 0; i < strlen(str); i++){
@@ -96,11 +95,10 @@ char* getDecryptionOf(char *str, nd tree){
     setResultByReadingTree(tree, &currentNode, path, &result, &resultIndex);
     free(path);
   }
-
-  if(sizeof(result)/sizeof(char) < resultSize){
-    char *tmp = (char*)realloc(result, sizeof(result)/sizeof(char) + 1);
-    if(tmp != NULL) result = tmp;
-  }
+  // if(strlen(result) < resultSize){
+  //   char *tmp = (char*)realloc(result, strlen(result) + 1);
+  //   if(tmp != NULL) result = tmp;
+  // }
   free(resultIndex);
   return result;
 }
@@ -158,7 +156,9 @@ void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPre
           if(actualByteIndex == 8){
             actualByteIndex = 0;
             charToWrite = charBytesToChar(bytes);
-            fwrite(&charToWrite, 1, sizeof(charToWrite), fileW);
+            fprintf(fileW, "%c", charToWrite);
+            // fprintf(fileW, "%s ", bytes); // To print the string of bytes in the file
+            // fwrite(&charToWrite, 1, sizeof(charToWrite), fileW); // Old version
           }
           bytes[actualByteIndex] = encrOfLigne[i];
           actualByteIndex++;
