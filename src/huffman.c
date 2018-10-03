@@ -61,26 +61,28 @@ void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
     FILE *fileToRead = fopen(fileIn, "r");
     FILE *fileToWrite = fopen(fileOut, "w");
     if(fileToRead != NULL && fileToWrite != NULL){
-      // char line[255];
-      // char* lineToWrite;
-      // while(fgets(line, sizeof(line), fileToRead) != NULL){
-      //   lineToWrite = getDecryptionOf(line, tree);
-      //   fwrite(lineToWrite, 1, strlen(lineToWrite), fileToWrite);
-      //   free(lineToWrite);
-      // }
+      nd currentNode = tree;
+      char *currentCharBits;
+      char charToWrite;
       char c;
-      char line[512];
-      int cpt = 0;
       while((c = fgetc(fileToRead)) != EOF) {
-        if(cpt == 512){
-          fprintf(fileToWrite, "%s", getDecryptionOf(line, tree));
-          cpt = 0;
+        currentCharBits = decimalToBinary(c, 8);
+        currentCharBits[7] = '\0';
+        for (size_t i = 0; i < strlen(currentCharBits); i++) {
+          if(isLeaf(currentNode)){
+            charToWrite = *((char*)getTupleKey((tpl)getTag(currentNode)));
+            fprintf(fileToWrite, "%c", charToWrite);
+            currentNode = tree;
+          }
+          if(currentCharBits[i] == '0'){
+            currentNode = getLeft(currentNode);
+          }
+          else if(currentCharBits[i] == '1'){
+            currentNode = getRight(currentNode);
+          }
         }
-        line[cpt] = c;
-        cpt++;
-        // printf("%s\n", getDecryptionOf(line,tree));
+        free(currentCharBits);
     	}
-      fprintf(fileToWrite, "%s", getDecryptionOf(line, tree));
       destroyNode(&tree);
       fclose(fileToRead);
       fclose(fileToWrite);
@@ -94,7 +96,6 @@ void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
 
 char* getDecryptionOf(char *str, nd tree){
   const size_t numberOfBits = 8;
-  printf("%zu\n", strlen(str));
   int* resultIndex = (int*)malloc(sizeof(int));
   unsigned int resultSize = strlen(str)*3 + 1;
   *resultIndex = 0;
@@ -103,7 +104,6 @@ char* getDecryptionOf(char *str, nd tree){
   nd currentNode = tree;
   for(size_t i = 0; i < strlen(str); i++){
     path = decimalToBinary((unsigned int)str[i], numberOfBits);
-    // printf("%s\n", path);
     setResultByReadingTree(tree, &currentNode, path, &result, &resultIndex);
     free(path);
   }
@@ -122,11 +122,9 @@ void setResultByReadingTree(nd tree, nd *currentNode, char *path, char **result,
       *currentNode = tree;
       (*(*resultIndex))++;
     }
-
     if(path[j] == '0'){
       *currentNode = getLeft(*currentNode);
     }
-
     else if(path[j] == '1'){
       *currentNode = getRight(*currentNode);
     }
@@ -462,7 +460,6 @@ char* makeCharactersFromBits(char *bits, char *endChar){
     encr[strlen(encr)] = charBitsToChar(chars);
   }
   free(chars); free(bits);
-  // printf("%d %d\n", strlen(encr)+1, size);
   return encr;
 }
 
