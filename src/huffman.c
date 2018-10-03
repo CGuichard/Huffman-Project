@@ -65,16 +65,22 @@ void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
       // char* lineToWrite;
       // while(fgets(line, sizeof(line), fileToRead) != NULL){
       //   lineToWrite = getDecryptionOf(line, tree);
-      //   for(size_t i = 0; i < sizeof(lineToWrite)/sizeof(char); i++){
-      //     fwrite(&(lineToWrite[i]), 1, sizeof(lineToWrite[i]), fileToWrite);
-      //   }
-      //
+      //   fwrite(lineToWrite, 1, strlen(lineToWrite), fileToWrite);
       //   free(lineToWrite);
       // }
       char c;
+      char line[512];
+      int cpt = 0;
       while((c = fgetc(fileToRead)) != EOF) {
-        // TODO
+        if(cpt == 512){
+          fprintf(fileToWrite, "%s", getDecryptionOf(line, tree));
+          cpt = 0;
+        }
+        line[cpt] = c;
+        cpt++;
+        // printf("%s\n", getDecryptionOf(line,tree));
     	}
+      fprintf(fileToWrite, "%s", getDecryptionOf(line, tree));
       destroyNode(&tree);
       fclose(fileToRead);
       fclose(fileToWrite);
@@ -88,6 +94,7 @@ void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
 
 char* getDecryptionOf(char *str, nd tree){
   const size_t numberOfBits = 8;
+  printf("%zu\n", strlen(str));
   int* resultIndex = (int*)malloc(sizeof(int));
   unsigned int resultSize = strlen(str)*3 + 1;
   *resultIndex = 0;
@@ -95,7 +102,8 @@ char* getDecryptionOf(char *str, nd tree){
   char* path;
   nd currentNode = tree;
   for(size_t i = 0; i < strlen(str); i++){
-    path = decimalToBinary((size_t)str[i], numberOfBits);
+    path = decimalToBinary((unsigned int)str[i], numberOfBits);
+    // printf("%s\n", path);
     setResultByReadingTree(tree, &currentNode, path, &result, &resultIndex);
     free(path);
   }
@@ -108,7 +116,7 @@ char* getDecryptionOf(char *str, nd tree){
 }
 
 void setResultByReadingTree(nd tree, nd *currentNode, char *path, char **result, int **resultIndex){
-  for(size_t j = 0; j < sizeof(path)/sizeof(char); j++){
+  for(size_t j = 0; j < strlen(path)-1; j++){
     if(isLeaf((*currentNode))){
       (*result)[(*(*resultIndex))] = (*(char*)getTupleKey(getTag(*currentNode)));
       *currentNode = tree;
@@ -454,7 +462,7 @@ char* makeCharactersFromBits(char *bits, char *endChar){
     encr[strlen(encr)] = charBitsToChar(chars);
   }
   free(chars); free(bits);
-  printf("%d %d\n", strlen(encr)+1, size);
+  // printf("%d %d\n", strlen(encr)+1, size);
   return encr;
 }
 

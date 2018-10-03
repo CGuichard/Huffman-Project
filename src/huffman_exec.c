@@ -15,7 +15,7 @@
 #include "huffman.h"
 
 char* TEST1 = "J'ai perdu ma force et ma vie,\nEt mes amis et ma gaieté,\nJ'ai perdu jusqu'à la fierté\nQui faisait croire à mon génie.\n\nQuand j'ai connu la Vérité,\nJ'ai cru que c'était une amie ;\nQuand je l'ai comprise et sentie,\nJ'en étais déjà dégoûté.\n\nEt pourtant elle est éternelle,\nEt ceux qui se sont passés d'elle\nIci-bas ont tout ignoré.\n\nDieu parle, il faut qu'on lui réponde.\nLe seul bien qui me reste au monde\nEst d'avoir quelquefois pleuré.\nAlfred de Musset.";
-char* TEST2 = "This is a test to verify if the encryption and the descryption is correct";
+char* TEST2 = "This is a test to verify if the encryption and the decryption are correct";
 char* TEST3 = "TTT";
 
 /* ================================================== */
