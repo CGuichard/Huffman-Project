@@ -19,6 +19,8 @@
  *    - getEncryptionOf
  *    - writeEncryptionInFile
  *    - saveKeyInFile
+ *    - getDecryptionOf
+ *    - writeDecryptionInFile
  *    - getTreeFromKeyFile
  *    - charOccurencesOfStr
  *    - charOccurencesOfFile
@@ -28,6 +30,7 @@
  *    - calculatePrefixes
  *    - makeCharactersFromBits
  *    - getTupleInListByKey
+ *    - writeBitsInOpenedFile
  */
 
 
@@ -54,15 +57,21 @@
 char* huffmanEncryptStr(char *str);
 void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey);
 
+
 char* huffmanDecryptStr(char *str);
 void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey);
-char* getDecryptionOf(char *str, nd tree);
-void setResultByReadingTree(nd tree, nd *currentNode, char *path, char **result, int **resultIndex);
+
 
 char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength);
 void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPrefixLength);
 void saveKeyInFile(lst occurences, char *fileKey);
+
+
+char* getDecryptionOf(char *str, nd tree);
+void setResultByReadingTree(nd tree, nd *currentNode, char *path, char **result, int **resultIndex);
+void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree);
 nd getTreeFromKeyFile(char *fileKey);
+
 
 lst charOccurencesOfStr(char *str);
 lst charOccurencesOfFile(char *srcFile);
@@ -72,7 +81,9 @@ lst prefixesList(lst occurences, char *fileKey, int *maxPrefixLength);
 void calculatePrefixes(nd node, lst prefixes, char *prefix);
 char* makeCharactersFromBits(char *bits, char *endChar);
 
+
 tpl getTupleInListByKey(lst list, char key);
+void writeBitsInOpenedFile(FILE *fileW, char *bits);
 
 
 #endif

@@ -12,7 +12,25 @@
  * The tree is a binary tree, which is composed of nodes.
  *
  * Overview about public functions of this file:
- *    -
+ *    - huffmanEncryptStr
+ *    - huffmanEncryptFile
+ *    - huffmanDecryptStr
+ *    - huffmanDecryptFile
+ *    - getEncryptionOf
+ *    - writeEncryptionInFile
+ *    - saveKeyInFile
+ *    - getDecryptionOf
+ *    - writeDecryptionInFile
+ *    - getTreeFromKeyFile
+ *    - charOccurencesOfStr
+ *    - charOccurencesOfFile
+ *    - contructBinaryTree
+ *    - mergeTwoSmallerNodes
+ *    - prefixesList
+ *    - calculatePrefixes
+ *    - makeCharactersFromBits
+ *    - getTupleInListByKey
+ *    - writeBitsInOpenedFile
  */
 
 #include "huffman.h"
@@ -58,78 +76,11 @@ char* huffmanDecryptStr(char *str){
 void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
   if(fileIn != NULL && fileOut != NULL && fileKey != NULL){
     nd tree = getTreeFromKeyFile(fileKey);
-    FILE *fileToRead = fopen(fileIn, "r");
-    FILE *fileToWrite = fopen(fileOut, "w");
-    if(fileToRead != NULL && fileToWrite != NULL){
-      nd currentNode = tree;
-      char *currentCharBits;
-      char charToWrite;
-      char c;
-      while((c = fgetc(fileToRead)) != EOF) {
-        currentCharBits = decimalToBinary(c, 8);
-        currentCharBits[7] = '\0';
-        for (size_t i = 0; i < strlen(currentCharBits); i++) {
-          if(isLeaf(currentNode)){
-            charToWrite = *((char*)getTupleKey((tpl)getTag(currentNode)));
-            fprintf(fileToWrite, "%c", charToWrite);
-            currentNode = tree;
-          }
-          if(currentCharBits[i] == '0'){
-            currentNode = getLeft(currentNode);
-          }
-          else if(currentCharBits[i] == '1'){
-            currentNode = getRight(currentNode);
-          }
-        }
-        free(currentCharBits);
-    	}
-      destroyNode(&tree);
-      fclose(fileToRead);
-      fclose(fileToWrite);
-    } else {
-      if(fileToRead == NULL) perror(fileIn);
-      if(fileToWrite == NULL) perror(fileOut);
-      exit(0);
-    }
+    writeDecryptionInFile(fileIn, fileOut, tree);
+    destroyNode(&tree);
   }
 }
 
-char* getDecryptionOf(char *str, nd tree){
-  const size_t numberOfBits = 8;
-  int* resultIndex = (int*)malloc(sizeof(int));
-  unsigned int resultSize = strlen(str)*3 + 1;
-  *resultIndex = 0;
-  char* result = (char*)calloc(sizeof(char), resultSize);
-  char* path;
-  nd currentNode = tree;
-  for(size_t i = 0; i < strlen(str); i++){
-    path = decimalToBinary((unsigned int)str[i], numberOfBits);
-    setResultByReadingTree(tree, &currentNode, path, &result, &resultIndex);
-    free(path);
-  }
-  // if(strlen(result) < resultSize){
-  //   char *tmp = (char*)realloc(result, strlen(result) + 1);
-  //   if(tmp != NULL) result = tmp;
-  // }
-  free(resultIndex);
-  return result;
-}
-
-void setResultByReadingTree(nd tree, nd *currentNode, char *path, char **result, int **resultIndex){
-  for(size_t j = 0; j < strlen(path)-1; j++){
-    if(isLeaf((*currentNode))){
-      (*result)[(*(*resultIndex))] = (*(char*)getTupleKey(getTag(*currentNode)));
-      *currentNode = tree;
-      (*(*resultIndex))++;
-    }
-    if(path[j] == '0'){
-      *currentNode = getLeft(*currentNode);
-    }
-    else if(path[j] == '1'){
-      *currentNode = getRight(*currentNode);
-    }
-  }
-}
 /* ========================================================================== */
 
 char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength){
@@ -152,10 +103,9 @@ char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength){
 
 void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPrefixLength){
   if(fileIn != NULL && fileOut != NULL && prefixes != NULL){
-    FILE* file = fopen(fileIn, "r");
+    FILE *file = fopen(fileIn, "r");
     FILE *fileW = fopen(fileOut, "wb");
     if(file != NULL && fileOut != NULL){
-      char charToWrite;
       char ligne[255];
       int actualBitIndex = 0;
       char *bits = (char*)calloc(sizeof(char), 9);
@@ -167,9 +117,7 @@ void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPre
         for(size_t i = 0; i < strlen(encrOfLigne); i++){
           if(actualBitIndex >= E_CHAR){
             actualBitIndex = 0;
-            charToWrite = charBitsToChar(bits);
-            fprintf(fileW, "%c", charToWrite);
-            // fprintf(fileW, "%s ", bits); // To print the string of bits in the file
+            writeBitsInOpenedFile(fileW, bits);
           }
           bits[actualBitIndex] = encrOfLigne[i];
           actualBitIndex++;
@@ -179,9 +127,7 @@ void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPre
       for (size_t i = 0; i < strlen(endChar); i++) {
         if(actualBitIndex >= E_CHAR){
           actualBitIndex = 0;
-          charToWrite = charBitsToChar(bits);
-          fprintf(fileW, "%c", charToWrite);
-          // fprintf(fileW, "%s ", bits); // To print the string of bits in the file
+          writeBitsInOpenedFile(fileW, bits);
         }
         bits[actualBitIndex] = endChar[i];
         actualBitIndex++;
@@ -192,9 +138,7 @@ void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPre
           actualBitIndex++;
           if(actualBitIndex >= E_CHAR) actualBitIndex = 0;
         }
-        charToWrite = charBitsToChar(bits);
-        fprintf(fileW, "%c", charToWrite);
-        // fprintf(fileW, "%s ", bits); // To print the string of bits in the file
+        writeBitsInOpenedFile(fileW, bits);
       }
       printf("Encryption process completed\n");
       free(bits); fclose(fileW); fclose(file);
@@ -225,8 +169,83 @@ void saveKeyInFile(lst occurences, char *fileKey){
   }
 }
 
+/* ========================================================================== */
+
+char* getDecryptionOf(char *str, nd tree){
+  unsigned int resultSize = strlen(str)*3 + 1;
+  char* result = (char*)calloc(sizeof(char), resultSize);
+  nd currentNode = tree;
+  char* path;
+  const size_t numberOfBits = 8;
+  int resultIndex = 0;
+  for(size_t i = 0; i < strlen(str); i++){
+    path = decimalToBinary((unsigned int)str[i], numberOfBits);
+    for(size_t j = 0; j < strlen(path)-1; j++){
+      if(isLeaf((currentNode))){
+        result[resultIndex] = *((char*)getTupleKey((tpl)getTag(currentNode)));
+        currentNode = tree;
+        resultIndex++;
+      }
+      if(path[j] == '0'){
+        currentNode = getLeft(currentNode);
+      }
+      else if(path[j] == '1'){
+        currentNode = getRight(currentNode);
+      }
+    }
+    free(path);
+  }
+  // if(strlen(result) < resultSize){
+  //   char *tmp = (char*)realloc(result, strlen(result) + 1);
+  //   if(tmp != NULL) result = tmp;
+  // }
+  return result;
+}
+
+void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree){
+  FILE *fileToRead = fopen(fileIn, "r");
+  FILE *fileToWrite = fopen(fileOut, "w");
+  if(fileToRead != NULL && fileToWrite != NULL){
+    nd currentNode = tree;
+    char *currentCharBits;
+    char charToWrite;
+    char c;
+    int again = 1;
+    while((c = fgetc(fileToRead)) != EOF && again == 1) {
+      currentCharBits = decimalToBinary(c, 8);
+      currentCharBits[7] = '\0';
+      for (size_t i = 0; i < strlen(currentCharBits); i++) {
+        if(isLeaf(currentNode)){
+          charToWrite = *((char*)getTupleKey((tpl)getTag(currentNode)));
+          if (charToWrite == '\0') {
+            again = 0;
+            break;
+          }
+          fprintf(fileToWrite, "%c", charToWrite);
+          currentNode = tree;
+        }
+        if(currentCharBits[i] == '0'){
+          currentNode = getLeft(currentNode);
+        }
+        else if(currentCharBits[i] == '1'){
+          currentNode = getRight(currentNode);
+        }
+      }
+      free(currentCharBits);
+    }
+    printf("Decryption process completed\n");
+    fclose(fileToRead);
+    fclose(fileToWrite);
+  } else {
+    if(fileToRead == NULL) perror(fileIn);
+    if(fileToWrite == NULL) perror(fileOut);
+    destroyNode(&tree);
+    exit(0);
+  }
+}
+
 nd getTreeFromKeyFile(char *fileKey){
-  FILE* file = fopen (fileKey, "r");
+  FILE *file = fopen (fileKey, "r");
   if(file != NULL) {
     char ligne[255];
     tpl occurence = NULL;
@@ -304,7 +323,7 @@ lst charOccurencesOfStr(char *str){
 }
 
 lst charOccurencesOfFile(char *srcFile){
-  FILE* file = fopen (srcFile, "r");
+  FILE *file = fopen (srcFile, "r");
   if(file != NULL){
     char ligne[512];
     lst occurences = createDefinedList(&destroyTupleGen, &printTupleGen);
@@ -472,6 +491,15 @@ tpl getTupleInListByKey(lst list, char key){
     if(*((char*)getTupleKey(tuple)) == key) return tuple;
   }
   return NULL;
+}
+
+void writeBitsInOpenedFile(FILE *fileW, char *bits){
+  if(fileW != NULL){
+    char charToWrite = charBitsToChar(bits);
+    if(charToWrite == '\0') charToWrite = 1; // Bits values: 00000001
+    fprintf(fileW, "%c", charToWrite);
+    // fprintf(fileW, "%s ", bits); // To print the string of bits in the file
+  }
 }
 
 
