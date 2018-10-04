@@ -172,19 +172,23 @@ void saveKeyInFile(lst occurences, char *fileKey){
 /* ========================================================================== */
 
 char* getDecryptionOf(char *str, nd tree){
+  const size_t numberOfBits = 8;
   unsigned int resultSize = strlen(str)*3 + 1;
   char* result = (char*)calloc(sizeof(char), resultSize);
   nd currentNode = tree;
   char* path;
-  const size_t numberOfBits = 8;
+  char* charToWrite;
   int resultIndex = 0;
+  int endFound = 0;
   for(size_t i = 0; i < strlen(str); i++){
     path = decimalToBinary((unsigned int)str[i], numberOfBits);
     for(size_t j = 0; j < strlen(path)-1; j++){
       if(isLeaf((currentNode))){
-        result[resultIndex] = *((char*)getTupleKey((tpl)getTag(currentNode)));
+        charToWrite = (char*)getTupleKey((tpl)getTag(currentNode));
+        result[resultIndex] = *charToWrite;
         currentNode = tree;
         resultIndex++;
+        if(*charToWrite == '\0') endFound = 1;
       }
       if(path[j] == '0'){
         currentNode = getLeft(currentNode);
@@ -192,8 +196,10 @@ char* getDecryptionOf(char *str, nd tree){
       else if(path[j] == '1'){
         currentNode = getRight(currentNode);
       }
+      if(endFound == 1) break;
     }
     free(path);
+    if(endFound == 1) break;
   }
   // if(strlen(result) < resultSize){
   //   char *tmp = (char*)realloc(result, strlen(result) + 1);
