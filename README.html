@@ -314,12 +314,24 @@ img {
 <p>To learn how to install <strong>valgrind</strong> on other operating systems, please check the correct documentation</p>
 <p><em>Learn more about <a href="http://valgrind.org/">valgrind</a></em></p>
 <h3>Compilation</h3>
+<h4>Executable</h4>
 <p>To compile you will have to open a terminal at the root of the project folder and type in the terminal:</p>
 <pre><code>make
 </code></pre>
 
-<p><em>You can use the -j{x} option with make and replace {x} with the number of jobs you want to run simultaneously. To summarize if your machine has 4 cores add -j4 to compile faster using the 4 cores instead of one</em></p>
+<blockquote>
+<p><em>Note: You can use the -j{x} option with make and replace {x} with the number of jobs you want to run simultaneously. To summarize if your machine has 4 cores add -j4 to compile faster using the 4 cores instead of one</em></p>
+</blockquote>
 <p>Quite simple isn't it? Now the project is ready to run</p>
+<h4>Library</h4>
+<p>You can compile a library libhuffman containing functions that can be used to encrypt and decrypt a string of character or a file by using the command:</p>
+<pre><code>make lib
+</code></pre>
+
+<p>The library will be generated in the directory <strong>lib/</strong>. Two version will be generated, a static library and a dynamic library.</p>
+<blockquote>
+<p><em>Note: The static one end by &quot;.a&quot; and the dynamic one end with &quot;.so&quot;</em></p>
+</blockquote>
 <h3>Use of the executable</h3>
 <h4>Start the test</h4>
 <p>The project is easy to use. You can execute this command to run the default test of the executable:</p>
@@ -331,7 +343,7 @@ img {
 </code></pre>
 
 <p>This test encrypt and decrypt a string of characters wrote in src/huffman_exec.c</p>
-<p>You can modify the test string in the src/huffman.exec to make another test</p>
+<p>You can modify the test string in the <strong>src/huffman.exec</strong> to make another test</p>
 <p>If you want to run the program with valgrind you can execute:</p>
 <pre><code>make memory_run
 # OR
@@ -350,7 +362,9 @@ valgrind ./bin/huffman_exec
 <li><code>{pathFileOut}</code>: Path of the output file <em>(not obligatory)</em></li>
 <li><code>{pathFileKey}</code>: Path of the file used to save the key <em>(not obligatory)</em></li>
 </ol>
+<blockquote>
 <p><em>Note: Remember that you cannot change the order of the arguments. For example if you want to put {pathFileKey} you must have put {pathFileOut}</em></p>
+</blockquote>
 <p>To decrypt the order of the argument is not exactly the same:</p>
 <pre><code>./bin/huffman_exec decrypt {pathFileInput} {pathFileKey} {pathFileOut}
 </code></pre>
@@ -360,7 +374,9 @@ valgrind ./bin/huffman_exec
 <li><code>{pathFileKey}</code>: Path of the file used to save the key <em>(not obligatory)</em></li>
 <li><code>{pathFileOut}</code>: Path of the output file <em>(not obligatory)</em></li>
 </ol>
-<p><em>Note: it is possible not to specify files other than that of pathFileInput, because the program will determine the filenames (pathFileOut = pathFileInput + &quot;.hfm&quot; and pathFileKey = pathFileInput + &quot;.hfm.key&quot;)</em></p>
+<blockquote>
+<p><em>Note: it is possible to not specify files other than the one of pathFileInput, because the program will determine the filenames (pathFileOut = pathFileInput + &quot;.hfm&quot; and pathFileKey = pathFileInput + &quot;.hfm.key&quot;)</em></p>
+</blockquote>
 <p>It goes without saying that you can put <strong>valgring</strong> before <strong>./bin/huffman_exec</strong> to use it</p>
 <h3>Learn more</h3>
 <p>You can learn more about the commands you can use with <strong>make</strong> by looking at the <strong>commands.md</strong> file</p>

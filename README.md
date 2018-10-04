@@ -35,13 +35,25 @@ To learn how to install **valgrind** on other operating systems, please check th
 
 ### Compilation
 
+#### Executable
+
 To compile you will have to open a terminal at the root of the project folder and type in the terminal:
 
     make
 
-*You can use the -j{x} option with make and replace {x} with the number of jobs you want to run simultaneously. To summarize if your machine has 4 cores add -j4 to compile faster using the 4 cores instead of one*
+> *Note: You can use the -j{x} option with make and replace {x} with the number of jobs you want to run simultaneously. To summarize if your machine has 4 cores add -j4 to compile faster using the 4 cores instead of one*
 
 Quite simple isn't it? Now the project is ready to run
+
+#### Library
+
+You can compile a library libhuffman containing functions that can be used to encrypt and decrypt a string of character or a file by using the command:
+
+	make lib
+
+The library will be generated in the directory **lib/**. Two version will be generated, a static library and a dynamic library.
+
+> *Note: The static one end by ".a" and the dynamic one end with ".so"*
 
 ### Use of the executable
 
@@ -57,7 +69,7 @@ You can also write directly:
 
 This test encrypt and decrypt a string of characters wrote in src/huffman_exec.c
 
-You can modify the test string in the src/huffman.exec to make another test
+You can modify the test string in the **src/huffman.exec** to make another test
 
 If you want to run the program with valgrind you can execute:
 
@@ -79,7 +91,7 @@ For this you need to type as follows:
 2. `{pathFileOut}`: Path of the output file *(not obligatory)*
 3. `{pathFileKey}`: Path of the file used to save the key *(not obligatory)*
 
-*Note: Remember that you cannot change the order of the arguments. For example if you want to put {pathFileKey} you must have put {pathFileOut}*
+> *Note: Remember that you cannot change the order of the arguments. For example if you want to put {pathFileKey} you must have put {pathFileOut}*
 
 To decrypt the order of the argument is not exactly the same:
 
@@ -89,7 +101,7 @@ To decrypt the order of the argument is not exactly the same:
 2. `{pathFileKey}`: Path of the file used to save the key *(not obligatory)*
 3. `{pathFileOut}`: Path of the output file *(not obligatory)*
 
-*Note: it is possible not to specify files other than that of pathFileInput, because the program will determine the filenames (pathFileOut = pathFileInput + ".hfm" and pathFileKey = pathFileInput + ".hfm.key")*
+> *Note: it is possible to not specify files other than the one of pathFileInput, because the program will determine the filenames (pathFileOut = pathFileInput + ".hfm" and pathFileKey = pathFileInput + ".hfm.key")*
 
 It goes without saying that you can put **valgring** before **./bin/huffman_exec** to use it
 
