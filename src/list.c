@@ -24,16 +24,16 @@
  *    - createList
  *    - createDefinedList
  *    - getListSize
- *    - setElemDestroyer
- *    - setElemPrinter
+ *    - setListElemDestroyer
+ *    - setListElemPrinter
  *    - destroyList
  *    - emptyTheList
  *    - printList
  *    - addInList
  *    - popList
- *    - removeInList
- *    - popInList
- *    - get
+ *    - popFromList
+ *    - removeFromList
+ *    - getOfList
  */
 
 #include "list.h"
@@ -139,16 +139,16 @@ size_t getListSize(lst l) {
 }
 
 /**
- * @see @file list.h / @function setElemDestroyer
+ * @see @file list.h / @function setListElemDestroyer
  */
-void setElemDestroyer(lst l, void(*destroyElem)(void **elem)) {
+void setListElemDestroyer(lst l, void(*destroyElem)(void **elem)) {
     l->destroyElem = destroyElem;
 }
 
 /**
- * @see @file list.h / @function setElemPrinter
+ * @see @file list.h / @function setListElemPrinter
  */
-void setElemPrinter(lst l, void(*printElem)(void *elem)) {
+void setListElemPrinter(lst l, void(*printElem)(void *elem)) {
   l->printElem = printElem;
 }
 
@@ -225,9 +225,9 @@ void popList(lst l) {
 }
 
 /**
- * @see @file list.h / @function removeInList
+ * @see @file list.h / @function popFromList
  */
-void removeInList(lst l, size_t pos) {
+void popFromList(lst l, size_t pos) {
   if(l != NULL && l->numberOfElements > 0 && l->objectList[l->numberOfElements-1] != NULL && pos < l->numberOfElements) {
     destroyElemInList(l, pos);
     for (size_t i = pos; i < l->numberOfElements-1; i++)
@@ -239,9 +239,9 @@ void removeInList(lst l, size_t pos) {
 }
 
 /**
- * @see @file list.h / @function popInList
+ * @see @file list.h / @function removeFromList
  */
-void* popInList(lst l, size_t pos) {
+void* removeFromList(lst l, size_t pos) {
   if(l != NULL && l->numberOfElements > 0 && l->objectList[l->numberOfElements-1] != NULL && pos < l->numberOfElements) {
     void *elem = l->objectList[pos];
     for (size_t i = pos; i < l->numberOfElements-1; i++)
@@ -255,9 +255,9 @@ void* popInList(lst l, size_t pos) {
 }
 
 /**
- * @see @file list.h / @function get
+ * @see @file list.h / @function getOfList
  */
-void* get(lst l, size_t pos) {
+void* getOfList(lst l, size_t pos) {
   if(pos < l->numberOfElements)
     return l->objectList[pos];
   return NULL;

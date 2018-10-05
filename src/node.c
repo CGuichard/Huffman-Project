@@ -13,20 +13,20 @@
  * Overview about public functions of node:
  *  - createNode
  *  - createDefinedNode
- *  - setTagDestroyer
- *  - setTagPrinter
+ *  - setNodeTagDestroyer
+ *  - setNodeTagPrinter
  *  - destroyLastNode
  *  - destroyNode
  *  - destroyNodeGen
  *  - printNode
  *  - printNodeGen
- *  - getLeft
- *  - setLeft
- *  - getRight
- *  - setRight
- *  - getTag
+ *  - getNodeLeft
+ *  - setNodeLeft
+ *  - getNodeRight
+ *  - setNodeRight
+ *  - getNodeTag
  *  - isValidNode
- *  - isLeaf
+ *  - isLeafNode
  *  - getNodeDepth
  */
 
@@ -90,16 +90,16 @@ nd createDefinedNode(void *tag, void(*destroyTag)(void **elem), void(*printTag)(
 }
 
 /**
- * @see @file node.h / @function setTagDestroyer
+ * @see @file node.h / @function setNodeTagDestroyer
  */
-void setTagDestroyer(nd node, void(*destroyTag)(void **elem)) {
+void setNodeTagDestroyer(nd node, void(*destroyTag)(void **elem)) {
   node->destroyTag = destroyTag;
 }
 
 /**
- * @see @file node.h / @function setTagPrinter
+ * @see @file node.h / @function setNodeTagPrinter
  */
-void setTagPrinter(nd node, void(*printTag)(void *elem)) {
+void setNodeTagPrinter(nd node, void(*printTag)(void *elem)) {
   node->printTag = printTag;
 }
 
@@ -159,7 +159,7 @@ void destroyNodeGen(void **n) {
 */
 void printNode(nd n) {
   if(n != NULL) {
-    if(isLeaf(n)) {
+    if(isLeafNode(n)) {
       printf("<Leaf | Tag : ");
       if(n->printTag != NULL)
         n->printTag(n->tag);
@@ -189,37 +189,37 @@ void printNodeGen(void *n) {
 }
 
 /**
-* @see @file node.h / @function getLeft
+* @see @file node.h / @function getNodeLeft
 */
-nd getLeft(nd n) {
+nd getNodeLeft(nd n) {
   return n->left;
 }
 
 /**
- * @see @file node.h / @function setLeft
+ * @see @file node.h / @function setNodeLeft
  */
-void setLeft(nd n, nd child) {
+void setNodeLeft(nd n, nd child) {
   n->left = child;
 }
 
 /**
- * @see @file node.h / @function getRight
+ * @see @file node.h / @function getNodeRight
  */
-nd getRight(nd n) {
+nd getNodeRight(nd n) {
   return n->right;
 }
 
 /**
-* @see @file node.h / @function setRight
+* @see @file node.h / @function setNodeRight
 */
-void setRight(nd n, nd child) {
+void setNodeRight(nd n, nd child) {
   n->right = child;
 }
 
 /**
- * @see @file node.h / @function getTag
+ * @see @file node.h / @function getNodeTag
  */
-void* getTag(nd n) {
+void* getNodeTag(nd n) {
   return n->tag;
 }
 
@@ -229,13 +229,13 @@ void* getTag(nd n) {
 int isValidNode(nd n) {
   // if the node have a tag AND haven't children, it's a valid node.
   // if the node haven't a tag AND at least one child, it's a valid node.
-  return (isLeaf(n) && n->tag != NULL) || (!isLeaf(n) && n->tag !=NULL) ? 1 : 0;
+  return (isLeafNode(n) && n->tag != NULL) || (!isLeafNode(n) && n->tag !=NULL) ? 1 : 0;
 }
 
 /**
- * @see @file node.h / @function isLeaf
+ * @see @file node.h / @function isLeafNode
  */
-int isLeaf(nd n) {
+int isLeafNode(nd n) {
   // if the node have no children and its tag is set
   // then it's a leaf.
   return n->left == NULL && n->right == NULL ? 1 : 0;

@@ -19,16 +19,16 @@
  *    - createList
  *    - createDefinedList
  *    - getListSize
- *    - setElemDestroyer
- *    - setElemPrinter
+ *    - setListElemDestroyer
+ *    - setListElemPrinter
  *    - destroyList
  *    - emptyTheList
  *    - printList
  *    - addInList
  *    - popList
- *    - removeInList
- *    - popInList
- *    - get
+ *    - popFromList
+ *    - removeFromList
+ *    - getOfList
  */
 
 /* ========================================================= */
@@ -104,7 +104,7 @@ lst createDefinedList(void(*destroyElem)(void **elem),
 size_t getListSize(lst l);
 
 /**
- * @function setElemDestroyer
+ * @function setListElemDestroyer
  * @brief Set the element printer for the list
  *
  * Set the element destroyer for the list, because the list is generic and we
@@ -116,10 +116,10 @@ size_t getListSize(lst l);
  *
  * @return{void}
  */
-void setElemDestroyer(lst l, void(*destroyElem)(void **elem));
+void setListElemDestroyer(lst l, void(*destroyElem)(void **elem));
 
 /**
- * @function setElemPrinter
+ * @function setListElemPrinter
  * @brief Set the element printer for the list
  *
  * Set the element printer for the list, because the list is generic and we need
@@ -131,7 +131,7 @@ void setElemDestroyer(lst l, void(*destroyElem)(void **elem));
  *
  * @return{void}
  */
-void setElemPrinter(lst l, void(*printElem)(void *elem));
+void setListElemPrinter(lst l, void(*printElem)(void *elem));
 
 /**
  * @function destroyList
@@ -208,8 +208,8 @@ void addInList(lst l, void *elem);
 void popList(lst l);
 
 /**
- * @function removeInList
- * @brief Remove an element of a list
+ * @function popFromList
+ * @brief Pop a choosen element of a list
  *
  * This function destroy the element of the list with it index, and adjust the
  * size to the new size after the remove of the element.
@@ -219,13 +219,13 @@ void popList(lst l);
  *
  * @return{void}
  */
-void removeInList(lst l, size_t pos);
+void popFromList(lst l, size_t pos);
 
 /**
- * @function popInList
- * @brief Pop an element of a list
+ * @function removeFromList
+ * @brief Remove an element from the list, and give its pointer
  *
- * This function is like removeInList, but don't destroy the element, the
+ * This function is like popFromList, but don't destroy the element, the
  * pointer of the element is removed from the list, but the pointer is given by
  * the function so that the element is not destroyed
  *
@@ -234,10 +234,10 @@ void removeInList(lst l, size_t pos);
  *
  * @return{void*}: pointer of the element
  */
-void* popInList(lst l, size_t pos);
+void* removeFromList(lst l, size_t pos);
 
 /**
- * @function get
+ * @function getOfList
  * @brief Get the pointer of an element of a list
  *
  * This function return the pointer of an element at a given index in the list
@@ -247,7 +247,7 @@ void* popInList(lst l, size_t pos);
  *
  * @return{void*}: pointer of the element
  */
-void* get(lst l, size_t pos);
+void* getOfList(lst l, size_t pos);
 
 
 #endif

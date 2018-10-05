@@ -21,6 +21,7 @@
  *  - copyString
  *  - charBitsToChar
  *  - strToInt
+ *  - decimalToBinary
  *  - pointerAllocError
  *  - pointerNullError
  */

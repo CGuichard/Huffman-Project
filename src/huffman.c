@@ -209,7 +209,7 @@ void saveKeyInFile(lst occurrences, char *fileKey) {
     tpl occurrence = NULL;
     if(file != NULL) {
       for (size_t i = 0; i < getListSize(occurrences); i++) {
-        occurrence = get(occurrences, i);
+        occurrence = getOfList(occurrences, i);
         if(*((char*)getTupleKey(occurrence)) != '\0') {
           fprintf(file, "%c:%d;", *((char*)getTupleKey(occurrence)), *((int*)getTupleValue(occurrence)));
         }
@@ -238,17 +238,17 @@ char* getDecryptionOf(char *str, nd tree) {
   for(size_t i = 0; i < strlen(str); i++) {
     path = decimalToBinary((unsigned int)str[i], numberOfBits);
     for(size_t j = 0; j < strlen(path)-1; j++) {
-      if(isLeaf((currentNode))) {
-        charToWrite = (char*)getTupleKey((tpl)getTag(currentNode));
+      if(isLeafNode((currentNode))) {
+        charToWrite = (char*)getTupleKey((tpl)getNodeTag(currentNode));
         result[resultIndex] = *charToWrite;
         currentNode = tree;
         resultIndex++;
         if(*charToWrite == '\0') endFound = 1;
       }
       if(path[j] == '0') {
-        currentNode = getLeft(currentNode);
+        currentNode = getNodeLeft(currentNode);
       } else if(path[j] == '1') {
-        currentNode = getRight(currentNode);
+        currentNode = getNodeRight(currentNode);
       }
       if(endFound == 1) break;
     }
@@ -278,8 +278,8 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree) {
       currentCharBits = decimalToBinary(c, 8);
       currentCharBits[7] = '\0';
       for (size_t i = 0; i < strlen(currentCharBits); i++) {
-        if(isLeaf(currentNode)) {
-          charToWrite = *((char*)getTupleKey((tpl)getTag(currentNode)));
+        if(isLeafNode(currentNode)) {
+          charToWrite = *((char*)getTupleKey((tpl)getNodeTag(currentNode)));
           if (charToWrite == '\0') {
             again = 0;
             break;
@@ -288,9 +288,9 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree) {
           currentNode = tree;
         }
         if(currentCharBits[i] == '0') {
-          currentNode = getLeft(currentNode);
+          currentNode = getNodeLeft(currentNode);
         } else if(currentCharBits[i] == '1') {
-          currentNode = getRight(currentNode);
+          currentNode = getNodeRight(currentNode);
         }
       }
       free(currentCharBits);
@@ -437,7 +437,7 @@ nd contructBinaryTree(lst occurrences) {
   nd tree = NULL;
   tpl tuple = NULL;
   for(size_t i = 0; i < getListSize(occurrences); i++) {
-    tuple = get(occurrences, i);
+    tuple = getOfList(occurrences, i);
     tpl tmp = makeCopyTuple(tuple, copyChar, copyInt);
     nd node = createDefinedNode(tmp, destroyTupleGen, printTupleGen);
     addInList(treeNodes, node);
@@ -446,7 +446,7 @@ nd contructBinaryTree(lst occurrences) {
     while(getListSize(treeNodes) > 1) {
       mergeTwoSmallerNodes(treeNodes);
     }
-    if(getListSize(treeNodes) == 1) tree = (nd)popInList(treeNodes, 0);
+    if(getListSize(treeNodes) == 1) tree = (nd)removeFromList(treeNodes, 0);
   }
   destroyList(&treeNodes);
   return tree;
@@ -458,11 +458,11 @@ nd contructBinaryTree(lst occurrences) {
 void mergeTwoSmallerNodes(lst list) {
   size_t j = 0;
   size_t k = 1;
-  int valueJ = *((int*)getTupleValue((tpl)getTag((nd)get(list, j))));
-  int valueK = *((int*)getTupleValue((tpl)getTag((nd)get(list, k))));
+  int valueJ = *((int*)getTupleValue((tpl)getNodeTag((nd)getOfList(list, j))));
+  int valueK = *((int*)getTupleValue((tpl)getNodeTag((nd)getOfList(list, k))));
   int *currentValue = NULL;
   for(size_t i = 2; i < getListSize(list); i++) {
-    currentValue = (int*)getTupleValue((tpl)getTag((nd)get(list, i)));
+    currentValue = (int*)getTupleValue((tpl)getNodeTag((nd)getOfList(list, i)));
     if(k < j) {
       if(*currentValue < valueK && i != j && i != k) {
         k = i;
@@ -476,20 +476,20 @@ void mergeTwoSmallerNodes(lst list) {
     }
   }
   if(j < k) k--;
-  nd child1 = (nd)popInList(list, j);
-  nd child2 = (nd)popInList(list, k);
-  int valChild1 = *((int*)getTupleValue((tpl)getTag(child1)));
-  int valChild2 = *((int*)getTupleValue((tpl)getTag(child2)));
+  nd child1 = (nd)removeFromList(list, j);
+  nd child2 = (nd)removeFromList(list, k);
+  int valChild1 = *((int*)getTupleValue((tpl)getNodeTag(child1)));
+  int valChild2 = *((int*)getTupleValue((tpl)getNodeTag(child2)));
   int *newValue = (int*)malloc(sizeof(int));
   *newValue = valChild1 + valChild2;
   tpl newTuple = createTuple(NULL, newValue, NULL, printChar, NULL, printInt);
   nd newNode = createDefinedNode(newTuple, destroyTupleGen, printTupleGen);
   if(valChild1 <= valChild2) {
-    setLeft(newNode, child1);
-    setRight(newNode, child2);
+    setNodeLeft(newNode, child1);
+    setNodeRight(newNode, child2);
   } else {
-    setLeft(newNode, child2);
-    setRight(newNode, child1);
+    setNodeLeft(newNode, child2);
+    setNodeRight(newNode, child1);
   }
   addInList(list, newNode);
 }
@@ -516,14 +516,14 @@ lst prefixesList(lst occurrences, char *fileKey, int *maxPrefixLength) {
 void calculatePrefixes(nd node, lst prefixes, char *prefix) {
   if(node == NULL || prefix == NULL || prefixes == NULL) pointerNullError();
   int next = (int)strlen(prefix);
-  if(isLeaf(node)) {
-    char *ch = (char*)copyChar(getTupleKey((tpl)getTag(node)));
+  if(isLeafNode(node)) {
+    char *ch = (char*)copyChar(getTupleKey((tpl)getNodeTag(node)));
     char *pr = copyString(prefix);
     tpl prefixTuple = createTuple(ch, pr, NULL, printChar, NULL, printString);
     addInList(prefixes, prefixTuple);
   } else {
-    nd left = getLeft(node);
-    nd right = getRight(node);
+    nd left = getNodeLeft(node);
+    nd right = getNodeRight(node);
     if(left != NULL) {
       prefix[next] = '0';
       calculatePrefixes(left, prefixes, prefix);
@@ -544,7 +544,7 @@ void calculatePrefixes(nd node, lst prefixes, char *prefix) {
 tpl getTupleInListByKey(lst list, char key) {
   tpl tuple = NULL;
   for(size_t i = 0; i < getListSize(list); i++) {
-    tuple = (tpl)get(list, i);
+    tuple = (tpl)getOfList(list, i);
     if(*((char*)getTupleKey(tuple)) == key) return tuple;
   }
   return NULL;

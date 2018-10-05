@@ -15,20 +15,20 @@
  * Overview about public functions of node:
  *  - createNode
  *  - createDefinedNode
- *  - setTagDestroyer
- *  - setTagPrinter
+ *  - setNodeTagDestroyer
+ *  - setNodeTagPrinter
  *  - destroyLastNode
  *  - destroyNode
  *  - destroyNodeGen
  *  - printNode
  *  - printNodeGen
- *  - getLeft
- *  - setLeft
- *  - getRight
- *  - setRight
- *  - getTag
+ *  - getNodeLeft
+ *  - setNodeLeft
+ *  - getNodeRight
+ *  - setNodeRight
+ *  - getNodeTag
  *  - isValidNode
- *  - isLeaf
+ *  - isLeafNode
  *  - getNodeDepth
  */
 
@@ -87,7 +87,7 @@ nd createDefinedNode(void *tag,
                     );
 
 /**
- * @function setTagDestroyer
+ * @function setNodeTagDestroyer
  * @brief This function sets a function to destroy a node's tag
  *
  * @param{nd} node: pointer on a node
@@ -97,10 +97,10 @@ nd createDefinedNode(void *tag,
  *
  * @return{void}
  */
-void setTagDestroyer(nd node, void(*destroyTag)(void **elem));
+void setNodeTagDestroyer(nd node, void(*destroyTag)(void **elem));
 
 /**
- * @function setTagPrinter
+ * @function setNodeTagPrinter
  * @brief This function sets a function to print a node's tag
  *
  * @param{nd} node: pointer on a node
@@ -110,7 +110,7 @@ void setTagDestroyer(nd node, void(*destroyTag)(void **elem));
  *
  * @return{void}
  */
-void setTagPrinter(nd node, void(*printTag)(void *elem));
+void setNodeTagPrinter(nd node, void(*printTag)(void *elem));
 
 /**
  * @function destroyLastNode
@@ -171,17 +171,17 @@ void printNode(nd n);
 void printNodeGen(void *n);
 
 /**
- * @function getLeft
+ * @function getNodeLeft
  * @brief Gets the left child of a node
  *
  * @param{nd} n: pointer on a node
  *
  * @return{nd}: the pointer of the left child's pointer
  */
-nd getLeft(nd n);
+nd getNodeLeft(nd n);
 
 /**
- * @function setLeft
+ * @function setNodeLeft
  * @brief Sets the left child of the node
  *
  * @param{nd} n: pointer on a node
@@ -189,20 +189,20 @@ nd getLeft(nd n);
  *
  * @return{void}
  */
-void setLeft(nd n, nd child);
+void setNodeLeft(nd n, nd child);
 
 /**
- * @function getRight
+ * @function getNodeRight
  * @brief Gets the right child of the node
  *
  * @param{nd} n: pointer on a node
  *
  * @return{nd}: the pointer of the right child's pointer
  */
-nd getRight(nd n);
+nd getNodeRight(nd n);
 
 /**
- * @function setRight
+ * @function setNodeRight
  * @brief Sets the right child of the node
  *
  * @param{nd} n: pointer on a node
@@ -210,17 +210,17 @@ nd getRight(nd n);
  *
  * @return{void}
  */
-void setRight(nd n, nd child);
+void setNodeRight(nd n, nd child);
 
 /**
- * @function getTag
+ * @function getNodeTag
  * @brief Gets the node's tag
  *
  * @param{nd} n: pointer on a node
  *
  * @return{void*}: pointer on the tag of the node
  */
-void* getTag(nd n);
+void* getNodeTag(nd n);
 
 /**
  * @function isValidNode
@@ -233,14 +233,14 @@ void* getTag(nd n);
 int isValidNode(nd n);
 
 /**
- * @function isLeaf
+ * @function isLeafNode
  * @brief Checks if a node is a leaf
  *
  * @param{nd} n: pointer on a node
  *
  * @return{int}: a boolean, 0 if it's false else 1
  */
-int isLeaf(nd n);
+int isLeafNode(nd n);
 
 /**
  * @function getNodeDepth
