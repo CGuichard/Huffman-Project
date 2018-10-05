@@ -59,7 +59,7 @@ struct node{
 /* ========================================================================== */
 
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function createNode
  */
 nd createNode(void* tag){
@@ -74,7 +74,7 @@ nd createNode(void* tag){
   return node;
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function createDefinedNode
  */
 nd createDefinedNode(void* tag, void(*destroyTag)(void **elem), void(*printTag)(void *elem)){
@@ -89,21 +89,21 @@ nd createDefinedNode(void* tag, void(*destroyTag)(void **elem), void(*printTag)(
   return node;
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function setTagDestroyer
  */
 void setTagDestroyer(nd node, void(*destroyTag)(void **elem)){
   node->destroyTag = destroyTag;
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function setTagPrinter
  */
 void setTagPrinter(nd node, void(*printTag)(void *elem)){
   node->printTag = printTag;
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function destroyLastNode
  */
 void destroyLastNode(nd n){
@@ -125,7 +125,7 @@ void destroyLastNode(nd n){
   }
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function destroyNode
  */
 void destroyNode(nd *n){
@@ -147,14 +147,14 @@ void destroyNode(nd *n){
   }
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function destroyNodeGen
  */
 void destroyNodeGen(void **n){
   destroyNode((nd*)n);
 }
 
-/** ===========================================================================/
+/**
 * @see @file node.h / @function printNode
 */
 void printNode(nd n){
@@ -183,49 +183,49 @@ void printNode(nd n){
   }
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function printNodeGen
  */
 void printNodeGen(void *n){
   printNode((nd)n);
 }
 
-/** ===========================================================================/
+/**
 * @see @file node.h / @function getLeft
 */
 nd getLeft(nd n){
   return n->left;
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function setLeft
  */
 void setLeft(nd n, nd child){
   n->left = child;
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function getRight
  */
 nd getRight(nd n){
   return n->right;
 }
 
-/** ===========================================================================/
+/**
 * @see @file node.h / @function setRight
 */
 void setRight(nd n, nd child){
   n->right = child;
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function getTag
  */
 void* getTag(nd n){
   return n->tag;
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function isValidNode
  */
 int isValidNode(nd n){
@@ -234,7 +234,7 @@ int isValidNode(nd n){
   return (isLeaf(n) && n->tag != NULL) || (!isLeaf(n) && n->tag !=NULL) ? 1 : 0;
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function isLeaf
  */
 int isLeaf(nd n){
@@ -243,7 +243,7 @@ int isLeaf(nd n){
   return n->left == NULL && n->right == NULL ? 1 : 0;
 }
 
-/** ===========================================================================/
+/**
  * @see @file node.h / @function getNodeDepth
  */
 int getNodeDepth(nd n){

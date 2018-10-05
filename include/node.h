@@ -58,7 +58,7 @@ typedef struct node* nd;
 
 /* ======== Functions ======== */
 
-/** ===========================================================================/
+/**
  * @function createNode
  * @brief This function creates a new node
  *
@@ -68,7 +68,7 @@ typedef struct node* nd;
  */
 nd createNode(void *tag);
 
-/** ===========================================================================/
+/**
  * @function createDefinedNode
  * @brief This function creates a new node
  *
@@ -86,7 +86,7 @@ nd createDefinedNode(void *tag,
                      void(*printTag)(void *elem)
                     );
 
-/** ===========================================================================/
+/**
  * @function setTagDestroyer
  * @brief This function sets a function to destroy a node's tag
  *
@@ -99,7 +99,7 @@ nd createDefinedNode(void *tag,
  */
 void setTagDestroyer(nd node, void(*destroyTag)(void **elem));
 
-/** ===========================================================================/
+/**
  * @function setTagPrinter
  * @brief This function sets a function to print a node's tag
  *
@@ -112,7 +112,7 @@ void setTagDestroyer(nd node, void(*destroyTag)(void **elem));
  */
 void setTagPrinter(nd node, void(*printTag)(void *elem));
 
-/** ===========================================================================/
+/**
  * @function destroyLastNode
  * @brief Destroys recursively all the children of a node
  *
@@ -122,7 +122,7 @@ void setTagPrinter(nd node, void(*printTag)(void *elem));
  */
 void destroyLastNode(nd n);
 
-/** ===========================================================================/
+/**
  * @function destroyNode
  * @brief Destroys safely a node
  *
@@ -132,7 +132,7 @@ void destroyLastNode(nd n);
  */
 void destroyNode(nd *n);
 
-/** ===========================================================================/
+/**
  * @function destroyNodeGen
  * @brief Destroys safely a generic node
  *
@@ -142,7 +142,7 @@ void destroyNode(nd *n);
  */
 void destroyNodeGen(void **n);
 
-/** ===========================================================================/
+/**
 * @function printNode
 * @brief Prints a node
 *
@@ -156,7 +156,7 @@ void destroyNodeGen(void **n);
 */
 void printNode(nd n);
 
-/** ===========================================================================/
+/**
 * @function printNodeGen
 * @brief Prints a generic node
 *
@@ -170,7 +170,7 @@ void printNode(nd n);
 */
 void printNodeGen(void *n);
 
-/** ===========================================================================/
+/**
  * @function getLeft
  * @brief Gets the left child of a node
  *
@@ -180,7 +180,7 @@ void printNodeGen(void *n);
  */
 nd getLeft(nd n);
 
-/** ===========================================================================/
+/**
  * @function setLeft
  * @brief Sets the left child of the node
  *
@@ -191,7 +191,7 @@ nd getLeft(nd n);
  */
 void setLeft(nd n, nd child);
 
-/** ===========================================================================/
+/**
  * @function getRight
  * @brief Gets the right child of the node
  *
@@ -201,7 +201,7 @@ void setLeft(nd n, nd child);
  */
 nd getRight(nd n);
 
-/** ===========================================================================/
+/**
  * @function setRight
  * @brief Sets the right child of the node
  *
@@ -212,7 +212,7 @@ nd getRight(nd n);
  */
 void setRight(nd n, nd child);
 
-/** ===========================================================================/
+/**
  * @function getTag
  * @brief Gets the node's tag
  *
@@ -222,7 +222,7 @@ void setRight(nd n, nd child);
  */
 void* getTag(nd n);
 
-/** ===========================================================================/
+/**
  * @function isValidNode
  * @brief Checks a node's validity
  *
@@ -232,7 +232,7 @@ void* getTag(nd n);
  */
 int isValidNode(nd n);
 
-/** ===========================================================================/
+/**
  * @function isLeaf
  * @brief Checks if a node is a leaf
  *
@@ -242,7 +242,7 @@ int isValidNode(nd n);
  */
 int isLeaf(nd n);
 
-/** ===========================================================================/
+/**
  * @function getNodeDepth
  * @brief Return the depth/height of a node
  *

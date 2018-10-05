@@ -58,7 +58,7 @@ typedef struct list* lst;
 
 /* ======== Functions ======== */
 
-/** ===========================================================================/
+/**
  * @function createList
  * @brief Create a new struct list and give its pointer
  *
@@ -70,7 +70,7 @@ typedef struct list* lst;
  */
 lst createList();
 
-/** ===========================================================================/
+/**
  * @function createDefinedList
  * @brief Create a new struct list, give its pointer, set destroyer and printer
  *
@@ -90,7 +90,7 @@ lst createDefinedList(void(*destroyElem)(void **elem),
                       void(*printElem)(void *elem)
                      );
 
-/** ===========================================================================/
+/**
  * @function getListSize
  * @brief Getter of the list size
  *
@@ -103,7 +103,7 @@ lst createDefinedList(void(*destroyElem)(void **elem),
  */
 size_t getListSize(lst l);
 
-/** ===========================================================================/
+/**
  * @function setElemDestroyer
  * @brief Set the element printer for the list
  *
@@ -118,7 +118,7 @@ size_t getListSize(lst l);
  */
 void setElemDestroyer(lst l, void(*destroyElem)(void **elem));
 
-/** ===========================================================================/
+/**
  * @function setElemPrinter
  * @brief Set the element printer for the list
  *
@@ -133,7 +133,7 @@ void setElemDestroyer(lst l, void(*destroyElem)(void **elem));
  */
 void setElemPrinter(lst l, void(*printElem)(void *elem));
 
-/** ===========================================================================/
+/**
  * @function destroyList
  * @brief Destroy a list
  *
@@ -151,7 +151,7 @@ void setElemPrinter(lst l, void(*printElem)(void *elem));
  */
 void destroyList(lst *l);
 
-/** ===========================================================================/
+/**
  * @function emptyTheList
  * @brief Empty the list of its elements
  *
@@ -167,7 +167,7 @@ void destroyList(lst *l);
  */
 void emptyTheList(lst l);
 
-/** ===========================================================================/
+/**
  * @function printList
  * @brief Print a list
  *
@@ -180,7 +180,7 @@ void emptyTheList(lst l);
  */
 void printList(lst l);
 
-/** ===========================================================================/
+/**
  * @function addInList
  * @brief Add the pointer of an element in the list
  *
@@ -194,7 +194,7 @@ void printList(lst l);
  */
 void addInList(lst l, void *elem);
 
-/** ===========================================================================/
+/**
  * @function popList
  * @brief Destroy the last element of a list
  *
@@ -207,7 +207,7 @@ void addInList(lst l, void *elem);
  */
 void popList(lst l);
 
-/** ===========================================================================/
+/**
  * @function removeInList
  * @brief Remove an element of a list
  *
@@ -221,7 +221,7 @@ void popList(lst l);
  */
 void removeInList(lst l, size_t pos);
 
-/** ===========================================================================/
+/**
  * @function popInList
  * @brief Pop an element of a list
  *
@@ -236,7 +236,7 @@ void removeInList(lst l, size_t pos);
  */
 void* popInList(lst l, size_t pos);
 
-/** ===========================================================================/
+/**
  * @function get
  * @brief Get the pointer of an element of a list
  *

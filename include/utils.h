@@ -42,7 +42,7 @@
 
 /* ======== Functions ======== */
 
-/** ===========================================================================/
+/**
 * @function equalsInt
 * @brief Tell if two integer are equals
 *
@@ -57,7 +57,7 @@
 */
 int equalsInt(void *val1, void *val2);
 
-/** ===========================================================================/
+/**
  * @function printInt
  * @brief Print an integer
  *
@@ -70,7 +70,7 @@ int equalsInt(void *val1, void *val2);
  */
 void printInt(void *elem);
 
-/** ===========================================================================/
+/**
  * @function printChar
  * @brief Print a character
  *
@@ -83,7 +83,7 @@ void printInt(void *elem);
  */
 void printChar(void *elem);
 
-/** ===========================================================================/
+/**
  * @function printChar
  * @brief Print a string of character
  *
@@ -96,7 +96,7 @@ void printChar(void *elem);
  */
 void printString(void *elem);
 
-/** ===========================================================================/
+/**
  * @function copyInt
  * @brief Return the pointer of the copy of the given integer
  *
@@ -109,7 +109,7 @@ void printString(void *elem);
  */
 void* copyInt(void *elem);
 
-/** ===========================================================================/
+/**
  * @function copyChar
  * @brief Return the pointer of the copy of the given character
  *
@@ -122,7 +122,7 @@ void* copyInt(void *elem);
  */
 void* copyChar(void *elem);
 
-/** ===========================================================================/
+/**
  * @function copyString
  * @brief Return the pointer of the copy of the given string
  *
@@ -135,7 +135,7 @@ void* copyChar(void *elem);
  */
 void* copyString(void *elem);
 
-/** ===========================================================================/
+/**
  * @function charBitsToChar
  * @brief Returns the character corresponding to a sequence of bits
  *
@@ -148,7 +148,7 @@ void* copyString(void *elem);
  */
 char charBitsToChar(char *bits);
 
-/** ===========================================================================/
+/**
  * @function strToInt
  * @brief Returns the integer corresponding to an integer which is in a string
  *
@@ -160,7 +160,7 @@ char charBitsToChar(char *bits);
  */
 int strToInt(char* str);
 
-/** ===========================================================================/
+/**
  * @function decimalToBinary
  * @brief Converts a decimal to its binary form
  *
@@ -173,7 +173,7 @@ int strToInt(char* str);
  */
 char* decimalToBinary(unsigned int decimal, int numberOfBits);
 
-/** ===========================================================================/
+/**
  * @function pointerAllocError
  * @brief Print a memory allocation error, and stop the program
  *
@@ -184,7 +184,7 @@ char* decimalToBinary(unsigned int decimal, int numberOfBits);
  */
 void pointerAllocError();
 
-/** ===========================================================================/
+/**
  * @function pointerNullError
  * @brief Print a null pointer error, and stop the program
  *

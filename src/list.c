@@ -68,7 +68,7 @@ struct list {
 /* ========================================================================== */
 
 
-/** ===========================================================================/
+/**
  * @function destroyElemInList
  * @brief Destroy an element of the list
  *
@@ -82,7 +82,7 @@ struct list {
  */
 void destroyElemInList(lst l, size_t pos);
 
-/** ===========================================================================/
+/**
  * @function resizeAlloc
  * @brief Resizes the current size of memory took by the list
  *
@@ -103,7 +103,7 @@ void resizeAlloc(lst l, int nbNewElements);
 /* ========================================================================== */
 
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function createList
  */
 lst createList(){
@@ -117,7 +117,7 @@ lst createList(){
   return l;
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function createDefinedList
  */
 lst createDefinedList(void(*destroyElem)(void **elem), void(*printElem)(void *elem)){
@@ -131,28 +131,28 @@ lst createDefinedList(void(*destroyElem)(void **elem), void(*printElem)(void *el
   return l;
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function getListSize
  */
 size_t getListSize(lst l){
   return (l != NULL)?l->numberOfElements:0;
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function setElemDestroyer
  */
 void setElemDestroyer(lst l, void(*destroyElem)(void **elem)){
     l->destroyElem = destroyElem;
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function setElemPrinter
  */
 void setElemPrinter(lst l, void(*printElem)(void *elem)){
   l->printElem = printElem;
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function destroyList
  */
 void destroyList(lst *l){
@@ -161,7 +161,7 @@ void destroyList(lst *l){
   *l = NULL;
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function emptyTheList
  */
 void emptyTheList(lst l){
@@ -180,7 +180,7 @@ void emptyTheList(lst l){
   }
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function printList
  */
 void printList(lst l){
@@ -202,7 +202,7 @@ void printList(lst l){
   }
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function addInList
  */
 void addInList(lst l, void *elem){
@@ -213,7 +213,7 @@ void addInList(lst l, void *elem){
   }
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function popList
  */
 void popList(lst l){
@@ -224,7 +224,7 @@ void popList(lst l){
   }
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function removeInList
  */
 void removeInList(lst l, size_t pos){
@@ -238,7 +238,7 @@ void removeInList(lst l, size_t pos){
   }
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function popInList
  */
 void* popInList(lst l, size_t pos){
@@ -254,7 +254,7 @@ void* popInList(lst l, size_t pos){
   return NULL;
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.h / @function get
  */
 void* get(lst l, size_t pos){
@@ -267,7 +267,7 @@ void* get(lst l, size_t pos){
 /* ===================== PRIVATE ==================== */
 /* ========================================================================== */
 
-/** ===========================================================================/
+/**
  * @see @file list.c / @function destroyElemInList
  */
 void destroyElemInList(lst l, size_t pos){
@@ -279,7 +279,7 @@ void destroyElemInList(lst l, size_t pos){
   }
 }
 
-/** ===========================================================================/
+/**
  * @see @file list.c / @function resizeAlloc
  */
 void resizeAlloc(lst l, int nbNewElements){

@@ -54,7 +54,7 @@ struct tuple {
 /* ========================================================================== */
 
 
-/** ===========================================================================/
+/**
  * @see @file tuple.h / @function createTuple
  */
 tpl createTuple(void *key, void *val, void(*destroyKey)(void **elem), void(*printKey)(void *key), void(*destroyValue)(void **elem), void(*printValue)(void *val)){
@@ -68,7 +68,7 @@ tpl createTuple(void *key, void *val, void(*destroyKey)(void **elem), void(*prin
   return t;
 }
 
-/** ===========================================================================/
+/**
  * @see @file tuple.h / @function createTupleByCopy
  */
 tpl createTupleByCopy(void *key, void *val, void*(*copyKey)(void *key), void(*destroyKey)(void **elem), void(*printKey)(void *key), void*(*copyValue)(void *val), void(*destroyValue)(void **elem), void(*printValue)(void *val)){
@@ -82,7 +82,7 @@ tpl createTupleByCopy(void *key, void *val, void*(*copyKey)(void *key), void(*de
   return t;
 }
 
-/** ===========================================================================/
+/**
  * @see @file tuple.h / @function makeCopyTuple
  */
 tpl makeCopyTuple(tpl tuple, void*(*copyKey)(void *key), void*(*copyValue)(void *val)){
@@ -96,7 +96,7 @@ tpl makeCopyTuple(tpl tuple, void*(*copyKey)(void *key), void*(*copyValue)(void 
   return t;
 }
 
-/** ===========================================================================/
+/**
  * @see @file tuple.h / @function destroyTuple
  */
 void destroyTuple(tpl *tuple){
@@ -113,14 +113,14 @@ void destroyTuple(tpl *tuple){
   }
 }
 
-/** ===========================================================================/
+/**
  * @see @file tuple.h / @function destroyTupleGen
  */
 void destroyTupleGen(void **tuple){
   destroyTuple((tpl*)tuple);
 }
 
-/** ===========================================================================/
+/**
  * @see @file tuple.h / @function printTuple
  */
 void printTuple(tpl tuple){
@@ -139,35 +139,35 @@ void printTuple(tpl tuple){
   }
 }
 
-/** ===========================================================================/
+/**
  * @see @file tuple.h / @function printTupleGen
  */
 void printTupleGen(void *tuple){
   printTuple((tpl)tuple);
 }
 
-/** ===========================================================================/
+/**
  * @see @file tuple.h / @function getTupleKey
  */
 void* getTupleKey(tpl tuple){
   return tuple->key;
 }
 
-/** ===========================================================================/
+/**
  * @see @file tuple.h / @function getTupleValue
  */
 void* getTupleValue(tpl tuple){
   return tuple->val;
 }
 
-/** ===========================================================================/
+/**
  * @see @file tuple.h / @function isKeyOfTuple
  */
 int isKeyOfTuple(tpl tuple, void *key, int(*equals)(void *val1, void *val2)){
   return (*equals)(tuple->key, key);
 }
 
-/** ===========================================================================/
+/**
  * @see @file tuple.h / @function isValueOfTuple
  */
 int isValueOfTuple(tpl tuple, void *val, int(*equals)(void *val1, void *val2)){

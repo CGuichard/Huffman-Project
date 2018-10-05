@@ -52,7 +52,7 @@ typedef struct tuple* tpl;
 
 /* ======== Functions ======== */
 
-/** ===========================================================================/
+/**
  * @function createTuple
  * @brief This function create a new tuple
  *
@@ -79,7 +79,7 @@ tpl createTuple(void *key,
                 void(*printValue)(void *val)
                );
 
-/** ===========================================================================/
+/**
  * @function createTupleByCopy
  * @brief Create a tuple by copy of a key and a value
  *
@@ -116,7 +116,7 @@ tpl createTupleByCopy(void *key,
                       void(*printValue)(void *val)
                      );
 
-/** ===========================================================================/
+/**
  * @function makeCopyTuple
  * @brief This function make a copy of a given tuple
  *
@@ -133,7 +133,7 @@ tpl makeCopyTuple(tpl tuple,
                   void*(*copyValue)(void *val)
                  );
 
-/** ===========================================================================/
+/**
  * @function destroyTuple
  * @brief Destroy a tuple
  *
@@ -146,7 +146,7 @@ tpl makeCopyTuple(tpl tuple,
  */
 void destroyTuple(tpl *tuple);
 
-/** ===========================================================================/
+/**
  * @function destroyTupleGen
  * @brief Destroy a tuple pointed by a generic pointer
  *
@@ -159,7 +159,7 @@ void destroyTuple(tpl *tuple);
  */
 void destroyTupleGen(void **tuple);
 
-/** ===========================================================================/
+/**
  * @function printTuple
  * @brief Print a tuple
  *
@@ -172,7 +172,7 @@ void destroyTupleGen(void **tuple);
  */
 void printTuple(tpl tuple);
 
-/** ===========================================================================/
+/**
  * @function printTupleGen
  * @brief Print a tuple pointed by a generic pointer
  *
@@ -185,7 +185,7 @@ void printTuple(tpl tuple);
  */
 void printTupleGen(void *tuple);
 
-/** ===========================================================================/
+/**
  * @function getTupleKey
  * @brief Give a pointer of the key of a tuple
  *
@@ -198,7 +198,7 @@ void printTupleGen(void *tuple);
  */
 void* getTupleKey(tpl tuple);
 
-/** ===========================================================================/
+/**
  * @function getTupleValue
  * @brief Give a pointer of the value of a tuple
  *
@@ -211,7 +211,7 @@ void* getTupleKey(tpl tuple);
  */
 void* getTupleValue(tpl tuple);
 
-/** ===========================================================================/
+/**
  * @function isKeyOfTuple
  * @brief Tell if a key is the key of a tuple
  *
@@ -231,7 +231,7 @@ void* getTupleValue(tpl tuple);
  */
 int isKeyOfTuple(tpl tuple, void *key, int(*equals)(void *val1, void *val2));
 
-/** ===========================================================================/
+/**
  * @function isValueOfTuple
  * @brief Tell if a value is the value of a tuple
  *

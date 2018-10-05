@@ -23,7 +23,7 @@ char* TEST3 = "TTT";
 /* ========================================================================== */
 
 
-/** ===========================================================================/
+/**
  * @function setFilesNames
  * @brief Function used to set the files names
  *
@@ -87,7 +87,7 @@ int main(int argc, char *argv[]){
 /* ========================================================================== */
 
 
-/** ===========================================================================/
+/**
  * @see @file huffman_exec.c / @function setFilesNames
  */
 void setFilesNames(char *argv[], int argc, char **fileIn, char **fileOut, char **fileKey){

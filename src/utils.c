@@ -33,14 +33,14 @@
 /* ========================================================================== */
 
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function equalsInt
  */
 int equalsInt(void *val1, void *val2){
   return *((int*)val1) == *((int*)val2);
 }
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function printInt
  */
 void printInt(void *elem){
@@ -50,7 +50,7 @@ void printInt(void *elem){
     printf("NULL");
 }
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function printChar
  */
 void printChar(void *elem){
@@ -60,7 +60,7 @@ void printChar(void *elem){
     printf("NULL");
 }
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function printString
  */
 void printString(void *elem){
@@ -70,7 +70,7 @@ void printString(void *elem){
     printf("NULL");
 }
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function copyInt
  */
 void* copyInt(void *elem){
@@ -79,7 +79,7 @@ void* copyInt(void *elem){
   return i;
 }
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function copyChar
  */
 void* copyChar(void *elem){
@@ -88,7 +88,7 @@ void* copyChar(void *elem){
   return c;
 }
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function copyString
  */
 void* copyString(void *elem){
@@ -97,7 +97,7 @@ void* copyString(void *elem){
   return s;
 }
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function charBitsToChar
  */
 char charBitsToChar(char *bits){
@@ -110,7 +110,7 @@ char charBitsToChar(char *bits){
   return 0;
 }
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function strToInt
  */
 int strToInt(char* str){
@@ -120,7 +120,7 @@ int strToInt(char* str){
   return val;
 }
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function decimalToBinary
  */
 char* decimalToBinary(unsigned int decimal, int numberOfBits){
@@ -141,7 +141,7 @@ char* decimalToBinary(unsigned int decimal, int numberOfBits){
 }
 
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function pointerAllocError
  */
 void pointerAllocError(){
@@ -149,7 +149,7 @@ void pointerAllocError(){
   exit(0);
 }
 
-/** ===========================================================================/
+/**
  * @see @file utils.h / @function pointerNullError
  */
 void pointerNullError(){
