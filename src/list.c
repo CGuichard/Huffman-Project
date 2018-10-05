@@ -57,7 +57,7 @@
 struct list {
   size_t numberOfElements; /**< Number of elements in the list */
   size_t allocatedBlocks; /**< Number of blocks allocated in the memory */
-  void** objectList; /**< List of pointers */
+  void **objectList; /**< List of pointers */
   void (*destroyElem)(void **elem); /**< Function used to destroy an element */
   void (*printElem)(void *elem); /**< Function used to print an element */
 };
@@ -106,7 +106,7 @@ void resizeAlloc(lst l, int nbNewElements);
 /**
  * @see @file list.h / @function createList
  */
-lst createList(){
+lst createList() {
   lst l = (lst)malloc(sizeof(struct list));
   if(l == NULL) exit(1);
   l->numberOfElements = 0;
@@ -120,7 +120,7 @@ lst createList(){
 /**
  * @see @file list.h / @function createDefinedList
  */
-lst createDefinedList(void(*destroyElem)(void **elem), void(*printElem)(void *elem)){
+lst createDefinedList(void(*destroyElem)(void **elem), void(*printElem)(void *elem)) {
   lst l = (lst)malloc(sizeof(struct list));
   if(l == NULL) pointerAllocError();
   l->numberOfElements = 0;
@@ -134,28 +134,28 @@ lst createDefinedList(void(*destroyElem)(void **elem), void(*printElem)(void *el
 /**
  * @see @file list.h / @function getListSize
  */
-size_t getListSize(lst l){
-  return (l != NULL)?l->numberOfElements:0;
+size_t getListSize(lst l) {
+  return (l != NULL) ? l->numberOfElements : 0;
 }
 
 /**
  * @see @file list.h / @function setElemDestroyer
  */
-void setElemDestroyer(lst l, void(*destroyElem)(void **elem)){
+void setElemDestroyer(lst l, void(*destroyElem)(void **elem)) {
     l->destroyElem = destroyElem;
 }
 
 /**
  * @see @file list.h / @function setElemPrinter
  */
-void setElemPrinter(lst l, void(*printElem)(void *elem)){
+void setElemPrinter(lst l, void(*printElem)(void *elem)) {
   l->printElem = printElem;
 }
 
 /**
  * @see @file list.h / @function destroyList
  */
-void destroyList(lst *l){
+void destroyList(lst *l) {
   emptyTheList(*l);
   free(*l);
   *l = NULL;
@@ -164,11 +164,11 @@ void destroyList(lst *l){
 /**
  * @see @file list.h / @function emptyTheList
  */
-void emptyTheList(lst l){
-  if(l != NULL){
-    if(l->objectList != NULL){
-      for(size_t i = 0; i < l->numberOfElements; i++){
-        if(l->objectList[i] != NULL){
+void emptyTheList(lst l) {
+  if(l != NULL) {
+    if(l->objectList != NULL) {
+      for(size_t i = 0; i < l->numberOfElements; i++) {
+        if(l->objectList[i] != NULL) {
           destroyElemInList(l, i);
         }
       }
@@ -183,19 +183,19 @@ void emptyTheList(lst l){
 /**
  * @see @file list.h / @function printList
  */
-void printList(lst l){
-  if(l == NULL){
+void printList(lst l) {
+  if(l == NULL) {
     printf("<List destroyed>\n");
-  }else{
+  } else {
     printf("<List | size: %zd ; blocks: %zd>[", l->numberOfElements, l->allocatedBlocks);
-    if(l->objectList != NULL){
-      for(size_t i = 0; i < l->numberOfElements; i++){
-        if(l->printElem != NULL){
+    if(l->objectList != NULL) {
+      for(size_t i = 0; i < l->numberOfElements; i++) {
+        if(l->printElem != NULL) {
           l->printElem(l->objectList[i]);
-        }else{
+        } else {
           printf("<Undefined element printer>");
         }
-        printf("%s", ((i < l->numberOfElements - 1)?", ":""));
+        printf("%s", ((i < l->numberOfElements - 1) ? ", " : ""));
       }
     }
     printf("]\n");
@@ -205,8 +205,8 @@ void printList(lst l){
 /**
  * @see @file list.h / @function addInList
  */
-void addInList(lst l, void *elem){
-  if(l != NULL){
+void addInList(lst l, void *elem) {
+  if(l != NULL) {
     resizeAlloc(l, 1);
     l->objectList[l->numberOfElements] = elem;
     l->numberOfElements++;
@@ -216,8 +216,8 @@ void addInList(lst l, void *elem){
 /**
  * @see @file list.h / @function popList
  */
-void popList(lst l){
-  if(l != NULL && l->numberOfElements > 0 && l->objectList[l->numberOfElements-1] != NULL){
+void popList(lst l) {
+  if(l != NULL && l->numberOfElements > 0 && l->objectList[l->numberOfElements-1] != NULL) {
     destroyElemInList(l, l->numberOfElements-1);
     l->numberOfElements--;
     resizeAlloc(l, 0);
@@ -227,8 +227,8 @@ void popList(lst l){
 /**
  * @see @file list.h / @function removeInList
  */
-void removeInList(lst l, size_t pos){
-  if(l != NULL && l->numberOfElements > 0 && l->objectList[l->numberOfElements-1] != NULL && pos < l->numberOfElements){
+void removeInList(lst l, size_t pos) {
+  if(l != NULL && l->numberOfElements > 0 && l->objectList[l->numberOfElements-1] != NULL && pos < l->numberOfElements) {
     destroyElemInList(l, pos);
     for (size_t i = pos; i < l->numberOfElements-1; i++)
       l->objectList[i] = l->objectList[i+1];
@@ -241,9 +241,9 @@ void removeInList(lst l, size_t pos){
 /**
  * @see @file list.h / @function popInList
  */
-void* popInList(lst l, size_t pos){
-  if(l != NULL && l->numberOfElements > 0 && l->objectList[l->numberOfElements-1] != NULL && pos < l->numberOfElements){
-    void* elem = l->objectList[pos];
+void* popInList(lst l, size_t pos) {
+  if(l != NULL && l->numberOfElements > 0 && l->objectList[l->numberOfElements-1] != NULL && pos < l->numberOfElements) {
+    void *elem = l->objectList[pos];
     for (size_t i = pos; i < l->numberOfElements-1; i++)
       l->objectList[i] = l->objectList[i+1];
     l->objectList[l->numberOfElements-1] = NULL;
@@ -257,7 +257,7 @@ void* popInList(lst l, size_t pos){
 /**
  * @see @file list.h / @function get
  */
-void* get(lst l, size_t pos){
+void* get(lst l, size_t pos) {
   if(pos < l->numberOfElements)
     return l->objectList[pos];
   return NULL;
@@ -270,10 +270,10 @@ void* get(lst l, size_t pos){
 /**
  * @see @file list.c / @function destroyElemInList
  */
-void destroyElemInList(lst l, size_t pos){
+void destroyElemInList(lst l, size_t pos) {
   if(l->destroyElem != NULL)
     l->destroyElem((void**)&(l->objectList[pos]));
-  else{
+  else {
       free(l->objectList[pos]);
       l->objectList[pos] = NULL;
   }
@@ -282,12 +282,12 @@ void destroyElemInList(lst l, size_t pos){
 /**
  * @see @file list.c / @function resizeAlloc
  */
-void resizeAlloc(lst l, int nbNewElements){
-  if(l != NULL){
+void resizeAlloc(lst l, int nbNewElements) {
+  if(l != NULL) {
     unsigned int size = 0;
     int N = l->numberOfElements + nbNewElements;
     int B = l->allocatedBlocks;
-    if(l->objectList == NULL){
+    if(l->objectList == NULL) {
       size = 2 * sizeof(void*);
       l->objectList = (void**)malloc(size);
       if(l->objectList == NULL) pointerAllocError();
@@ -296,19 +296,19 @@ void resizeAlloc(lst l, int nbNewElements){
     }
     int actualSize = (int)(N*sizeof(void*));
     // printf("%d: %d <-> %d\n", N, actualSize, B);
-    if(N == 0){
+    if(N == 0) {
       emptyTheList(l);
-    }else if(actualSize > B){
+    } else if(actualSize > B) {
       // printf("RESIZE +\n");
       size = actualSize + B / 2;
-      void** ptr = (void**)realloc(l->objectList, size);
+      void **ptr = (void**)realloc(l->objectList, size);
       if(ptr != NULL) l->objectList = ptr;
       else pointerAllocError();
       l->allocatedBlocks = size;
-    }else if(actualSize < B/2){
+    } else if(actualSize < B/2) {
       // printf("RESIZE -\n");
       // size = actualSize + actualSize / 2;
-      // void** ptr = (void**)realloc(l->objectList, size);
+      // void **ptr = (void**)realloc(l->objectList, size);
       // if(ptr != NULL) l->objectList = ptr;
       // else pointerAllocError();
       // l->allocatedBlocks = size;

@@ -43,14 +43,14 @@
 /**
  * @see @file huffman.h / @function
  */
-char* huffmanEncryptStr(char *str){
-  if(str != NULL){
+char* huffmanEncryptStr(char *str) {
+  if(str != NULL) {
     lst charOccurences = charOccurencesOfStr(str);
     int maxPrefixLength = 0;
     lst prefixes = prefixesList(charOccurences, "tests/test_str.hfm.key", &maxPrefixLength);
     char *bitsEncryption = getEncryptionOf(str, prefixes, maxPrefixLength);
     tpl tupleEndChar = (tpl)getTupleInListByKey(prefixes, '\0');
-    char* encr = makeCharactersFromBits(bitsEncryption, (char*)getTupleValue(tupleEndChar));
+    char *encr = makeCharactersFromBits(bitsEncryption, (char*)getTupleValue(tupleEndChar));
     destroyList(&prefixes);
     return encr;
   }
@@ -60,8 +60,8 @@ char* huffmanEncryptStr(char *str){
 /**
  * @see @file huffman.h / @function
  */
-void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey){
-  if(fileIn != NULL && fileOut != NULL && fileKey != NULL){
+void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey) {
+  if(fileIn != NULL && fileOut != NULL && fileKey != NULL) {
     lst charOccurences = charOccurencesOfFile(fileIn);
     int maxPrefixLength = 0;
     lst prefixes = prefixesList(charOccurences, fileKey, &maxPrefixLength);
@@ -74,9 +74,9 @@ void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey){
 /**
  * @see @file huffman.h / @function
  */
-char* huffmanDecryptStr(char *str){
+char* huffmanDecryptStr(char *str) {
   nd tree = getTreeFromKeyFile("tests/test_str.hfm.key");
-  char* result = getDecryptionOf(str, tree);
+  char *result = getDecryptionOf(str, tree);
   destroyNode(&tree);
   return result;
 }
@@ -84,8 +84,8 @@ char* huffmanDecryptStr(char *str){
 /**
  * @see @file huffman.h / @function
  */
-void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
-  if(fileIn != NULL && fileOut != NULL && fileKey != NULL){
+void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey) {
+  if(fileIn != NULL && fileOut != NULL && fileKey != NULL) {
     nd tree = getTreeFromKeyFile(fileKey);
     writeDecryptionInFile(fileIn, fileOut, tree);
     destroyNode(&tree);
@@ -96,18 +96,18 @@ void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey){
 /**
  * @see @file huffman.h / @function
  */
-char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength){
+char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength) {
   char *encr = (char*)calloc(sizeof(char), maxPrefixLength * strlen(str) + 1);
-  if(str != NULL && prefixes != NULL){
+  if(str != NULL && prefixes != NULL) {
     tpl prefixTuple = NULL;
     char *prefix = NULL;
-    for(size_t i = 0; i < strlen(str); i++){
+    for(size_t i = 0; i < strlen(str); i++) {
       prefixTuple = getTupleInListByKey(prefixes, str[i]);
       prefix = (char*)getTupleValue(prefixTuple);
       strcat(encr, prefix);
     }
   }
-  // if(strlen(encr) < (unsigned int)maxPrefixLength){
+  // if(strlen(encr) < (unsigned int)maxPrefixLength) {
   //   char *tmp = (char*)realloc(encr, strlen(encr) + 1);
   //   if(tmp != NULL) encr = tmp;
   // }
@@ -117,53 +117,53 @@ char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength){
 /**
  * @see @file huffman.h / @function
  */
-char* makeCharactersFromBits(char *bits, char *endChar){
-  int size = (strlen(bits)+strlen(endChar))/7+2;
+char* makeCharactersFromBits(char *bits, char *endChar) {
+  int size = (strlen(bits) + strlen(endChar))/7 + 2;
   char *encr = (char*)calloc(sizeof(char), size);
   int actualBitIndex = 0;
   char *chars = (char*)calloc(sizeof(char), 9);
   const int E_CHAR = 7;
   chars[7] = '0';
-  for(size_t i = 0; i < strlen(bits)+strlen(endChar); i++){
-      if(actualBitIndex >= E_CHAR){
+  for(size_t i = 0; i < strlen(bits) + strlen(endChar); i++) {
+      if(actualBitIndex >= E_CHAR) {
         actualBitIndex = 0;
         encr[strlen(encr)] = charBitsToChar(chars);
       }
-      if(i<strlen(bits))
-        chars[actualBitIndex] = bits[i];
+      if(i < strlen(bits)) chars[actualBitIndex] = bits[i];
       else
         chars[actualBitIndex] = endChar[i-strlen(bits)];
       actualBitIndex++;
   }
-  if(actualBitIndex != 0){
-    while(actualBitIndex < E_CHAR){
+  if(actualBitIndex != 0) {
+    while(actualBitIndex < E_CHAR) {
       chars[actualBitIndex] = '0';
       actualBitIndex++;
     }
     encr[strlen(encr)] = charBitsToChar(chars);
   }
-  free(chars); free(bits);
+  free(chars);
+  free(bits);
   return encr;
 }
 
 /**
  * @see @file huffman.h / @function
  */
-void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPrefixLength){
-  if(fileIn != NULL && fileOut != NULL && prefixes != NULL){
+void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPrefixLength) {
+  if(fileIn != NULL && fileOut != NULL && prefixes != NULL) {
     FILE *file = fopen(fileIn, "r");
     FILE *fileW = fopen(fileOut, "wb");
-    if(file != NULL && fileOut != NULL){
+    if(file != NULL && fileOut != NULL) {
       char ligne[255];
       int actualBitIndex = 0;
       char *bits = (char*)calloc(sizeof(char), 9);
       const int E_CHAR = 7;
       bits[E_CHAR] = '0';
       char *endChar = (char*)getTupleValue((tpl)getTupleInListByKey(prefixes, '\0'));
-      while(fgets(ligne, sizeof(ligne), file) != NULL){
+      while(fgets(ligne, sizeof(ligne), file) != NULL) {
         char *encrOfLigne = getEncryptionOf(ligne, prefixes, maxPrefixLength);
-        for(size_t i = 0; i < strlen(encrOfLigne); i++){
-          if(actualBitIndex >= E_CHAR){
+        for(size_t i = 0; i < strlen(encrOfLigne); i++) {
+          if(actualBitIndex >= E_CHAR) {
             actualBitIndex = 0;
             writeBitsInOpenedFile(fileW, bits);
           }
@@ -173,15 +173,15 @@ void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPre
         free(encrOfLigne);
       }
       for (size_t i = 0; i < strlen(endChar); i++) {
-        if(actualBitIndex >= E_CHAR){
+        if(actualBitIndex >= E_CHAR) {
           actualBitIndex = 0;
           writeBitsInOpenedFile(fileW, bits);
         }
         bits[actualBitIndex] = endChar[i];
         actualBitIndex++;
       }
-      if(actualBitIndex != 0){
-        while(actualBitIndex != 0){
+      if(actualBitIndex != 0) {
+        while(actualBitIndex != 0) {
           bits[actualBitIndex] = '0';
           actualBitIndex++;
           if(actualBitIndex >= E_CHAR) actualBitIndex = 0;
@@ -189,8 +189,10 @@ void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPre
         writeBitsInOpenedFile(fileW, bits);
       }
       printf("Encryption process completed\n");
-      free(bits); fclose(fileW); fclose(file);
-    }else{
+      free(bits);
+      fclose(fileW);
+      fclose(file);
+    } else {
       if(file == NULL) perror(fileIn);
       if(fileW == NULL) perror(fileOut);
       exit(0);
@@ -201,19 +203,19 @@ void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPre
 /**
  * @see @file huffman.h / @function
  */
-void saveKeyInFile(lst occurrences, char *fileKey){
-  if(occurrences != NULL && fileKey != NULL){
+void saveKeyInFile(lst occurrences, char *fileKey) {
+  if(occurrences != NULL && fileKey != NULL) {
     FILE *file = fopen(fileKey, "w");
     tpl occurrence = NULL;
-    if(file != NULL){
+    if(file != NULL) {
       for (size_t i = 0; i < getListSize(occurrences); i++) {
         occurrence = get(occurrences, i);
-        if(*((char*)getTupleKey(occurrence)) != '\0'){
+        if(*((char*)getTupleKey(occurrence)) != '\0') {
           fprintf(file, "%c:%d;", *((char*)getTupleKey(occurrence)), *((int*)getTupleValue(occurrence)));
         }
       }
       fclose(file);
-    }else{
+    } else {
       if(file == NULL) perror(fileKey);
       exit(0);
     }
@@ -224,29 +226,28 @@ void saveKeyInFile(lst occurrences, char *fileKey){
 /**
  * @see @file huffman.h / @function
  */
-char* getDecryptionOf(char *str, nd tree){
+char* getDecryptionOf(char *str, nd tree) {
   const size_t numberOfBits = 8;
   unsigned int resultSize = strlen(str)*3 + 1;
-  char* result = (char*)calloc(sizeof(char), resultSize);
+  char *result = (char*)calloc(sizeof(char), resultSize);
   nd currentNode = tree;
-  char* path;
-  char* charToWrite;
+  char *path;
+  char *charToWrite;
   int resultIndex = 0;
   int endFound = 0;
-  for(size_t i = 0; i < strlen(str); i++){
+  for(size_t i = 0; i < strlen(str); i++) {
     path = decimalToBinary((unsigned int)str[i], numberOfBits);
-    for(size_t j = 0; j < strlen(path)-1; j++){
-      if(isLeaf((currentNode))){
+    for(size_t j = 0; j < strlen(path)-1; j++) {
+      if(isLeaf((currentNode))) {
         charToWrite = (char*)getTupleKey((tpl)getTag(currentNode));
         result[resultIndex] = *charToWrite;
         currentNode = tree;
         resultIndex++;
         if(*charToWrite == '\0') endFound = 1;
       }
-      if(path[j] == '0'){
+      if(path[j] == '0') {
         currentNode = getLeft(currentNode);
-      }
-      else if(path[j] == '1'){
+      } else if(path[j] == '1') {
         currentNode = getRight(currentNode);
       }
       if(endFound == 1) break;
@@ -254,7 +255,7 @@ char* getDecryptionOf(char *str, nd tree){
     free(path);
     if(endFound == 1) break;
   }
-  // if(strlen(result) < resultSize){
+  // if(strlen(result) < resultSize) {
   //   char *tmp = (char*)realloc(result, strlen(result) + 1);
   //   if(tmp != NULL) result = tmp;
   // }
@@ -264,10 +265,10 @@ char* getDecryptionOf(char *str, nd tree){
 /**
  * @see @file huffman.h / @function
  */
-void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree){
+void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree) {
   FILE *fileToRead = fopen(fileIn, "r");
   FILE *fileToWrite = fopen(fileOut, "w");
-  if(fileToRead != NULL && fileToWrite != NULL){
+  if(fileToRead != NULL && fileToWrite != NULL) {
     nd currentNode = tree;
     char *currentCharBits;
     char charToWrite;
@@ -277,7 +278,7 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree){
       currentCharBits = decimalToBinary(c, 8);
       currentCharBits[7] = '\0';
       for (size_t i = 0; i < strlen(currentCharBits); i++) {
-        if(isLeaf(currentNode)){
+        if(isLeaf(currentNode)) {
           charToWrite = *((char*)getTupleKey((tpl)getTag(currentNode)));
           if (charToWrite == '\0') {
             again = 0;
@@ -286,10 +287,9 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree){
           fprintf(fileToWrite, "%c", charToWrite);
           currentNode = tree;
         }
-        if(currentCharBits[i] == '0'){
+        if(currentCharBits[i] == '0') {
           currentNode = getLeft(currentNode);
-        }
-        else if(currentCharBits[i] == '1'){
+        } else if(currentCharBits[i] == '1') {
           currentNode = getRight(currentNode);
         }
       }
@@ -309,7 +309,7 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree){
 /**
  * @see @file huffman.h / @function
  */
-nd getTreeFromKeyFile(char *fileKey){
+nd getTreeFromKeyFile(char *fileKey) {
   FILE *file = fopen (fileKey, "r");
   if(file != NULL) {
     char ligne[255];
@@ -317,20 +317,20 @@ nd getTreeFromKeyFile(char *fileKey){
     int etape = 1;
     char l = 0;
     unsigned int tmp = 0;
-    char* nb = (char*)calloc(sizeof(char), 11);
+    char *nb = (char*)calloc(sizeof(char), 11);
     lst occurrences = createDefinedList(&destroyTupleGen, &printTupleGen);
-    while(fgets(ligne, sizeof(ligne), file) != NULL){
-      for (unsigned int i = 0; i < strlen(ligne); i++){
+    while(fgets(ligne, sizeof(ligne), file) != NULL) {
+      for (unsigned int i = 0; i < strlen(ligne); i++) {
         if (etape == 1) {
           l = ligne[i];
           etape++;
-        }else if(etape == 2){
+        } else if(etape == 2) {
           if (ligne[i] == ':') etape++;
-        }else if(etape == 3){
+        } else if(etape == 3) {
           nb[tmp] = ligne[i];
           tmp++;
-          if(ligne[i+1] == ';'){
-            while(tmp < 11){
+          if(ligne[i+1] == ';') {
+            while(tmp < 11) {
               nb[tmp] = 0;
               tmp++;
             }
@@ -341,7 +341,7 @@ nd getTreeFromKeyFile(char *fileKey){
             addInList(occurrences, occurrence);
             etape++;
           }
-        }else if(etape == 4){
+        } else if(etape == 4) {
           if (ligne[i] == ';') etape = 1;
         }
       }
@@ -365,18 +365,19 @@ nd getTreeFromKeyFile(char *fileKey){
 /**
  * @see @file huffman.h / @function
  */
-lst charOccurencesOfStr(char *str){
+lst charOccurencesOfStr(char *str) {
   lst occurrences = createDefinedList(&destroyTupleGen, &printTupleGen);
   char *key = (char*)malloc(sizeof(char));
-  int *val = (int*)malloc(sizeof(int)); *val = 1;
+  int *val = (int*)malloc(sizeof(int));
+  *val = 1;
   tpl tupleTmp = NULL;
-  for(size_t i = 0; i < strlen(str); i++){
+  for(size_t i = 0; i < strlen(str); i++) {
     tupleTmp = getTupleInListByKey(occurrences, str[i]);
-    if(tupleTmp == NULL){
+    if(tupleTmp == NULL) {
       *key = str[i];
       tpl tuple = createTupleByCopy(key, val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
       addInList(occurrences, tuple);
-    }else{
+    } else {
       (*((int*)getTupleValue(tupleTmp)))++;
       tupleTmp = NULL;
     }
@@ -392,22 +393,23 @@ lst charOccurencesOfStr(char *str){
 /**
  * @see @file huffman.h / @function
  */
-lst charOccurencesOfFile(char *srcFile){
+lst charOccurencesOfFile(char *srcFile) {
   FILE *file = fopen (srcFile, "r");
-  if(file != NULL){
+  if(file != NULL) {
     char ligne[512];
     lst occurrences = createDefinedList(&destroyTupleGen, &printTupleGen);
     char *key = (char*)malloc(sizeof(char));
-    int *val = (int*)malloc(sizeof(int)); *val = 1;
+    int *val = (int*)malloc(sizeof(int));
+    *val = 1;
     tpl tupleTmp = NULL;
-    while(fgets(ligne, sizeof(ligne), file) != NULL){
-      for(unsigned int i = 0; i < strlen(ligne); i++){
+    while(fgets(ligne, sizeof(ligne), file) != NULL) {
+      for(unsigned int i = 0; i < strlen(ligne); i++) {
         tupleTmp = getTupleInListByKey(occurrences, ligne[i]);
-        if(tupleTmp == NULL){
+        if(tupleTmp == NULL) {
           *key = ligne[i];
           tpl tuple = createTupleByCopy(key, val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
           addInList(occurrences, tuple);
-        }else{
+        } else {
           (*((int*)getTupleValue(tupleTmp)))++;
           tupleTmp = NULL;
         }
@@ -420,7 +422,7 @@ lst charOccurencesOfFile(char *srcFile){
     free(val);
     fclose(file);
     return occurrences;
-  }else{
+  } else {
     perror(srcFile);
     exit(0);
   }
@@ -430,18 +432,18 @@ lst charOccurencesOfFile(char *srcFile){
 /**
  * @see @file huffman.h / @function
  */
-nd contructBinaryTree(lst occurrences){
+nd contructBinaryTree(lst occurrences) {
   lst treeNodes = createDefinedList(destroyNodeGen, printNodeGen);
   nd tree = NULL;
   tpl tuple = NULL;
-  for(size_t i = 0; i < getListSize(occurrences); i++){
+  for(size_t i = 0; i < getListSize(occurrences); i++) {
     tuple = get(occurrences, i);
     tpl tmp = makeCopyTuple(tuple, copyChar, copyInt);
     nd node = createDefinedNode(tmp, destroyTupleGen, printTupleGen);
     addInList(treeNodes, node);
   }
-  if(getListSize(treeNodes) > 0){
-    while(getListSize(treeNodes) > 1){
+  if(getListSize(treeNodes) > 0) {
+    while(getListSize(treeNodes) > 1) {
       mergeTwoSmallerNodes(treeNodes);
     }
     if(getListSize(treeNodes) == 1) tree = (nd)popInList(treeNodes, 0);
@@ -453,21 +455,21 @@ nd contructBinaryTree(lst occurrences){
 /**
  * @see @file huffman.h / @function
  */
-void mergeTwoSmallerNodes(lst list){
+void mergeTwoSmallerNodes(lst list) {
   size_t j = 0;
   size_t k = 1;
   int valueJ = *((int*)getTupleValue((tpl)getTag((nd)get(list, j))));
   int valueK = *((int*)getTupleValue((tpl)getTag((nd)get(list, k))));
   int *currentValue = NULL;
-  for(size_t i = 2; i < getListSize(list); i++){
+  for(size_t i = 2; i < getListSize(list); i++) {
     currentValue = (int*)getTupleValue((tpl)getTag((nd)get(list, i)));
-    if(k < j){
-      if(*currentValue < valueK && i != j && i != k){
+    if(k < j) {
+      if(*currentValue < valueK && i != j && i != k) {
         k = i;
         valueK = *currentValue;
       }
-    }else{
-      if(*currentValue < valueJ && i != j && i != k){
+    } else {
+      if(*currentValue < valueJ && i != j && i != k) {
         j = i;
         valueJ = *currentValue;
       }
@@ -478,14 +480,14 @@ void mergeTwoSmallerNodes(lst list){
   nd child2 = (nd)popInList(list, k);
   int valChild1 = *((int*)getTupleValue((tpl)getTag(child1)));
   int valChild2 = *((int*)getTupleValue((tpl)getTag(child2)));
-  int* newValue = (int*)malloc(sizeof(int));
+  int *newValue = (int*)malloc(sizeof(int));
   *newValue = valChild1 + valChild2;
   tpl newTuple = createTuple(NULL, newValue, NULL, printChar, NULL, printInt);
   nd newNode = createDefinedNode(newTuple, destroyTupleGen, printTupleGen);
-  if(valChild1 <= valChild2){
+  if(valChild1 <= valChild2) {
     setLeft(newNode, child1);
     setRight(newNode, child2);
-  }else{
+  } else {
     setLeft(newNode, child2);
     setRight(newNode, child1);
   }
@@ -495,7 +497,7 @@ void mergeTwoSmallerNodes(lst list){
 /**
  * @see @file huffman.h / @function
  */
-lst prefixesList(lst occurrences, char *fileKey, int *maxPrefixLength){
+lst prefixesList(lst occurrences, char *fileKey, int *maxPrefixLength) {
   nd tree = contructBinaryTree(occurrences);
   *maxPrefixLength = getNodeDepth(tree);
   saveKeyInFile(occurrences, fileKey);
@@ -511,23 +513,23 @@ lst prefixesList(lst occurrences, char *fileKey, int *maxPrefixLength){
 /**
  * @see @file huffman.h / @function
  */
-void calculatePrefixes(nd node, lst prefixes, char *prefix){
+void calculatePrefixes(nd node, lst prefixes, char *prefix) {
   if(node == NULL || prefix == NULL || prefixes == NULL) pointerNullError();
   int next = (int)strlen(prefix);
-  if(isLeaf(node)){
-    char* ch = (char*)copyChar(getTupleKey((tpl)getTag(node)));
-    char* pr = copyString(prefix);
+  if(isLeaf(node)) {
+    char *ch = (char*)copyChar(getTupleKey((tpl)getTag(node)));
+    char *pr = copyString(prefix);
     tpl prefixTuple = createTuple(ch, pr, NULL, printChar, NULL, printString);
     addInList(prefixes, prefixTuple);
   } else {
     nd left = getLeft(node);
     nd right = getRight(node);
-    if(left != NULL){
+    if(left != NULL) {
       prefix[next] = '0';
       calculatePrefixes(left, prefixes, prefix);
       prefix[next] = 0;
     }
-    if(right != NULL){
+    if(right != NULL) {
       prefix[next] = '1';
       calculatePrefixes(right, prefixes, prefix);
       prefix[next] = 0;
@@ -539,9 +541,9 @@ void calculatePrefixes(nd node, lst prefixes, char *prefix){
 /**
  * @see @file huffman.h / @function
  */
-tpl getTupleInListByKey(lst list, char key){
+tpl getTupleInListByKey(lst list, char key) {
   tpl tuple = NULL;
-  for(size_t i = 0; i < getListSize(list); i++){
+  for(size_t i = 0; i < getListSize(list); i++) {
     tuple = (tpl)get(list, i);
     if(*((char*)getTupleKey(tuple)) == key) return tuple;
   }
@@ -551,8 +553,8 @@ tpl getTupleInListByKey(lst list, char key){
 /**
  * @see @file huffman.h / @function
  */
-void writeBitsInOpenedFile(FILE *fileW, char *bits){
-  if(fileW != NULL){
+void writeBitsInOpenedFile(FILE *fileW, char *bits) {
+  if(fileW != NULL) {
     char charToWrite = charBitsToChar(bits);
     if(charToWrite == '\0') charToWrite = 1; // Bits values: 00000001
     fprintf(fileW, "%c", charToWrite);

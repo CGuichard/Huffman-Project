@@ -158,7 +158,7 @@ char charBitsToChar(char *bits);
  *
  * @return{int}: The integer
  */
-int strToInt(char* str);
+int strToInt(char *str);
 
 /**
  * @function decimalToBinary
