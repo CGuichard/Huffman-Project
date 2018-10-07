@@ -39,12 +39,12 @@
 #ifndef NODE_H
 #define NODE_H
 
-/* ========= Includes ======== */
+/* ============ Includes =========== */
 
 #include <stdlib.h>
 #include <stdio.h>
 
-/* ========== Struct ========= */
+/* ============= Struct ============ */
 
 /**
  * @typedef nd
@@ -56,7 +56,7 @@
  */
 typedef struct node* nd;
 
-/* ======== Functions ======== */
+/* ======== Struct functions ======= */
 
 /**
  * @function createNode

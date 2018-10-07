@@ -11,9 +11,20 @@
  * This file implements function of the huffman coding using trees in C.
  * The tree is a binary tree, which is composed of nodes.
  *
- * Overview about public functions of this file:
- *    - huffmanEncryptStr
+ * The structure huffman is also declared here
+ * Overview about the huffman structure functions:
+ *    - createHuffman
+ *    - createDefinedHuffman
+ *    - getHuffmanStr
+ *    - getHuffmanTree
+ *    - setHuffmanStr
+ *    - setHuffmanTree
+ *    - destroyHuffman
+ *
+ * Overview about public functions of the file huffman:
+ *    - huffmanEncrypt
  *    - huffmanEncryptFile
+ *    - huffmanDecrypt
  *    - huffmanDecryptStr
  *    - huffmanDecryptFile
  *    - getEncryptionOf
@@ -23,8 +34,8 @@
  *    - getDecryptionOf
  *    - writeDecryptionInFile
  *    - getTreeFromKeyFile
- *    - charOccurencesOfStr
- *    - charOccurencesOfFile
+ *    - charOccurrencesOfStr
+ *    - charOccurrencesOfFile
  *    - contructBinaryTree
  *    - mergeTwoSmallerNodes
  *    - prefixesList
@@ -37,34 +48,132 @@
 
 
 /* ================================================== */
+/* ==================== STRUCT DEF ================== */
+/* ========================================================================== */
+
+
+/**
+ * @struct huffman
+ * @brief A representation of an encryption obtained by huffman coding
+ *
+ * The structure huffman represent an encryption, generated with an huffman
+ * coding. It contains the encrypted string of characters and the binary tree
+ * used in the encryption process
+ */
+struct huffman {
+  nd tree; /**< Tree used to make the 'encryption' member */
+  char *encryption; /**< The encrypted string of characters */
+};
+
+
+/* ================================================== */
+/* ================ STRUCT FUNCTIONS ================ */
+/* ========================================================================== */
+
+
+/**
+ * @see @file huffman.h / @function createHuffman
+ */
+hfm createHuffman(){
+  hfm newHuffman = (hfm)malloc(sizeof(struct huffman));
+  newHuffman->encryption = NULL;
+  newHuffman->tree = NULL;
+  return newHuffman;
+}
+
+/**
+ * @see @file huffman.h / @function createDefinedHuffman
+ */
+hfm createDefinedHuffman(char *str, nd tree){
+  hfm newHuffman = (hfm)malloc(sizeof(struct huffman));
+  newHuffman->encryption = str;
+  newHuffman->tree = tree;
+  return newHuffman;
+}
+
+/**
+ * @see @file huffman.h / @function getHuffmanStr
+ */
+char* getHuffmanStr(hfm huffman){
+  return huffman->encryption;
+}
+
+/**
+ * @see @file huffman.h / @function getHuffmanTree
+ */
+nd getHuffmanTree(hfm huffman){
+  return huffman->tree;
+}
+
+/**
+ * @see @file huffman.h / @function setHuffmanStr
+ */
+void setHuffmanStr(hfm huffman, char *str){
+  huffman->encryption = str;
+}
+
+/**
+ * @see @file huffman.h / @function setHuffmanTree
+ */
+void setHuffmanTree(hfm huffman, nd tree){
+  huffman->tree = tree;
+}
+
+/**
+ * @see @file huffman.h / @function destroyHuffman
+ */
+void destroyHuffman(hfm *huffman){
+  if(*huffman != NULL) {
+    if((*huffman)->encryption != NULL) {
+      free((*huffman)->encryption);
+      (*huffman)->encryption = NULL;
+    }
+    if((*huffman)->tree != NULL) {
+      destroyNode(&((*huffman)->tree));
+      (*huffman)->tree = NULL;
+    }
+    free(*huffman);
+    *huffman = NULL;
+  }
+}
+
+
+/* ================================================== */
 /* ===================== PUBLIC ===================== */
 /* ========================================================================== */
 
+
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function huffmanEncrypt
  */
-char* huffmanEncryptStr(char *str) {
+hfm huffmanEncrypt(char *str) {
   if(str != NULL) {
-    lst charOccurences = charOccurencesOfStr(str);
+    lst charOccurrences = charOccurrencesOfStr(str);
+    nd tree = contructBinaryTree(charOccurrences);
+    destroyList(&charOccurrences);
     int maxPrefixLength = 0;
-    lst prefixes = prefixesList(charOccurences, "tests/test_str.hfm.key", &maxPrefixLength);
+    lst prefixes = prefixesList(tree, &maxPrefixLength);
     char *bitsEncryption = getEncryptionOf(str, prefixes, maxPrefixLength);
     tpl tupleEndChar = (tpl)getTupleInListByKey(prefixes, '\0');
     char *encr = makeCharactersFromBits(bitsEncryption, (char*)getTupleValue(tupleEndChar));
     destroyList(&prefixes);
-    return encr;
+    return createDefinedHuffman(encr, tree);
   }
   return NULL;
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function huffmanEncryptFile
  */
 void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey) {
   if(fileIn != NULL && fileOut != NULL && fileKey != NULL) {
-    lst charOccurences = charOccurencesOfFile(fileIn);
+    lst charOccurrences = charOccurrencesOfFile(fileIn);
+    saveKeyInFile(charOccurrences, fileKey);
+    nd tree = contructBinaryTree(charOccurrences);
+    destroyList(&charOccurrences);
     int maxPrefixLength = 0;
-    lst prefixes = prefixesList(charOccurences, fileKey, &maxPrefixLength);
+    lst prefixes = prefixesList(tree, &maxPrefixLength);
+    destroyNode(&tree);
     writeEncryptionInFile(fileIn, fileOut, prefixes, maxPrefixLength);
     destroyList(&prefixes);
   }
@@ -72,17 +181,23 @@ void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey) {
 
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function huffmanDecrypt
  */
-char* huffmanDecryptStr(char *str) {
-  nd tree = getTreeFromKeyFile("tests/test_str.hfm.key");
-  char *result = getDecryptionOf(str, tree);
-  destroyNode(&tree);
+char* huffmanDecrypt(hfm huffmanEncr) {
+  char *result = getDecryptionOf(getHuffmanStr(huffmanEncr), getHuffmanTree(huffmanEncr));
   return result;
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function huffmanDecryptStr
+ */
+char* huffmanDecryptStr(char *str, nd tree) {
+  char *result = getDecryptionOf(str, tree);
+  return result;
+}
+
+/**
+ * @see @file huffman.h / @function huffmanDecryptFile
  */
 void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey) {
   if(fileIn != NULL && fileOut != NULL && fileKey != NULL) {
@@ -94,7 +209,7 @@ void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey) {
 
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function getEncryptionOf
  */
 char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength) {
   char *encr = (char*)calloc(sizeof(char), maxPrefixLength * strlen(str) + 1);
@@ -115,7 +230,7 @@ char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength) {
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function makeCharactersFromBits
  */
 char* makeCharactersFromBits(char *bits, char *endChar) {
   int size = (strlen(bits) + strlen(endChar))/7 + 2;
@@ -147,7 +262,7 @@ char* makeCharactersFromBits(char *bits, char *endChar) {
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function writeEncryptionInFile
  */
 void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPrefixLength) {
   if(fileIn != NULL && fileOut != NULL && prefixes != NULL) {
@@ -201,7 +316,7 @@ void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPre
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function saveKeyInFile
  */
 void saveKeyInFile(lst occurrences, char *fileKey) {
   if(occurrences != NULL && fileKey != NULL) {
@@ -224,7 +339,7 @@ void saveKeyInFile(lst occurrences, char *fileKey) {
 
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function getDecryptionOf
  */
 char* getDecryptionOf(char *str, nd tree) {
   const size_t numberOfBits = 8;
@@ -263,7 +378,7 @@ char* getDecryptionOf(char *str, nd tree) {
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function writeDecryptionInFile
  */
 void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree) {
   FILE *fileToRead = fopen(fileIn, "r");
@@ -307,7 +422,7 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree) {
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function getTreeFromKeyFile
  */
 nd getTreeFromKeyFile(char *fileKey) {
   FILE *file = fopen (fileKey, "r");
@@ -363,9 +478,9 @@ nd getTreeFromKeyFile(char *fileKey) {
 
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function charOccurrencesOfStr
  */
-lst charOccurencesOfStr(char *str) {
+lst charOccurrencesOfStr(char *str) {
   lst occurrences = createDefinedList(&destroyTupleGen, &printTupleGen);
   char *key = (char*)malloc(sizeof(char));
   int *val = (int*)malloc(sizeof(int));
@@ -391,9 +506,9 @@ lst charOccurencesOfStr(char *str) {
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function charOccurrencesOfFile
  */
-lst charOccurencesOfFile(char *srcFile) {
+lst charOccurrencesOfFile(char *srcFile) {
   FILE *file = fopen (srcFile, "r");
   if(file != NULL) {
     char ligne[512];
@@ -430,7 +545,7 @@ lst charOccurencesOfFile(char *srcFile) {
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function contructBinaryTree
  */
 nd contructBinaryTree(lst occurrences) {
   lst treeNodes = createDefinedList(destroyNodeGen, printNodeGen);
@@ -453,7 +568,7 @@ nd contructBinaryTree(lst occurrences) {
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function mergeTwoSmallerNodes
  */
 void mergeTwoSmallerNodes(lst list) {
   size_t j = 0;
@@ -495,23 +610,19 @@ void mergeTwoSmallerNodes(lst list) {
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function prefixesList
  */
-lst prefixesList(lst occurrences, char *fileKey, int *maxPrefixLength) {
-  nd tree = contructBinaryTree(occurrences);
+lst prefixesList(nd tree, int *maxPrefixLength) {
   *maxPrefixLength = getNodeDepth(tree);
-  saveKeyInFile(occurrences, fileKey);
-  destroyList(&occurrences);
   lst prefixes = createDefinedList(&destroyTupleGen, &printTupleGen);
   char *prefix = (char*)calloc(sizeof(char), *maxPrefixLength + 1);
   calculatePrefixes(tree, prefixes, prefix);
   free(prefix);
-  destroyNode(&tree);
   return prefixes;
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function calculatePrefixes
  */
 void calculatePrefixes(nd node, lst prefixes, char *prefix) {
   if(node == NULL || prefix == NULL || prefixes == NULL) pointerNullError();
@@ -539,7 +650,7 @@ void calculatePrefixes(nd node, lst prefixes, char *prefix) {
 
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function getTupleInListByKey
  */
 tpl getTupleInListByKey(lst list, char key) {
   tpl tuple = NULL;
@@ -551,7 +662,7 @@ tpl getTupleInListByKey(lst list, char key) {
 }
 
 /**
- * @see @file huffman.h / @function
+ * @see @file huffman.h / @function writeBitsInOpenedFile
  */
 void writeBitsInOpenedFile(FILE *fileW, char *bits) {
   if(fileW != NULL) {

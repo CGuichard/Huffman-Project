@@ -32,13 +32,13 @@
 #ifndef TUPLE_H
 #define TUPLE_H
 
-/* ========= Includes ======== */
+/* ============ Includes =========== */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include "utils.h" /**< Contains useful tool functions  */
 
-/* ========== Struct ========= */
+/* ============= Struct ============ */
 
 /**
  * @typedef tpl
@@ -50,7 +50,7 @@
  */
 typedef struct tuple* tpl;
 
-/* ======== Functions ======== */
+/* ======== Struct functions ======= */
 
 /**
  * @function createTuple

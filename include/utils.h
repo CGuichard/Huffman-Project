@@ -33,14 +33,14 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-/* ========= Includes ======== */
+/* ============ Includes =========== */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h> /**< used for strlen, strcpy and strcat function */
 #include <math.h> /**< used for pow function */
 
-/* ======== Functions ======== */
+/* =========== Functions =========== */
 
 /**
 * @function equalsInt

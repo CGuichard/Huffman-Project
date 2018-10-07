@@ -11,9 +11,20 @@
  * This file describe the functions used in the file "huffman.c" to encrypt and
  * decrypt ASCII text using the Huffman coding.
  *
- * Overview about public functions of tuple:
- *    - huffmanEncryptStr
+ * The structure huffman is also declared here
+ * Overview about the huffman structure functions:
+ *    - createHuffman
+ *    - createDefinedHuffman
+ *    - getHuffmanStr
+ *    - getHuffmanTree
+ *    - setHuffmanStr
+ *    - setHuffmanTree
+ *    - destroyHuffman
+ *
+ * Overview about public functions of the file huffman:
+ *    - huffmanEncrypt
  *    - huffmanEncryptFile
+ *    - huffmanDecrypt
  *    - huffmanDecryptStr
  *    - huffmanDecryptFile
  *    - getEncryptionOf
@@ -23,8 +34,8 @@
  *    - getDecryptionOf
  *    - writeDecryptionInFile
  *    - getTreeFromKeyFile
- *    - charOccurencesOfStr
- *    - charOccurencesOfFile
+ *    - charOccurrencesOfStr
+ *    - charOccurrencesOfFile
  *    - contructBinaryTree
  *    - mergeTwoSmallerNodes
  *    - prefixesList
@@ -33,8 +44,6 @@
  *    - writeBitsInOpenedFile
  */
 
-
-
 /* ========================================================= */
 /* ================= HUFFMAN_H FILE HEADER ================= */
 /* ========================================================================== */
@@ -42,7 +51,7 @@
 #ifndef HUFFMAN_H
 #define HUFFMAN_H
 
-/* ========= Includes ======== */
+/* ============ Includes =========== */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -52,20 +61,118 @@
 #include "list.h" /**< Contains struct list and its functions  */
 #include "node.h" /**< Contains struct node and its functions  */
 
-/* ======== Functions ======== */
+/* ============= Struct ============ */
 
 /**
- * @function huffmanEncryptStr
+ * @typedef hfm
+ * @brief Definition of hfm, a pointer of the structure huffman
+ *
+ * The struct huffman is said existing, but truly implemented in the file
+ * "huffman.c". The idea is to make a structure with unknown members so that
+ * the structure is manipulated only by the functions detailed here
+ */
+typedef struct huffman* hfm;
+
+/* ======== Struct functions ======= */
+
+/**
+ * @function createHuffman
+ * @brief Create a new struct huffman and give its pointer
+ *
+ * This function create a new struct huffman, set its members to NULL and return
+ * a pointer on that struct
+ *
+ * @return{hfm}: pointer of the new huffman structure
+ */
+hfm createHuffman();
+
+/**
+ * @function createHuffman
+ * @brief Create a new struct huffman and give its pointer
+ *
+ * This function create a new struct huffman, set its members to the given
+ * values and return a pointer on that struct
+ *
+ * @param{char*} str: the encrypted string
+ * @param{nd} tree: the tree
+ *
+ * @return{hfm}: pointer of the new huffman structure
+ */
+hfm createDefinedHuffman(char *str, nd tree);
+
+/**
+ * @function getHuffmanStr
+ * @brief Getter of the huffman struct encrypted string of characters
+ *
+ * @param{hfm} huffman: pointer of the huffman structure
+ *
+ * @return{char*}: encrypted string of characters
+ */
+char* getHuffmanStr(hfm huffman);
+
+/**
+ * @function getHuffmanTree
+ * @brief Getter of the huffman struct tree
+ *
+ * @param{hfm} huffman: pointer of the huffman structure
+ *
+ * @return{nd}: tree of the huffman struct
+ */
+nd getHuffmanTree(hfm huffman);
+
+/**
+ * @function setHuffmanStr
+ * @brief Setter of the huffman struct encrypted string of characters
+ *
+ * @param{hfm} huffman: pointer of the huffman structure
+ * @param{char*} str: encrypted string of characters passed to the huffman
+ *                    struct
+ *
+ * @return{void}
+ */
+void setHuffmanStr(hfm huffman, char *str);
+
+/**
+ * @function setHuffmanTree
+ * @brief Setter of the huffman struct tree
+ *
+ * @param{hfm} huffman: pointer of the huffman structure
+ * @param{nd} tree: tree passed to the huffman struct
+ *
+ * @return{void}
+ */
+void setHuffmanTree(hfm huffman, nd tree);
+
+/**
+ * @function destroyHuffman
+ * @brief Destroy a huffman struct
+ *
+ * Destroyer that destroy a given huffman struct pointer, so it need the
+ * pointer of the pointer to not delete a "copy" pointer created for the
+ * function call.
+ * The tree is detroyed, and the string of characters is freed
+ *
+ * @param{hfm*} huffman: pointer of the pointer of the huffman structure which
+ *                       we want to be destroyed
+ *
+ * @return{void}
+ */
+void destroyHuffman(hfm *huffman);
+
+/* =========== Functions =========== */
+
+/**
+ * @function huffmanEncrypt
  * @brief Encrypt a string of characters
  *
  * This function encrypt a string of characters using the huffman coding and
- * return the pointer of the new encrypted string
+ * return the pointer of the corresponding huffman struct
  *
  * @param{char*} str: string of characters to encrypt
  *
- * @return{char*}: encrypted string
+ * @return{hfm}: encrypted string
  */
-char* huffmanEncryptStr(char *str);
+hfm huffmanEncrypt(char *str);
 
 /**
  * @function huffmanEncryptFile
@@ -83,17 +190,31 @@ void huffmanEncryptFile(char *fileIn, char *fileOut, char *fileKey);
 
 
 /**
- * @function huffmanDecryptStr
- * @brief Decrypt a string of characters
+ * @function huffmanDecrypt
+ * @brief Decrypt an huffman struct
  *
- * This function decrypt a string of characters using the huffman coding and
- * return the pointer of the decrypted string
+ * This function decrypt a huffman coding contains in a huffman struct (which
+ * contains the string of characters to decrypt and the tree needed to do so)
  *
- * @param{char*} str: string of characters to decrypt
+ * @param{hfm} huffmanEncr: A pointer on the huffman struct
  *
  * @return{char*}: decrypted string
  */
-char* huffmanDecryptStr(char *str);
+char* huffmanDecrypt(hfm huffmanEncr);
+
+/**
+ * @function huffmanDecrypt
+ * @brief Decrypt a string of characters
+ *
+ * This function decrypt a string of characters encrypt with the huffman coding
+ * by using a tree
+ *
+ * @param{char*} str: string of characters to decrypt
+ * @param{nd} tree: the tree needed to decrypt
+ *
+ * @return{char*}: decrypted string
+ */
+char* huffmanDecryptStr(char *str, nd tree);
 
 /**
  * @function huffmanDecryptFile
@@ -116,7 +237,7 @@ void huffmanDecryptFile(char *fileIn, char *fileOut, char *fileKey);
  * Returns the encryption in its bit form, that is the sequence of prefixes
  * corresponding for each character of the string passed as parameter
  *
- * @param{char*} str: string of character to encrypt (bits form)
+ * @param{char*} str: string of characters to encrypt (bits form)
  * @param{lst} prefixes: list of prefixes that give the bit sequence associated
  *                       for each character in fileIn
  * @param{int} maxPrefixLength: maximal size of a prefix
@@ -127,7 +248,7 @@ char* getEncryptionOf(char *str, lst prefixes, int maxPrefixLength);
 
 /**
  * @function makeCharactersFromBits
- * @brief Return a string of character encrypted (compressed)
+ * @brief Return a string of characters encrypted (compressed)
  * @see @function getEncryptionOf
  *
  * Return an encrypted string. The string is the compressed form of the
@@ -181,10 +302,10 @@ void saveKeyInFile(lst occurrences, char *fileKey);
  * @function getDecryptionOf
  * @brief Returns the decryption of the string given
  *
- * Returns the decryption of the string of character given in parameters by
+ * Returns the decryption of the string of characters given in parameters by
  * using the tree used to the encryption
  *
- * @param{char*} str: string of character to decrypt
+ * @param{char*} str: string of characters to decrypt
  * @param{lst}
  *
  * @return{char*}: Encryption in its bits form
@@ -220,20 +341,20 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree);
 nd getTreeFromKeyFile(char *fileKey);
 
 /**
- * @function charOccurencesOfStr
- * @brief Create a list of occurrences from a given string of character
+ * @function charOccurrencesOfStr
+ * @brief Create a list of occurrences from a given string of characters
  *
- * Create a list of occurrences from the string of character 'str' given in
+ * Create a list of occurrences from the string of characters 'str' given in
  * parameter. The character \0 is add to dedicate a prefix for it
  *
- * @param{char*} str: the string of character
+ * @param{char*} str: the string of characters
  *
  * @return{lst}: the occurrences
  */
-lst charOccurencesOfStr(char *str);
+lst charOccurrencesOfStr(char *str);
 
 /**
- * @function charOccurencesOfFile
+ * @function charOccurrencesOfFile
  * @brief Create a list of occurrences from a file
  *
  * Create a list of occurrences from a file given in parameter. The
@@ -243,7 +364,7 @@ lst charOccurencesOfStr(char *str);
  *
  * @return{lst}: the occurrences
  */
-lst charOccurencesOfFile(char *srcFile);
+lst charOccurrencesOfFile(char *srcFile);
 
 /**
  * @function contructBinaryTree
@@ -276,16 +397,14 @@ void mergeTwoSmallerNodes(lst list);
  * @function prefixesList
  * @brief Returns the prefixes for each character
  *
- * Returns the prefixes for each character from a list of occurrences after
- * course of the tree
+ * Returns the prefixes for each character from a given tree
  *
- * @param{lst} occurrences: list of occurrences
- * @param{char*} fileKey: name of the file to write the key in
+ * @param{nd} tree: the tree
  * @param{int} maxPrefixLength: maximal size of a prefix
  *
  * @return{lst}: the prefixes
  */
-lst prefixesList(lst occurrences, char *fileKey, int *maxPrefixLength);
+lst prefixesList(nd tree, int *maxPrefixLength);
 
 
 /**

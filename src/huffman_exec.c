@@ -62,11 +62,11 @@ int main(int argc, char *argv[]) {
     free(fileOut);
     free(fileKey);
   } else {
-    char *encr = huffmanEncryptStr(TEST2);
+    hfm huffmanEncr = huffmanEncrypt(TEST2);
     printf("Text: \"%s\"\n", TEST2);
-    if(encr != NULL) {
-      printf("Encryption: \"%s\"\n", encr);
-      char *decr = huffmanDecryptStr(encr);
+    if(huffmanEncr != NULL) {
+      printf("Encryption: \"%s\"\n", getHuffmanStr(huffmanEncr));
+      char *decr = huffmanDecrypt(huffmanEncr);
       if(decr != NULL) {
         printf("Decryption: \"%s\"\n", decr);
       } else {
@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
     } else {
       printf("Encryption failed\n");
     }
-    free(encr);
+    destroyHuffman(&huffmanEncr);
   }
   return EXIT_SUCCESS;
 }

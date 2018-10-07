@@ -15,7 +15,7 @@
  * contain only integers, or only characters, or only
  * one type of struct for example.
  *
- * Overview about public functions of tuple:
+ * Overview about public functions of list:
  *    - createList
  *    - createDefinedList
  *    - getListSize
@@ -38,13 +38,13 @@
 #ifndef LIST_H
 #define LIST_H
 
-/* ========= Includes ======== */
+/* ============ Includes =========== */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include "utils.h" /**< Contains useful tool functions  */
 
-/* ========== Struct ========= */
+/* ============= Struct ============ */
 
 /**
  * @typedef lst
@@ -56,7 +56,7 @@
  */
 typedef struct list* lst;
 
-/* ======== Functions ======== */
+/* ======== Struct functions ======= */
 
 /**
  * @function createList
