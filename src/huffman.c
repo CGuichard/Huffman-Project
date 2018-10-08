@@ -236,7 +236,8 @@ char* makeCharactersFromBits(char *bits, char *endChar) {
   int size = (strlen(bits) + strlen(endChar))/7 + 2;
   char *encr = (char*)calloc(sizeof(char), size);
   int actualBitIndex = 0;
-  char *chars = (char*)calloc(sizeof(char), 9);
+  char chars[9];
+  for (size_t i = 0; i < 9; i++) chars[i] = '\0';
   const int E_CHAR = 7;
   chars[7] = '0';
   for(size_t i = 0; i < strlen(bits) + strlen(endChar); i++) {
@@ -256,7 +257,6 @@ char* makeCharactersFromBits(char *bits, char *endChar) {
     }
     encr[strlen(encr)] = charBitsToChar(chars);
   }
-  free(chars);
   free(bits);
   return encr;
 }
@@ -271,7 +271,8 @@ void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPre
     if(file != NULL && fileOut != NULL) {
       char ligne[255];
       int actualBitIndex = 0;
-      char *bits = (char*)calloc(sizeof(char), 9);
+      char bits[9];
+      for (size_t i = 0; i < 9; i++) bits[i] = '\0';
       const int E_CHAR = 7;
       bits[E_CHAR] = '0';
       char *endChar = (char*)getTupleValue((tpl)getTupleInListByKey(prefixes, '\0'));
@@ -304,7 +305,6 @@ void writeEncryptionInFile(char *fileIn, char *fileOut, lst prefixes, int maxPre
         writeBitsInOpenedFile(fileW, bits);
       }
       printf("Encryption process completed\n");
-      free(bits);
       fclose(fileW);
       fclose(file);
     } else {
@@ -432,7 +432,8 @@ nd getTreeFromKeyFile(char *fileKey) {
     int etape = 1;
     char l = 0;
     unsigned int tmp = 0;
-    char *nb = (char*)calloc(sizeof(char), 11);
+    char nb[11];
+    for (size_t i = 0; i < 11; i++) nb[i] = '\0';
     lst occurrences = createDefinedList(&destroyTupleGen, &printTupleGen);
     while(fgets(ligne, sizeof(ligne), file) != NULL) {
       for (unsigned int i = 0; i < strlen(ligne); i++) {
@@ -462,7 +463,6 @@ nd getTreeFromKeyFile(char *fileKey) {
       }
     }
     fclose(file);
-    free(nb);
     char *letter = (char*)malloc(sizeof(char)); *letter = '\0';
     int *value = (int*)malloc(sizeof(int)); *value = 1;
     occurrence = createTuple(letter, value, NULL, printChar, NULL, printInt);
@@ -482,26 +482,23 @@ nd getTreeFromKeyFile(char *fileKey) {
  */
 lst charOccurrencesOfStr(char *str) {
   lst occurrences = createDefinedList(&destroyTupleGen, &printTupleGen);
-  char *key = (char*)malloc(sizeof(char));
-  int *val = (int*)malloc(sizeof(int));
-  *val = 1;
+  char key;
+  int val = 1;
   tpl tupleTmp = NULL;
   for(size_t i = 0; i < strlen(str); i++) {
     tupleTmp = getTupleInListByKey(occurrences, str[i]);
     if(tupleTmp == NULL) {
-      *key = str[i];
-      tpl tuple = createTupleByCopy(key, val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
+      key = str[i];
+      tpl tuple = createTupleByCopy(&key, &val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
       addInList(occurrences, tuple);
     } else {
       (*((int*)getTupleValue(tupleTmp)))++;
       tupleTmp = NULL;
     }
   }
-  *key = '\0';
-  tpl tuple = createTupleByCopy(key, val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
+  key = '\0';
+  tpl tuple = createTupleByCopy(&key, &val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
   addInList(occurrences, tuple);
-  free(key);
-  free(val);
   return occurrences;
 }
 
@@ -513,16 +510,15 @@ lst charOccurrencesOfFile(char *srcFile) {
   if(file != NULL) {
     char ligne[512];
     lst occurrences = createDefinedList(&destroyTupleGen, &printTupleGen);
-    char *key = (char*)malloc(sizeof(char));
-    int *val = (int*)malloc(sizeof(int));
-    *val = 1;
+    char key;
+    int val = 1;
     tpl tupleTmp = NULL;
     while(fgets(ligne, sizeof(ligne), file) != NULL) {
       for(unsigned int i = 0; i < strlen(ligne); i++) {
         tupleTmp = getTupleInListByKey(occurrences, ligne[i]);
         if(tupleTmp == NULL) {
-          *key = ligne[i];
-          tpl tuple = createTupleByCopy(key, val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
+          key = ligne[i];
+          tpl tuple = createTupleByCopy(&key, &val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
           addInList(occurrences, tuple);
         } else {
           (*((int*)getTupleValue(tupleTmp)))++;
@@ -530,11 +526,9 @@ lst charOccurrencesOfFile(char *srcFile) {
         }
       }
     }
-    *key = '\0';
-    tpl tuple = createTupleByCopy(key, val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
+    key = '\0';
+    tpl tuple = createTupleByCopy(&key, &val, &copyChar, NULL, &printChar, &copyInt, NULL, &printInt);
     addInList(occurrences, tuple);
-    free(key);
-    free(val);
     fclose(file);
     return occurrences;
   } else {
@@ -615,9 +609,9 @@ void mergeTwoSmallerNodes(lst list) {
 lst prefixesList(nd tree, int *maxPrefixLength) {
   *maxPrefixLength = getNodeDepth(tree);
   lst prefixes = createDefinedList(&destroyTupleGen, &printTupleGen);
-  char *prefix = (char*)calloc(sizeof(char), *maxPrefixLength + 1);
+  char prefix[*maxPrefixLength+1];
+  for (int i = 0; i < *maxPrefixLength+1; i++) prefix[i] = '\0';
   calculatePrefixes(tree, prefixes, prefix);
-  free(prefix);
   return prefixes;
 }
 
