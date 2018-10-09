@@ -346,12 +346,12 @@ char* getDecryptionOf(char *str, nd tree) {
   unsigned int resultSize = strlen(str)*3 + 1;
   char *result = (char*)calloc(sizeof(char), resultSize);
   nd currentNode = tree;
-  char *path;
+  char path[9]; path[8] = '\0';
   char *charToWrite;
   int resultIndex = 0;
   int endFound = 0;
   for(size_t i = 0; i < strlen(str); i++) {
-    path = decimalToBinary((unsigned int)str[i], numberOfBits);
+    decimalToBinary((unsigned int)str[i], numberOfBits, path);
     for(size_t j = 0; j < strlen(path)-1; j++) {
       if(isLeafNode((currentNode))) {
         charToWrite = (char*)getTupleKey((tpl)getNodeTag(currentNode));
@@ -367,7 +367,6 @@ char* getDecryptionOf(char *str, nd tree) {
       }
       if(endFound == 1) break;
     }
-    free(path);
     if(endFound == 1) break;
   }
   // if(strlen(result) < resultSize) {
@@ -385,12 +384,12 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree) {
   FILE *fileToWrite = fopen(fileOut, "w");
   if(fileToRead != NULL && fileToWrite != NULL) {
     nd currentNode = tree;
-    char *currentCharBits;
+    char currentCharBits[9]; currentCharBits[8] = '\0';
     char charToWrite;
     char c;
     int again = 1;
     while((c = fgetc(fileToRead)) != EOF && again == 1) {
-      currentCharBits = decimalToBinary(c, 8);
+      decimalToBinary(c, 8, currentCharBits);
       currentCharBits[7] = '\0';
       for (size_t i = 0; i < strlen(currentCharBits); i++) {
         if(isLeafNode(currentNode)) {
@@ -408,7 +407,6 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree) {
           currentNode = getNodeRight(currentNode);
         }
       }
-      free(currentCharBits);
     }
     printf("Decryption process completed\n");
     fclose(fileToRead);

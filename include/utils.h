@@ -164,14 +164,16 @@ int strToInt(char *str);
  * @function decimalToBinary
  * @brief Converts a decimal to its binary form
  *
- * This function converts an encrypted character to its unsigned binary form.
+ * This function converts an encrypted character to its unsigned binary form and
+ * put it in a buffer
  *
  * @param{unsigned int} decimal: code of the encrypted character
- * @param(int) numberOfBits: the size of the binary form (8bits, 16bits, ...)
+ * @param{int} numberOfBits: the size of the binary form (8bits, 16bits, ...)
+ * @param{char*} buffer: the buffer
  *
- * @return{char*}: the binary form of the decimal
+ * @return{void}
  */
-char* decimalToBinary(unsigned int decimal, int numberOfBits);
+void decimalToBinary(unsigned int decimal, int numberOfBits, char *buffer);
 
 /**
  * @function pointerAllocError
