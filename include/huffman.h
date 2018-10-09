@@ -38,9 +38,11 @@
  *    - charOccurrencesOfFile
  *    - contructBinaryTree
  *    - mergeTwoSmallerNodes
+ *    - mergeNodes
  *    - prefixesList
  *    - calculatePrefixes
  *    - getTupleInListByKey
+ *    - weightNode
  *    - writeBitsInOpenedFile
  */
 
@@ -387,11 +389,26 @@ nd contructBinaryTree(lst occurrences);
  * in the list.
  *
  * @param{lst} list: list of occurrences
+ * @param{int()} weight(void *elem): function to get the weight of a node
  *
  * @return{void}
  */
-void mergeTwoSmallerNodes(lst list);
+void mergeTwoSmallerNodes(lst list, int(*weight)(void *elem));
 
+/**
+ * @function mergeNodes
+ * @brief Merge two nodes
+ *
+ * This function merge two nodes, by making a node with a weight equal to the
+ * two nodes weight. The two child of the node are the given nodes.
+ *
+ * @param{nd} node1: first node
+ * @param{nd} node2: second node
+ * @param{int()} weight(void *elem): function to get the weight of a node
+ *
+ * @return{nd}: the new node
+ */
+nd mergeNodes(nd node1, nd node2, int(*weight)(void *elem));
 
 /**
  * @function prefixesList
@@ -405,7 +422,6 @@ void mergeTwoSmallerNodes(lst list);
  * @return{lst}: the prefixes
  */
 lst prefixesList(nd tree, int *maxPrefixLength);
-
 
 /**
  * @function contructBinaryTree
@@ -422,6 +438,7 @@ lst prefixesList(nd tree, int *maxPrefixLength);
  */
 void calculatePrefixes(nd node, lst prefixes, char *prefix);
 
+
 /**
  * @function getTupleInListByKey
  * @brief Return a pointer on the tuple which correspond to a given key
@@ -432,6 +449,16 @@ void calculatePrefixes(nd node, lst prefixes, char *prefix);
  * @return{tpl}: the pointer on the tuple found
  */
 tpl getTupleInListByKey(lst list, char key);
+
+/**
+ * @function weightNode
+ * @brief Return the node weight (value of the tuple which is the node tag)
+ *
+ * @param{void*} elem: the node
+ *
+ * @return{int}: the node weight
+ */
+int weightNode(void *elem);
 
 /**
  * @function writeBitsInOpenedFile

@@ -38,9 +38,11 @@
  *    - charOccurrencesOfFile
  *    - contructBinaryTree
  *    - mergeTwoSmallerNodes
+ *    - mergeNodes
  *    - prefixesList
  *    - calculatePrefixes
  *    - getTupleInListByKey
+ *    - weightNode
  *    - writeBitsInOpenedFile
  */
 
@@ -391,7 +393,6 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree) {
     int again = 1;
     while((c = fgetc(fileToRead)) != EOF && again == 1) {
       decimalToBinary(c, 8, currentCharBits);
-      printf("%s\n", currentCharBits);
       currentCharBits[7] = '\0';
       for (size_t i = 0; i < strlen(currentCharBits); i++) {
         if(isLeafNode(currentNode)) {
@@ -553,7 +554,7 @@ nd contructBinaryTree(lst occurrences) {
   }
   if(getListSize(treeNodes) > 0) {
     while(getListSize(treeNodes) > 1) {
-      mergeTwoSmallerNodes(treeNodes);
+      mergeTwoSmallerNodes(treeNodes, weightNode);
     }
     if(getListSize(treeNodes) == 1) tree = (nd)removeFromList(treeNodes, 0);
   }
@@ -564,43 +565,51 @@ nd contructBinaryTree(lst occurrences) {
 /**
  * @see @file huffman.h / @function mergeTwoSmallerNodes
  */
-void mergeTwoSmallerNodes(lst list) {
+void mergeTwoSmallerNodes(lst list, int(*weight)(void *elem)) {
   size_t j = 0;
   size_t k = 1;
-  int valueJ = *((int*)getTupleValue((tpl)getNodeTag((nd)getOfList(list, j))));
-  int valueK = *((int*)getTupleValue((tpl)getNodeTag((nd)getOfList(list, k))));
-  int *currentValue = NULL;
+  int valueJ = weight((nd)getOfList(list, j));
+  int valueK = weight((nd)getOfList(list, k));
+  int currentValue;
   for(size_t i = 2; i < getListSize(list); i++) {
-    currentValue = (int*)getTupleValue((tpl)getNodeTag((nd)getOfList(list, i)));
+    currentValue = weight((nd)getOfList(list, i));
     if(k < j) {
-      if(*currentValue < valueK && i != j && i != k) {
+      if(currentValue < valueK && i != j && i != k) {
         k = i;
-        valueK = *currentValue;
+        valueK = currentValue;
       }
     } else {
-      if(*currentValue < valueJ && i != j && i != k) {
+      if(currentValue < valueJ && i != j && i != k) {
         j = i;
-        valueJ = *currentValue;
+        valueJ = currentValue;
       }
     }
   }
   if(j < k) k--;
   nd child1 = (nd)removeFromList(list, j);
   nd child2 = (nd)removeFromList(list, k);
-  int valChild1 = *((int*)getTupleValue((tpl)getNodeTag(child1)));
-  int valChild2 = *((int*)getTupleValue((tpl)getNodeTag(child2)));
+  nd newNode = mergeNodes(child1, child2, weightNode);
+  addInList(list, newNode);
+}
+
+/**
+ * @see @file huffman.h / @function mergeNodes
+ */
+nd mergeNodes(nd node1, nd node2, int(*weight)(void *elem)) {
+  int val1 = weight(node1);
+  int val2 = weight(node2);
   int *newValue = (int*)malloc(sizeof(int));
-  *newValue = valChild1 + valChild2;
+  *newValue = val1 + val2;
   tpl newTuple = createTuple(NULL, newValue, NULL, printChar, NULL, printInt);
   nd newNode = createDefinedNode(newTuple, destroyTupleGen, printTupleGen);
-  if(valChild1 <= valChild2) {
-    setNodeLeft(newNode, child1);
-    setNodeRight(newNode, child2);
+  if(val1 <= val2) {
+    setNodeLeft(newNode, node1);
+    setNodeRight(newNode, node2);
   } else {
-    setNodeLeft(newNode, child2);
-    setNodeRight(newNode, child1);
+    setNodeLeft(newNode, node2);
+    setNodeRight(newNode, node1);
   }
-  addInList(list, newNode);
+  return newNode;
 }
 
 /**
@@ -653,6 +662,13 @@ tpl getTupleInListByKey(lst list, char key) {
     if(*((char*)getTupleKey(tuple)) == key) return tuple;
   }
   return NULL;
+}
+
+/**
+ * @see @file huffman.h / @function weightNode
+ */
+int weightNode(void *elem) {
+  return *((int*)getTupleValue(getNodeTag((nd)elem)));
 }
 
 /**
