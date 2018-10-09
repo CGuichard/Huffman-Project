@@ -351,7 +351,7 @@ char* getDecryptionOf(char *str, nd tree) {
   int resultIndex = 0;
   int endFound = 0;
   for(size_t i = 0; i < strlen(str); i++) {
-    decimalToBinary((unsigned int)str[i], path);
+    decimalToBinary((unsigned int)str[i], 8, path);
     for(size_t j = 0; j < strlen(path)-1; j++) {
       if(isLeafNode((currentNode))) {
         charToWrite = (char*)getTupleKey((tpl)getNodeTag(currentNode));
@@ -390,7 +390,8 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree) {
     char c;
     int again = 1;
     while((c = fgetc(fileToRead)) != EOF && again == 1) {
-      decimalToBinary(c, currentCharBits);
+      decimalToBinary(c, 8, currentCharBits);
+      printf("%s\n", currentCharBits);
       currentCharBits[7] = '\0';
       for (size_t i = 0; i < strlen(currentCharBits); i++) {
         if(isLeafNode(currentNode)) {
