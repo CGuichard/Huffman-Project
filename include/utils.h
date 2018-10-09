@@ -168,12 +168,11 @@ int strToInt(char *str);
  * put it in a buffer
  *
  * @param{unsigned int} decimal: code of the encrypted character
- * @param{int} numberOfBits: the size of the binary form (8bits, 16bits, ...)
  * @param{char*} buffer: the buffer
  *
  * @return{void}
  */
-void decimalToBinary(unsigned int decimal, int numberOfBits, char *buffer);
+void decimalToBinary(unsigned int decimal, char *buffer);
 
 /**
  * @function pointerAllocError

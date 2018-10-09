@@ -342,16 +342,16 @@ void saveKeyInFile(lst occurrences, char *fileKey) {
  * @see @file huffman.h / @function getDecryptionOf
  */
 char* getDecryptionOf(char *str, nd tree) {
-  const size_t numberOfBits = 8;
   unsigned int resultSize = strlen(str)*3 + 1;
   char *result = (char*)calloc(sizeof(char), resultSize);
   nd currentNode = tree;
   char path[9]; path[8] = '\0';
+  for (size_t i = 0; i < 8; i++) path[i] = '0';
   char *charToWrite;
   int resultIndex = 0;
   int endFound = 0;
   for(size_t i = 0; i < strlen(str); i++) {
-    decimalToBinary((unsigned int)str[i], numberOfBits, path);
+    decimalToBinary((unsigned int)str[i], path);
     for(size_t j = 0; j < strlen(path)-1; j++) {
       if(isLeafNode((currentNode))) {
         charToWrite = (char*)getTupleKey((tpl)getNodeTag(currentNode));
@@ -385,11 +385,12 @@ void writeDecryptionInFile(char *fileIn, char *fileOut, nd tree) {
   if(fileToRead != NULL && fileToWrite != NULL) {
     nd currentNode = tree;
     char currentCharBits[9]; currentCharBits[8] = '\0';
+    for (size_t i = 0; i < 8; i++) currentCharBits[i] = '0';
     char charToWrite;
     char c;
     int again = 1;
     while((c = fgetc(fileToRead)) != EOF && again == 1) {
-      decimalToBinary(c, 8, currentCharBits);
+      decimalToBinary(c, currentCharBits);
       currentCharBits[7] = '\0';
       for (size_t i = 0; i < strlen(currentCharBits); i++) {
         if(isLeafNode(currentNode)) {

@@ -124,9 +124,10 @@ int strToInt(char *str) {
 /**
  * @see @file utils.h / @function decimalToBinary
  */
-void decimalToBinary(unsigned int decimal, int numberOfBits, char *buffer) {
-  size_t index = numberOfBits - 1;
-  for(int c = numberOfBits; c > 0; c--) {
+void decimalToBinary(unsigned int decimal, char *buffer) {
+  size_t size = strlen(buffer);
+  size_t index = size - 1;
+  for(int c = size; c > 0; c--) {
     if(decimal%2 & 1)
       buffer[index] = '1';
     else
