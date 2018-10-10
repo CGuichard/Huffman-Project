@@ -53,9 +53,7 @@ obj/$(MAIN).pic.o: src/$(MAIN).c
 obj/%.pic.o: src/%.c include/%.h
 	$(CC) -fPIC -c -o $@ $< -I include
 
-.PHONY: all bin lib clean cleanO clean+ cleandir run memory_run archive lib
-
-all: bin lib
+.PHONY: bin lib clean cleanO clean+ cleandir run memory_run archive
 
 bin: bin/$(MAIN)
 
@@ -89,7 +87,7 @@ run: bin/$(MAIN)
 memory_run: bin/$(MAIN)
 	@valgrind ./bin/$(MAIN)
 
-archive: $(wildcard src/*) $(wildcard include/*) $(wildcard doc/*) $(wildcard tests/*) Makefile
+archive: $(wildcard src/*) $(wildcard include/*) $(wildcard doc/*) $(wildcard app/*) $(wildcard tests/*) Makefile
 	@tar jcvf $@-$(MAIN).tar.bz2 $^ > /dev/null
 ifneq ("$@-$(MAIN).tar.bz2","")
 	@echo "The archive \"$@-$(MAIN).tar.bz2\" was successfully generated"

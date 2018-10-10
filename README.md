@@ -124,7 +124,7 @@ To summurize the argument needed for the interface correspond to the arguments *
 
 ### Learn more
 
-You can learn more about the commands you can use with **make** by looking at the **COMMANDS.md** file
+You can learn more about the commands you can use with **make** by looking at the **commands.md** file
 
 ## Generation of the documentation
 
