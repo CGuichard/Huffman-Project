@@ -25,6 +25,7 @@ bin/$(MAIN): $(OBJS)
 	@mkdir -p bin
 	$(CC) -o $@ $^ $(LIBS)
 	@cp bin/$(MAIN) app/.resources/huffman_exec
+	@chmod +x app/.resources/huffman_exec
 
 obj/$(MAIN).o: src/$(MAIN).c
 	@mkdir -p obj
