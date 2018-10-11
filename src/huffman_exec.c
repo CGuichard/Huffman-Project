@@ -8,7 +8,7 @@
  *
  * @brief Main file
  *
- * This file is the main file that call the functions created to do a huffman
+ * This file is the main file that calls the functions created to do a huffman
  * coding.
  */
 
@@ -29,7 +29,7 @@ int TESTS_C = 4;
 
 /**
  * @function displayConsoleInterface
- * @brief Function used to display a terminal interface
+ * @brief Function used to display a terminal interface.
  *
  * @return{void}
  */
@@ -37,9 +37,9 @@ void displayConsoleInterface();
 
 /**
  * @function testStr
- * @brief Function used to test a string of characters encryption and decryption
+ * @brief Function used to test a string of characters encryption and decryption.
  *
- * @param{char*} str: string of characters to test
+ * @param{char*} str: string of characters to test.
  *
  * @return{void}
  */
@@ -55,14 +55,14 @@ void emptyBuffer();
 
 /**
  * @function setFilesNames
- * @brief Function used to set the files names
+ * @brief Function used to set the files names.
  *
- * @param{char**} argv: list of argument pass to the executable
- * @param{int} argc: size of argv
- * @param{char**} fileIn: pointer of the string of the input file
- * @param{char**} fileOut: pointer of the string of the output file
+ * @param{char**} argv: list of argument pass to the executable.
+ * @param{int} argc: size of argv.
+ * @param{char**} fileIn: pointer of the string of the input file.
+ * @param{char**} fileOut: pointer of the string of the output file.
  * @param{char**} fileKey: pointer of the string of the file containing the
- *                         encryption key
+ *                         encryption key.
  *
  * @return{void}
  */
