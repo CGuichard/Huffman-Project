@@ -13,7 +13,7 @@ Compiles the **src/** files and generates the executable huffman_exec in **bin/*
 
 	make bin
 
-Same as **make**, compile the executable in **bin/**
+Same as **make**, compiles the executable in **bin/**
 
 ### Make lib
 
@@ -25,7 +25,7 @@ Generates two versions of the library in **lib/**, a dynamic one _".so"_ and a s
 
 	make clean
 
-Delete the executable in **bin/**
+Deletes the executable in **bin/**
 
 ### Make cleanO
 
@@ -37,7 +37,7 @@ Deletes the files _".o"_ in **obj/**
 
 	make clean+
 
-Execute **make clean** and **make cleanO**
+Executes **make clean** and **make cleanO**
 
 ### Make cleandir
 
@@ -49,19 +49,19 @@ Deletes the folders **bin/**, **obj/** and **lib/**
 
 	make run
 
-Update the executable if needed, and after that execute **bin/huffman_exec** with no arguments
+Updates the executable if needed, and after that executes **bin/huffman_exec** with no arguments
 
 ### Make memory_run
 
 	make memory_run
 
-Same as **make run**, but use valgrind in addition
+Same as **make run**, but uses valgrind in addition
 
 ### Make archive
 
 	make archive
 
-Put the content of the directory in a compressed folder **.tar.bz2**. The folders **bin/**, **obj/** and **lib/** aren't put in it
+Puts the content of the directory in a compressed folder **.tar.bz2**. The folders **bin/**, **obj/** and **lib/** aren't put in it
 
 ## NOTE
 
