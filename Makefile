@@ -24,6 +24,7 @@ OBJSPIC=$(SRCS:src/%.c=obj/%.pic.o)
 bin/$(MAIN): $(OBJS)
 	@mkdir -p bin
 	$(CC) -o $@ $^ $(LIBS)
+	@cp bin/$(MAIN) app/.resources/huffman_exec
 
 obj/$(MAIN).o: src/$(MAIN).c
 	@mkdir -p obj
