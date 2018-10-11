@@ -54,7 +54,7 @@ obj/$(MAIN).pic.o: src/$(MAIN).c
 obj/%.pic.o: src/%.c include/%.h
 	$(CC) -fPIC -c -o $@ $< -I include
 
-.PHONY: bin lib clean cleanO cleantests clean+ cleandir run memory_run archive
+.PHONY: bin lib clean cleanO cleantests clean+ cleandir run memory_run run_interface memory_run_interface archive
 
 bin: bin/$(MAIN)
 
@@ -90,7 +90,7 @@ endif
 
 clean+: clean cleanO cleantests
 
-cleandir:
+cleandir: cleantests
 	@rm -rf bin obj lib
 	@echo "'bin/', 'obj/' and 'lib/' folders have been deleted"
 
@@ -100,7 +100,13 @@ run: bin/$(MAIN)
 memory_run: bin/$(MAIN)
 	@valgrind ./bin/$(MAIN)
 
-archive: $(wildcard src/*) $(wildcard include/*) $(wildcard doc/*) $(wildcard app/*) $(wildcard tests/*) Makefile
+run_interface: bin/$(MAIN)
+	@./bin/$(MAIN) interface
+
+memory_run_interface: bin/$(MAIN)
+	@valgrind ./bin/$(MAIN) interface
+
+archive: $(wildcard src/*) $(wildcard include/*) $(wildcard doc/*) $(wildcard app/.resources/*) app/HuffmanCoding.jar $(wildcard tests/*) Makefile README.html commands.html
 	@tar jcvf $@-$(MAIN).tar.bz2 $^ > /dev/null
 ifneq ("$@-$(MAIN).tar.bz2","")
 	@echo "The archive \"$@-$(MAIN).tar.bz2\" was successfully generated"
