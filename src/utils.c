@@ -9,7 +9,7 @@
  *
  * This file contains tool functions, used by
  * other files but not really belonging to a file,
- * and being useful in many places of the project
+ * and being useful in many places of the project.
  *
  * Overview about public functions of utils
  *  - equalsInt

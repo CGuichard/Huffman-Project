@@ -11,7 +11,7 @@
  * This file implements function of the huffman coding using trees in C.
  * The tree is a binary tree, which is composed of nodes.
  *
- * The structure huffman is also declared here
+ * The structure huffman is also declared here.
  * Overview about the huffman structure functions:
  *    - createHuffman
  *    - createDefinedHuffman
@@ -56,11 +56,11 @@
 
 /**
  * @struct huffman
- * @brief A representation of an encryption obtained by huffman coding
+ * @brief A representation of an encryption obtained by huffman coding.
  *
- * The structure huffman represent an encryption, generated with an huffman
+ * The structure huffman represents an encryption, generated with an huffman
  * coding. It contains the encrypted string of characters and the binary tree
- * used in the encryption process
+ * used in the encryption process.
  */
 struct huffman {
   nd tree; /**< Tree used to make the 'encryption' member */

@@ -43,7 +43,8 @@
  * @brief A node contains two children and a tag (is used to represent a tree)
  *
  * The structure node represents two children, a generic-typed tag and
- * pointers on functions needed to manage the node. It is used to represent trees.
+ * pointers on functions needed to manage the node. It is used to represent
+ * trees.
  */
 struct node {
   nd left; /**< Pointer on a child of the node, which is an other node */

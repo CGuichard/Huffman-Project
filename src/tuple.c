@@ -8,7 +8,7 @@
  * @brief Implementation file for the struct "tuple".
  *
  * This file implements the struct "tuple" described in the file "tuple.h",
- * a generic structure for multiple uses
+ * a generic structure for multiple uses.
  *
  * Overview about public functions of tuple:
  *  - createTuple
@@ -34,10 +34,10 @@
 
 /**
  * @struct tuple
- * @brief A tuple contain a key and a value
+ * @brief A tuple contains a key and a value.
  *
- * The structure tuple represent a key and a value, both with generic types,
- * and pointers on functions needed to manage a tuple
+ * The structure tuple represents a key and a value, both with generic types,
+ * and pointers on functions needed to manage a tuple.
  */
 struct tuple {
   void *key; /**< Generic pointer on the key of the tuple */

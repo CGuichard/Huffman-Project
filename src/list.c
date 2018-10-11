@@ -5,11 +5,11 @@
  * @version 1.0
  * @date 11th October 2018
  *
- * @brief Implementation file for the struct list and the functions in "list.h"
+ * @brief Implementation file for the struct list and the functions in "list.h".
  *
  * This file implements the struct "list" described in the file "list.h" (and
  * here in the comments of the struct implementation), a generic structure
- * for multiple uses
+ * for multiple uses.
  *
  * Overview about private functions of list:
  *    - destroyElemInList
@@ -18,7 +18,7 @@
  * The private functions are not in the header file because they are not
  * supposed to be used in other files. To prevent that, they are declared here,
  * in the .c file and not in the header file. They are used only by functions in
- * this file
+ * this file.
  *
  * Overview about public functions of list:
  *    - createList
@@ -46,11 +46,11 @@
 
 /**
  * @struct list
- * @brief A dynamic generic list
+ * @brief A dynamic generic list.
  *
- * The structure list is a dynamic list, it size is modified when needed. This
- * list is also generic to support any type of element. However the type of
- * variables pointed to by the list must be constrained by a principle of
+ * The structure list is a dynamic list, its size is modified when needed. This
+ * list is also generic to support any type of element. However, the type of
+ * variables pointed by the list must be constrained by a principle of
  * uniqueness. For example, one list can contain only integers, or only
  * characters, or only one type of struct.
  */
@@ -70,13 +70,13 @@ struct list {
 
 /**
  * @function destroyElemInList
- * @brief Destroy an element of the list
+ * @brief Destroys an element of the list.
  *
- * This function destroy an element of the list. If the destroyElem of the
- * list is set, it is used, if not the function free() is used
+ * This function destroys an element of the list. If the destroyElem of the
+ * list is set, it is used, else the function free() is used.
  *
- * @param{lst} l: pointer of the list
- * @param{size_t} pos: position of the element in the list, its index
+ * @param{lst} l: pointer of the list.
+ * @param{size_t} pos: position of the element in the list, its index.
  *
  * @return{void}
  */
@@ -87,11 +87,11 @@ void destroyElemInList(lst l, size_t pos);
  * @brief Resizes the current size of memory took by the list
  *
  * This function resizes the current size of the list in memory according to the
- * number of items that will be added soon if necessary
+ * number of items that will be added soon if necessary.
  *
- * @param{lst} l: pointer of the list
- * @param{int} nbNewElements: number of new elements add in the list (can be
- * inferior to 0 if elements are removed)
+ * @param{lst} l: pointer of the list.
+ * @param{int} nbNewElements: number of new elements to add in the list (can be
+ * inferior to 0 if elements are removed).
  *
  * @return{void}
  */
