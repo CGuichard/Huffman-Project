@@ -51,11 +51,23 @@ Deletes the folders **bin/**, **obj/** and **lib/**
 
 Updates the executable if needed, and after that executes **bin/huffman_exec** with no arguments
 
+### Make run_interface
+
+	make run_interface
+
+Updates the executable if needed, and after that executes **bin/huffman_exec** with the argument "interface" to run the program with a console interface made for the tests
+
 ### Make memory_run
 
 	make memory_run
 
 Same as **make run**, but uses valgrind in addition
+
+### Make memory\_run\_interface
+
+	make memory_run_interface
+
+Same as **make run_interface**, but uses valgrind in addition
 
 ### Make archive
 
