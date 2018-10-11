@@ -22,6 +22,15 @@ char *TEST3 = "TTT";
 /* ============== DEF PRIVATE FUNCTIONS ============= */
 /* ========================================================================== */
 
+/**
+ * @function testStr
+ * @brief Function used to test a string of characters encryption and decryption
+ *
+ * @param{char*} str: string of characters to test
+ *
+ * @return{void}
+ */
+void testStr(char *str);
 
 /**
  * @function setFilesNames
@@ -62,21 +71,81 @@ int main(int argc, char *argv[]) {
     free(fileOut);
     free(fileKey);
   } else {
-    hfm huffmanEncr = huffmanEncrypt(TEST2);
-    printf("Text: \"%s\"\n", TEST2);
-    if(huffmanEncr != NULL) {
-      printf("Encryption: \"%s\"\n", getHuffmanStr(huffmanEncr));
-      char *decr = huffmanDecrypt(huffmanEncr);
-      if(decr != NULL) {
-        printf("Decryption: \"%s\"\n", decr);
+    int again = 1;
+    int inputreturn;
+    char input[10];
+    int choice = -1;
+    while(again == 1) {
+      printf("# ==================================== #\n# ============ TEST MENU ============= #\n# ==================================== #\n\n");
+      printf("0. Quit\n");
+      printf("1. Test a string of characters\n");
+      printf("2. Test a file\n");
+      printf( "\nEnter your choice (ex: 0 for quit): ");
+      inputreturn = scanf("%s", input);
+      if(inputreturn < 0) {
+        printf("\nError while reading the input\n");
       } else {
-        printf("Decryption failed\n");
+        choice = strToInt(input);
+        if(choice < 0 || choice > 2) {
+          printf("\nUnknown choice\n");
+        } else {
+          switch (choice) {
+            case 0:
+              again = 0;
+              printf("\nGood bye!\n");
+              break;
+            case 1:
+              printf("\nYou choosed to test the encryption and the decryption of a string of characters\n");
+              printf("Enter 0 to continue: ");
+              inputreturn = scanf("%s", input);
+              if(inputreturn < 0) {
+                printf("\nError while reading the input\n");
+              } else {
+                choice = strToInt(input);
+                if(choice == 0) {
+                  char *test = (char*)calloc(sizeof(char), 201);
+                  printf("\nPlease enter the string to test: ");
+                  test = fgets(test, 200, stdin);
+                  printf("\n\n");
+                  testStr(test);
+                  free(test);
+                } else {
+                  printf("\nProcess stopped\n");
+                }
+              }
+              break;
+            case 2:
+              printf("\nYou choosed to test the encryption and the decryption of a file\n");
+              printf("Enter 0 to continue: ");
+              inputreturn = scanf("%s", input);
+              if(inputreturn < 0) {
+                printf("\nError while reading the input\n");
+              } else {
+                char fileIn[100];
+                char fileOut[104];
+                char fileKey[108];
+                char fileOutDecr[108];
+                printf("\nEnter your file path: ");
+                inputreturn = scanf("%s", fileIn);
+                if(inputreturn < 0) {
+                  printf("\nError while reading the input\n");
+                } else {
+                  strcpy(fileOut, fileIn);
+                  strcat(fileOut, ".hfm");
+                  strcpy(fileKey, fileOut);
+                  strcat(fileKey, ".key");
+                  strcpy(fileOutDecr, fileOut);
+                  strcat(fileOutDecr, ".txt");
+                  huffmanEncryptFile(fileIn, fileOut, fileKey);
+                  huffmanDecryptFile(fileOut, fileOutDecr, fileKey);
+                }
+              }
+          }
+          printf("\n\n");
+        }
       }
-      free(decr);
-    } else {
-      printf("Encryption failed\n");
+      if(again != 1) printf("\n# ==================================== #\n# ==================================== #\n\n");
     }
-    destroyHuffman(&huffmanEncr);
   }
   return EXIT_SUCCESS;
 }
@@ -88,11 +157,34 @@ int main(int argc, char *argv[]) {
 
 
 /**
+ * @see @file huffman_exec.c / @function testStr
+ */
+void testStr(char *str) {
+  hfm huffmanEncr = huffmanEncrypt(str);
+  printf("# =============== TEST =============== #\n");
+  printf("====== Text ======\n\n\"%s\"\n\n", str);
+  if(huffmanEncr != NULL) {
+    printf("=== Encryption ===\n\n\"%s\"\n\n", getHuffmanStr(huffmanEncr));
+    char *decr = huffmanDecrypt(huffmanEncr);
+    if(decr != NULL) {
+      printf("=== Decryption ===\n\n\"%s\"\n\n", decr);
+    } else {
+      printf("==== Decryption failed ====\n");
+    }
+    free(decr);
+  } else {
+    printf("==== Encryption failed ====\n");
+  }
+  destroyHuffman(&huffmanEncr);
+  printf("# =========== END OF TEST ============ #\n");
+}
+
+/**
  * @see @file huffman_exec.c / @function setFilesNames
  */
 void setFilesNames(char *argv[], int argc, char **fileIn, char **fileOut, char **fileKey) {
-  *(fileOut) = (char*)malloc(sizeof(char) * 100);
-  *(fileKey) = (char*)malloc(sizeof(char) * 104);
+  *(fileOut) = (char*)malloc(sizeof(char) * 101);
+  *(fileKey) = (char*)malloc(sizeof(char) * 105);
   *(fileIn) = argv[2];
   if(!strcmp("encrypt", argv[1])) {
     if(argc >= 4) {

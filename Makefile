@@ -54,7 +54,7 @@ obj/$(MAIN).pic.o: src/$(MAIN).c
 obj/%.pic.o: src/%.c include/%.h
 	$(CC) -fPIC -c -o $@ $< -I include
 
-.PHONY: bin lib clean cleanO clean+ cleandir run memory_run archive
+.PHONY: bin lib clean cleanO cleantests clean+ cleandir run memory_run archive
 
 bin: bin/$(MAIN)
 
@@ -76,7 +76,19 @@ else
 	@echo "No file .o to delete"
 endif
 
-clean+: clean cleanO
+cleantests:
+ifneq ("$(wildcard tests/*.hfm)","")
+	@rm $(wildcard tests/*.hfm)
+endif
+ifneq ("$(wildcard tests/*.hfm.key)","")
+	@rm $(wildcard tests/*.hfm.key)
+endif
+ifneq ("$(wildcard tests/*.hfm.txt)","")
+	@rm $(wildcard tests/*.hfm.txt)
+endif
+	@echo "Tests repository cleaned"
+
+clean+: clean cleanO cleantests
 
 cleandir:
 	@rm -rf bin obj lib
