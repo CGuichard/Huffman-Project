@@ -14,13 +14,26 @@
 
 #include "huffman.h"
 
-char *TEST1 = "J'ai perdu ma force et ma vie,\nEt mes amis et ma gaieté,\nJ'ai perdu jusqu'à la fierté\nQui faisait croire à mon génie.\n\nQuand j'ai connu la Vérité,\nJ'ai cru que c'était une amie ;\nQuand je l'ai comprise et sentie,\nJ'en étais déjà dégoûté.\n\nEt pourtant elle est éternelle,\nEt ceux qui se sont passés d'elle\nIci-bas ont tout ignoré.\n\nDieu parle, il faut qu'on lui réponde.\nLe seul bien qui me reste au monde\nEst d'avoir quelquefois pleuré.\nAlfred de Musset.";
-char *TEST2 = "This is a test to verify if the encryption and the decryption are correct";
-char *TEST3 = "TTT";
+char* TESTS_V[4] = {
+  "Hello World!",
+  "J'ai perdu ma force et ma vie,\nEt mes amis et ma gaieté,\nJ'ai perdu jusqu'à la fierté\nQui faisait croire à mon génie.\n\nQuand j'ai connu la Vérité,\nJ'ai cru que c'était une amie ;\nQuand je l'ai comprise et sentie,\nJ'en étais déjà dégoûté.\n\nEt pourtant elle est éternelle,\nEt ceux qui se sont passés d'elle\nIci-bas ont tout ignoré.\n\nDieu parle, il faut qu'on lui réponde.\nLe seul bien qui me reste au monde\nEst d'avoir quelquefois pleuré.\nAlfred de Musset.",
+  "This is a test to verify if the encryption and the decryption are correct",
+  "TTT"
+};
+int TESTS_C = 4;
 
 /* ================================================== */
 /* ============== DEF PRIVATE FUNCTIONS ============= */
 /* ========================================================================== */
+
+
+/**
+ * @function displayConsoleInterface
+ * @brief Function used to display a terminal interface
+ *
+ * @return{void}
+ */
+void displayConsoleInterface();
 
 /**
  * @function testStr
@@ -31,6 +44,14 @@ char *TEST3 = "TTT";
  * @return{void}
  */
 void testStr(char *str);
+
+/**
+ * @function emptyBuffer
+ * @brief Function used to empty the buffer of stdin
+ *
+ * @return{void}
+ */
+void emptyBuffer();
 
 /**
  * @function setFilesNames
@@ -70,57 +91,95 @@ int main(int argc, char *argv[]) {
     }
     free(fileOut);
     free(fileKey);
+  } else if(argc == 2) {
+    if (!strcmp("interface", argv[1]))
+      displayConsoleInterface(); // Launch terminal interface
   } else {
-    int again = 1;
-    int inputreturn;
-    char input[10];
-    int choice = -1;
-    while(again == 1) {
-      printf("# ==================================== #\n# ============ TEST MENU ============= #\n# ==================================== #\n\n");
-      printf("0. Quit\n");
-      printf("1. Test a string of characters\n");
-      printf("2. Test a file\n");
-      printf( "\nEnter your choice (ex: 0 for quit): ");
-      inputreturn = scanf("%s", input);
-      if(inputreturn < 0) {
-        printf("\nError while reading the input\n");
+    /*=================================================
+
+
+
+
+
+
+                  You can place here the
+                  tests you want to run
+                       by default
+
+
+
+
+
+
+
+    =================================================*/
+    testStr(TESTS_V[0]); // example of test
+  }
+  return EXIT_SUCCESS;
+}
+
+
+/* ================================================== */
+/* ===================== PRIVATE ==================== */
+/* ========================================================================== */
+
+
+/**
+ * @see @file huffman_exec.c / @function testStr
+ */
+void displayConsoleInterface() {
+  int again = 1;
+  int inputreturn;
+  char input[200];
+  int choice = -1;
+  while(again == 1) {
+    printf("\n# ==================================== #\n# ============ TEST MENU ============= #\n# ==================================== #\n\n");
+    printf("0. Quit\n");
+    printf("1. Test a string of characters\n");
+    printf("2. Test a file\n");
+    printf("3. Start a predefined test\n");
+    printf( "\nEnter your choice (ex: 0 for quit): ");
+    inputreturn = scanf("%s", input);
+    if(inputreturn < 0) {
+      printf("\nError while reading the input\n");
+    } else {
+      choice = strToInt(input);
+      if(choice < 0 || choice > 3) {
+        printf("\nUnknown choice\n");
       } else {
-        choice = strToInt(input);
-        if(choice < 0 || choice > 2) {
-          printf("\nUnknown choice\n");
-        } else {
-          switch (choice) {
-            case 0:
-              again = 0;
-              printf("\nGood bye!\n");
-              break;
-            case 1:
-              printf("\nYou choosed to test the encryption and the decryption of a string of characters\n");
-              printf("Enter 0 to continue: ");
-              inputreturn = scanf("%s", input);
-              if(inputreturn < 0) {
-                printf("\nError while reading the input\n");
+        switch (choice) {
+          case 0:
+            again = 0;
+            printf("\nGood bye!\n");
+            break;
+          case 1:
+            printf("\nYou choosed to test the encryption and the decryption of a string of characters\n");
+            printf("Enter 0 to continue: ");
+            inputreturn = scanf("%s", input);
+            if(inputreturn < 0) {
+              printf("\nError while reading the input\n");
+            } else {
+              choice = strToInt(input);
+              if(choice == 0) {
+                printf("\nPlease enter the string to test: ");
+                emptyBuffer();
+                char *test = fgets(input, sizeof(input), stdin);
+                if(test[strlen(test)-1] == '\n') test[strlen(test)-1] = '\0';
+                testStr(test);
               } else {
-                choice = strToInt(input);
-                if(choice == 0) {
-                  char *test = (char*)calloc(sizeof(char), 201);
-                  printf("\nPlease enter the string to test: ");
-                  test = fgets(test, 200, stdin);
-                  printf("\n\n");
-                  testStr(test);
-                  free(test);
-                } else {
-                  printf("\nProcess stopped\n");
-                }
+                printf("\nProcess stopped");
               }
-              break;
-            case 2:
-              printf("\nYou choosed to test the encryption and the decryption of a file\n");
-              printf("Enter 0 to continue: ");
-              inputreturn = scanf("%s", input);
-              if(inputreturn < 0) {
-                printf("\nError while reading the input\n");
-              } else {
+            }
+            break;
+          case 2:
+            printf("\nYou choosed to test the encryption and the decryption of a file\n");
+            printf("Enter 0 to continue: ");
+            inputreturn = scanf("%s", input);
+            if(inputreturn < 0) {
+              printf("\nError while reading the input\n");
+            } else {
+              choice = strToInt(input);
+              if(choice == 0) {
                 char fileIn[100];
                 char fileOut[104];
                 char fileKey[108];
@@ -136,25 +195,58 @@ int main(int argc, char *argv[]) {
                   strcat(fileKey, ".key");
                   strcpy(fileOutDecr, fileOut);
                   strcat(fileOutDecr, ".txt");
+                  printf("\nTest started\n");
                   huffmanEncryptFile(fileIn, fileOut, fileKey);
                   huffmanDecryptFile(fileOut, fileOutDecr, fileKey);
                 }
+              } else {
+                printf("\nProcess stopped");
               }
-          }
-          printf("\n\n");
+            }
+            break;
+          case 3:
+            printf("\nYou choosed to use a predefined test\n");
+            printf("Enter 0 to continue: ");
+            inputreturn = scanf("%s", input);
+            if(inputreturn < 0) {
+              printf("\nError while reading the input\n");
+            } else {
+              choice = strToInt(input);
+              if(choice == 0) {
+                printf("\n\n");
+                int again2 = 1;
+                while(again2 == 1) {
+                  printf("\nWhich test do you want to do (enter 0 to quit)?\n");
+                  for (short int i = 0; i < TESTS_C; i++) printf("Test n°%d\n", i+1);
+                  printf("Your choice: Test n°");
+                  inputreturn = scanf("%s", input);
+                  if(inputreturn < 0) {
+                    printf("\nError while reading the input\n");
+                  } else {
+                    choice = strToInt(input);
+                    if(choice <= 0) {
+                      again2 = 0;
+                      printf("\nRunning of predefined tests stopped");
+                    } else {
+                      if(choice > TESTS_C) {
+                        printf("\nThis test does not exist\n\n");
+                      } else {
+                        testStr(TESTS_V[choice-1]);
+                      }
+                    }
+                  }
+                }
+              } else {
+                printf("\nProcess stopped");
+              }
+            }
         }
+        printf("\n\n");
       }
-      if(again != 1) printf("\n# ==================================== #\n# ==================================== #\n\n");
     }
+    if(again != 1) printf("\n# ==================================== #\n# ==================================== #\n\n");
   }
-  return EXIT_SUCCESS;
 }
-
-
-/* ================================================== */
-/* ===================== PRIVATE ==================== */
-/* ========================================================================== */
-
 
 /**
  * @see @file huffman_exec.c / @function testStr
@@ -177,6 +269,14 @@ void testStr(char *str) {
   }
   destroyHuffman(&huffmanEncr);
   printf("# =========== END OF TEST ============ #\n");
+}
+
+/**
+ * @see @file huffman_exec.c / @function emptyBuffer
+ */
+void emptyBuffer() {
+  int c = 0;
+  while (c != '\n' && c != EOF) c = getchar();
 }
 
 /**
