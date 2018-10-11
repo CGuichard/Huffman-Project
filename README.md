@@ -67,9 +67,11 @@ You can also write directly:
 
     ./bin/huffman_exec
 
-This test encrypt and decrypt a string of characters wrote in src/huffman_exec.c
+This test encrypt and decrypt a string of characters wrote in **src/huffman_exec.c**
 
-You can modify the test string in the **src/huffman.exec** to make another test
+A section to do your personnalized tests is present in the file **src/huffman_exec.c**, you can modify this section and tests every function of the project you want to test
+
+You can modify the tests strings stored in the variable *TESTS_V* in **src/huffman_exec.c** to make your own tests
 
 If you want to run the program with valgrind you can execute:
 
@@ -106,6 +108,20 @@ To decrypt the order of the argument is not exactly the same:
 It goes without saying that you can put **valgrind** before **./bin/huffman_exec** to use it
 
 We encourage you to always use only the **1.** parameter, and let the program calculate what's left, because it's more fast to test
+
+### Console Interface
+
+An interface for console have been made, you can use it with:
+
+	make run_interface
+	# OR
+	./bin/huffman_exec interface
+
+It is also possible to use valgrind to check the memory at the end of the interface execution with:
+
+	make memory_run_interface
+	# OR
+	valgrind ./bin/huffman_exec interface
 
 ### Java Interface
 
