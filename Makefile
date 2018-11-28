@@ -10,7 +10,7 @@ LIB=libhuffman
 CC=gcc
 
 # FLAGS : paramètres de compilation
-CFLAGS=-I include -O3 -march=native -Wall -Wextra -pedantic -ggdb
+CFLAGS=-I include -O2 -march=native -Wall -Wextra -pedantic -ggdb
 
 # FLAGS : Librairies + Version utilisée
 LIBS=-std=c99 -lm
