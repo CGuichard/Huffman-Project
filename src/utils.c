@@ -1,6 +1,6 @@
 /**
  * @file utils.c
- * @author Clément GUICHARD
+ * @author Clément GUICHARD <clement.guichard1@etu.univ-orleans.fr>
  * @standard C99
  * @version 1.0
  * @date 11th October 2018

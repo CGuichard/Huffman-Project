@@ -1,7 +1,7 @@
 /**
  * @file huffman.h
- * @author Clément GUICHARD
- * @author Thàng long CAMA
+ * @author Clément GUICHARD <clement.guichard1@etu.univ-orleans.fr>
+ * @author Thàng long CAMA <thang-long.cama@etu.univ-orleans.fr>
  * @standard C99
  * @version 1.0
  * @date 11th October 2018
