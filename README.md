@@ -171,8 +171,8 @@ We used [git](https://git-scm.com/) for versioning. An online version is hosted 
 
 ## Authors
 
-* **Clément GUICHARD** - *Developer* - <clement.guichard1@etu.univ-orleans.fr>
-* **Thàng long CAMA** - *Developer* - <thang-long.cama@etu.univ-orleans.fr>
+* **Clément GUICHARD** - *Developer* - <clement.guichard1@etu.univ-orleans.fr> ([GITHUB](https://github.com/CGuichard))
+* **Thàng long CAMA** - *Developer* - <thang-long.cama@etu.univ-orleans.fr> ([GITHUB](https://github.com/Thang-long))
 
 ## License
 

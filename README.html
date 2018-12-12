@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<p><span style="display:block;text-align:center"><img src="./doc/l3ing-project-huffman-coding.png" alt="Logo" /></p>
+<h1>L3 ING Project - Huffman coding</h1>
+<p>The objective of this project is to propose a code allowing to apply a Huffman coding on ASCII text files to compress their data without loss of information</p>
+<h2>Getting Started</h2>
+<p>These instructions will help you to get an executable file, as well as the method to use this executable</p>
+<h3>Prerequisites</h3>
+<h4>Make</h4>
+<p>To compile the project you will need to use <strong>make</strong>. This command uses the file named Makefile and is used to compile the project. It is normally on all GNU Operating Systems</p>
+<p>If it is not installed on your machine you will need to install it. This command can be found for example on Ubuntu in the build-essential package. You can install it as follows:</p>
+<pre><code>sudo apt-get install make
+</code></pre>
+
+<p>To learn how to install <strong>make</strong> on other operating systems, please check the correct documentation</p>
+<p><em>Learn more about <a href="https://www.gnu.org/software/make/manual/make.pdf">make</a></em></p>
+<h4>Valgrind</h4>
+<p>Valgrind is a tool used to know with details the state of the memory at the exit of the program. It is used in the makefile and by using the corresponding command (see <em>commands.md</em>) you can execute the program with valgrind</p>
+<p>To install it you need to use this command:</p>
+<pre><code>sudo apt-get install valgrind
+</code></pre>
+
+<p>To learn how to install <strong>valgrind</strong> on other operating systems, please check the correct documentation</p>
+<p><em>Learn more about <a href="http://valgrind.org/">valgrind</a></em></p>
+<h3>Compilation</h3>
+<h4>Executable</h4>
+<p>To compile you will have to open a terminal at the root of the project folder and type in the terminal:</p>
+<pre><code>make
+</code></pre>
+
+<blockquote>
+<p><em>Note: You can use the -j{x} option with make and replace {x} with the number of jobs you want to run simultaneously. To summarize if your machine has 4 cores add -j4 to compile faster using the 4 cores instead of one</em></p>
+</blockquote>
+<p>Quite simple isn't it? Now the project is ready to run</p>
+<h4>Library</h4>
+<p>You can compile a library libhuffman containing functions that can be used to encrypt and decrypt a string of character or a file by using the command:</p>
+<pre><code>make lib
+</code></pre>
+
+<p>The library will be generated in the directory <strong>lib/</strong>. Two versions will be generated, a static library and a dynamic library.</p>
+<blockquote>
+<p><em>Note: The static one end by &quot;.a&quot; and the dynamic one end with &quot;.so&quot;</em></p>
+</blockquote>
+<h3>Use of the executable</h3>
+<h4>Start the test</h4>
+<p>The project is easy to use. You can execute this command to run the default test of the executable:</p>
+<pre><code>make run
+</code></pre>
+
+<p>You can also write directly:</p>
+<pre><code>./bin/huffman_exec
+</code></pre>
+
+<p>This test encrypt and decrypt a string of characters wrote in <strong>src/huffman_exec.c</strong></p>
+<p>A section to do your personnalized tests is present in the file <strong>src/huffman_exec.c</strong>, you can modify this section and tests every function of the project you want to test</p>
+<p>You can modify the tests strings stored in the variable <em>TESTS<em>V</em> in <strong>src/huffman</em>exec.c</strong> to make your own tests</p>
+<p>If you want to run the program with valgrind you can execute:</p>
+<pre><code>make memory_run
+# OR
+valgrind ./bin/huffman_exec
+</code></pre>
+
+<h4>More precise execution</h4>
+<p>Previously we only used the test of huffman, but it is impractical to compile each time</p>
+<p>To overcome this problem, it is possible to encrypt files directly by giving the file to be encrypted as execution parameter of the executable</p>
+<p>For this you need to type as follows:</p>
+<pre><code>./bin/huffman_exec encrypt {pathFileInput} {pathFileOut} {pathFileKey}
+</code></pre>
+
+<ol>
+<li><code>{pathFileInput}</code>: Path of the file to encrypt</li>
+<li><code>{pathFileOut}</code>: Path of the output file <em>(not obligatory)</em></li>
+<li><code>{pathFileKey}</code>: Path of the file used to save the key <em>(not obligatory)</em></li>
+</ol>
+<blockquote>
+<p><em>Note: Remember that you cannot change the order of the arguments. For example if you want to put {pathFileKey} you must have put {pathFileOut}</em></p>
+</blockquote>
+<p>To decrypt the order of the argument is not exactly the same:</p>
+<pre><code>./bin/huffman_exec decrypt {pathFileInput} {pathFileKey} {pathFileOut}
+</code></pre>
+
+<ol>
+<li><code>{pathFileInput}</code>: Path of the file to encrypt</li>
+<li><code>{pathFileKey}</code>: Path of the file used to save the key <em>(not obligatory)</em></li>
+<li><code>{pathFileOut}</code>: Path of the output file <em>(not obligatory)</em></li>
+</ol>
+<blockquote>
+<p><em>Note: it is possible not to specify files other than the one of pathFileInput, because the program will determine the filenames (pathFileOut = pathFileInput + &quot;.hfm&quot; and pathFileKey = pathFileInput + &quot;.hfm.key&quot;)</em></p>
+</blockquote>
+<p>It goes without saying that you can put <strong>valgrind</strong> before <strong>./bin/huffman_exec</strong> to use it</p>
+<p>We encourage you to always use only the <strong>1.</strong> parameter, and let the program calculate what's left, because it's more fast to test</p>
+<h3>Console Interface</h3>
+<p>An interface for console have been made, you can use it with:</p>
+<pre><code>make run_interface
+# OR
+./bin/huffman_exec interface
+</code></pre>
+
+<p>It is also possible to use valgrind to check the memory at the end of the interface execution with:</p>
+<pre><code>make memory_run_interface
+# OR
+valgrind ./bin/huffman_exec interface
+</code></pre>
+
+<h3>Java Interface</h3>
+<blockquote>
+<p><strong>Attention!</strong> the java interface uses the linux executable generated by the makefile, it doesn't work on Windows or MACOSX or operating systems other than GNU</p>
+</blockquote>
+<p>In the folder <strong>app/</strong>  you can found a Java executable <strong>.jar</strong> which is an interface to use the executable without using manually the commands showed before. To run this executable you will need Java 8 or up. First you will need to open a terminal in the folder <strong>app/</strong> and execute this command:</p>
+<pre><code>app/$: java -jar HuffmanCoding.jar
+</code></pre>
+
+<p>There is a difference between the encrypt and the decrypt inputs</p>
+<ul>
+<li><strong>Encryption:</strong> when you encrypt the first file is the {pathFileInput}, and the second is {pathFileOut}</li>
+<li><strong>Decryption:</strong> when you decrypt the first file is the {pathFileInput}, and the second is {pathFileKey}</li>
+</ul>
+<p>To sum up the argument needed for the interface correspond to the arguments <strong>1.</strong> and <strong>2.</strong> described in the previous part for each option (<em>Encrypt</em> and <em>Decrypt</em>)</p>
+<h3>Learn more</h3>
+<p>You can learn more about the commands you can use with <strong>make</strong> by looking at the <strong>commands.md</strong> file</p>
+<h2>Generation of the documentation</h2>
+<p>The documentation of this project can be generated using the software <a href="http://www.doxygen.nl/">Doxygen</a></p>
+<p>You can learn about how to install Doxygen <a href="https://www.stack.nl/~dimitri/doxygen/manual/install.html">here</a></p>
+<p>Use Doxygen with the <strong>Doxyfile</strong> file in the <strong>doc/</strong> folder to generate web-format documentation (html). You can use Doxygen with the Doxywizard, or if you can by typing in a terminal <em>(by being in the directory doc /)</em> the command:</p>
+<pre><code>doxygen Doxyfile
+</code></pre>
+
+<p>If the version of Doxyfile is too old for your version of Doxygen, you can upgrade it with:</p>
+<pre><code>doxygen -u Doxyfile
+</code></pre>
+
+<p>Do not hesitate to consult the documentation of Doxygen for any problem</p>
+<h2>Standards used</h2>
+<ul>
+<li><a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n897.pdf">C99</a> - The international standard used for C language</li>
+<li><a href="http://www.doxygen.nl/">Doxygen</a> - The comments of our files are based on the file documentation described by the documentation generator Doxygen</li>
+</ul>
+<h2>Versioning</h2>
+<p>We used <a href="https://git-scm.com/">git</a> for versioning. An online version is hosted on <a href="https://gitlab.com/">gitlab</a>, however the directory is private and only visible to developers</p>
+<h2>Authors</h2>
+<ul>
+<li><strong>Clément GUICHARD</strong> - <em>Developer</em> - <a href="&#x6d;&#97;i&#x6c;&#x74;&#x6f;&#x3a;&#x63;&#x6c;&#101;&#x6d;&#x65;&#110;&#x74;&#x2e;&#103;&#x75;&#x69;&#99;&#x68;&#97;&#114;&#100;&#x31;&#x40;e&#x74;&#x75;&#x2e;&#117;&#x6e;&#105;&#x76;&#45;&#111;r&#x6c;&#101;&#97;&#x6e;&#x73;&#46;&#x66;&#x72;">&#99;&#x6c;&#x65;&#109;&#x65;&#110;&#x74;&#x2e;&#x67;&#117;&#x69;&#x63;&#x68;&#x61;&#114;&#100;&#x31;&#x40;&#x65;&#116;&#117;&#x2e;&#117;&#x6e;&#105;v&#45;&#x6f;&#x72;&#x6c;e&#x61;&#110;&#115;&#x2e;&#102;&#x72;</a> (<a href="https://github.com/CGuichard">GITHUB</a>)</li>
+<li><strong>Thàng long CAMA</strong> - <em>Developer</em> - <a href="&#109;a&#x69;&#108;t&#111;&#58;&#x74;h&#x61;&#x6e;&#x67;&#x2d;&#108;&#111;&#x6e;&#x67;.&#99;&#97;m&#x61;&#x40;&#101;&#116;&#x75;&#46;&#x75;&#x6e;&#105;&#118;&#45;&#x6f;&#114;&#x6c;&#x65;&#97;&#110;&#115;&#x2e;&#x66;&#114;">&#116;h&#x61;&#110;&#103;-&#x6c;&#x6f;&#x6e;&#x67;&#46;&#x63;&#x61;&#109;a&#64;&#x65;&#x74;&#x75;&#46;&#x75;&#110;&#x69;&#x76;&#x2d;&#111;r&#108;&#x65;a&#110;&#115;&#x2e;&#x66;r</a> (<a href="https://github.com/Thang-long">GITHUB</a>)</li>
+</ul>
+<h2>License</h2>
+<p>This project is subject to French laws concerning IT projects carried out within the framework of a University project</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
